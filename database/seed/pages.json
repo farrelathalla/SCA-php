@@ -1,0 +1,1642 @@
+{
+  "global": {
+    "_label": "Site-wide settings",
+    "site": {
+      "name": "Saiga Conservation Alliance",
+      "shortName": "SCA",
+      "description": "Protecting saiga antelope and the steppe grasslands they depend on, together with the people who live alongside them.",
+      "logoMark": "/logo/sca-mark.webp",
+      "logoFull": "/logo/sca-logo.webp"
+    },
+    "header": {
+      "donateLabel": "Donate",
+      "donateHref": "/support/donate",
+      "nav": [
+        {
+          "label": "About Us",
+          "href": "/about",
+          "children": [
+            {
+              "label": "Who We Are",
+              "href": "/about",
+              "description": "Mission, approach and governance",
+              "listProgrammes": false
+            },
+            {
+              "label": "Our Story",
+              "href": "/about/our-story",
+              "description": "Milestones since 2006",
+              "listProgrammes": false
+            },
+            {
+              "label": "Our People",
+              "href": "/about/our-people",
+              "description": "Staff, committee and trustees",
+              "listProgrammes": false
+            },
+            {
+              "label": "Partners & Funders",
+              "href": "/about/partners-funders",
+              "description": "Who we work with",
+              "listProgrammes": false
+            },
+            {
+              "label": "Contact Us",
+              "href": "/about/contact",
+              "description": "Get in touch",
+              "listProgrammes": false
+            }
+          ]
+        },
+        {
+          "label": "About Saigas",
+          "href": "/saigas/what-is-a-saiga",
+          "children": [
+            {
+              "label": "What is a Saiga?",
+              "href": "/saigas/what-is-a-saiga",
+              "description": "Meet the species",
+              "listProgrammes": false
+            },
+            {
+              "label": "Why Saigas Matter",
+              "href": "/saigas/why-saigas-matter",
+              "description": "Ecological and cultural value",
+              "listProgrammes": false
+            },
+            {
+              "label": "Population History & Threats",
+              "href": "/saigas/population-history-and-threats",
+              "description": "Decline, recovery and pressures",
+              "listProgrammes": false
+            },
+            {
+              "label": "Saiga Policy & Protection",
+              "href": "/saigas/policy-and-protection",
+              "description": "Legal status and agreements",
+              "listProgrammes": false
+            }
+          ]
+        },
+        {
+          "label": "Our Work",
+          "href": "/our-work",
+          "children": [
+            {
+              "label": "Overview",
+              "href": "/our-work",
+              "description": "Our work at a glance",
+              "listProgrammes": false
+            },
+            {
+              "label": "Working with Communities",
+              "href": "/our-work/working-with-communities",
+              "description": "",
+              "listProgrammes": false
+            },
+            {
+              "label": "Education & Awareness",
+              "href": "/our-work/education-and-awareness",
+              "description": "",
+              "listProgrammes": false
+            },
+            {
+              "label": "Research & Monitoring",
+              "href": "/our-work/research-and-monitoring",
+              "description": "",
+              "listProgrammes": false
+            },
+            {
+              "label": "Protecting Saigas on the Ground",
+              "href": "/our-work/protecting-saigas",
+              "description": "",
+              "listProgrammes": false
+            },
+            {
+              "label": "International Policy",
+              "href": "/our-work/international-policy",
+              "description": "",
+              "listProgrammes": false
+            },
+            {
+              "label": "Grants & Awards",
+              "href": "/our-work/grants-and-awards",
+              "description": "",
+              "listProgrammes": true
+            },
+            {
+              "label": "Projects Archive",
+              "href": "/projects",
+              "description": "Browse every project",
+              "listProgrammes": false
+            }
+          ]
+        },
+        {
+          "label": "Resources",
+          "href": "/resources",
+          "children": []
+        },
+        {
+          "label": "News & Updates",
+          "href": "/news",
+          "children": []
+        },
+        {
+          "label": "Support Us",
+          "href": "/support/donate",
+          "children": [
+            {
+              "label": "Donate",
+              "href": "/support/donate",
+              "description": "Keep them moving",
+              "listProgrammes": false
+            },
+            {
+              "label": "Sign Up for Updates",
+              "href": "/support/sign-up",
+              "description": "Our newsletter",
+              "listProgrammes": false
+            },
+            {
+              "label": "Work With Us",
+              "href": "/support/work-with-us",
+              "description": "Partner or get in touch",
+              "listProgrammes": false
+            }
+          ]
+        }
+      ]
+    },
+    "footer": {
+      "tagline": "Protecting saiga antelope and the steppe grasslands they depend on, together with the people who live alongside them.",
+      "contactLines": [
+        "hello@saiga-conservation.org",
+        "Registered charity — United Kingdom"
+      ],
+      "socials": [
+        {
+          "label": "Instagram",
+          "icon": "instagram",
+          "href": "#"
+        },
+        {
+          "label": "Facebook",
+          "icon": "facebook",
+          "href": "#"
+        },
+        {
+          "label": "LinkedIn",
+          "icon": "linkedin",
+          "href": "#"
+        },
+        {
+          "label": "YouTube",
+          "icon": "youtube",
+          "href": "#"
+        }
+      ],
+      "columns": [
+        {
+          "title": "About",
+          "links": [
+            {
+              "label": "Who We Are",
+              "href": "/about"
+            },
+            {
+              "label": "Our Story",
+              "href": "/about/our-story"
+            },
+            {
+              "label": "Our People",
+              "href": "/about/our-people"
+            },
+            {
+              "label": "Partners & Funders",
+              "href": "/about/partners-funders"
+            }
+          ]
+        },
+        {
+          "title": "Saigas & Our Work",
+          "links": [
+            {
+              "label": "What is a Saiga?",
+              "href": "/saigas/what-is-a-saiga"
+            },
+            {
+              "label": "Our Work",
+              "href": "/our-work"
+            },
+            {
+              "label": "Projects Archive",
+              "href": "/projects"
+            },
+            {
+              "label": "Grants & Awards",
+              "href": "/our-work/grants-and-awards"
+            }
+          ]
+        },
+        {
+          "title": "Get Involved",
+          "links": [
+            {
+              "label": "Donate",
+              "href": "/support/donate"
+            },
+            {
+              "label": "Sign Up for Updates",
+              "href": "/support/sign-up"
+            },
+            {
+              "label": "Work With Us",
+              "href": "/support/work-with-us"
+            },
+            {
+              "label": "Contact Us",
+              "href": "/about/contact"
+            }
+          ]
+        }
+      ],
+      "signupTitle": "Sign up for updates",
+      "signupNote": "We'll only use your email to send SCA updates. You can unsubscribe at any time.",
+      "copyright": "Saiga Conservation Alliance. All rights reserved.",
+      "privacyLabel": "Privacy Policy",
+      "privacyHref": "#"
+    },
+    "ctaBand": {
+      "eyebrow": "Support our work",
+      "title": "Keep them moving",
+      "body": "Saiga herds cross hundreds of kilometres of open steppe every year. Your support helps keep those routes open, protected and safe.",
+      "ctaLabel": "Make a donation",
+      "ctaHref": "/support/donate",
+      "note": "Every donation goes to work in the range states.",
+      "amounts": [
+        {
+          "label": "£15",
+          "href": "/support/donate#give"
+        },
+        {
+          "label": "£40",
+          "href": "/support/donate#give"
+        },
+        {
+          "label": "£75",
+          "href": "/support/donate#give"
+        },
+        {
+          "label": "Other",
+          "href": "/support/donate#give"
+        }
+      ]
+    },
+    "newsletter": {
+      "placeholder": "Your email address",
+      "buttonLabel": "Subscribe",
+      "thanks": "Thank you — please check your inbox to confirm.",
+      "defaultNote": "We use your address only to send SCA updates. Unsubscribe any time."
+    },
+    "contactForm": {
+      "nameLabel": "Your name",
+      "namePlaceholder": "Full name",
+      "emailLabel": "Email address",
+      "emailPlaceholder": "you@example.com",
+      "messageLabel": "Message",
+      "messagePlaceholder": "How can we help?",
+      "buttonLabel": "Send message",
+      "thanksTitle": "Thank you",
+      "thanksBody": "We have your message and will come back to you as soon as we can."
+    },
+    "labels": {
+      "readMore": "Read more",
+      "learnMore": "Learn more",
+      "readReport": "Read the report",
+      "loadMore": "Load more",
+      "clearFilters": "Clear filters",
+      "result": "result",
+      "results": "results",
+      "noResults": "Nothing matches those filters yet. Try widening your selection.",
+      "skipToContent": "Skip to content",
+      "menu": "Menu"
+    },
+    "notFound": {
+      "eyebrow": "404",
+      "title": "This page has moved on",
+      "intro": "Like the herds, some things do not stay in one place. Try the homepage, or head straight to our work.",
+      "primaryLabel": "Back to the homepage",
+      "primaryHref": "/",
+      "secondaryLabel": "See our work",
+      "secondaryHref": "/our-work"
+    },
+    "projectTypes": [
+      "SCA Project",
+      "Small Grants Project",
+      "Young Conservation Leaders Project",
+      "Excellence in Saiga Protection Awardee",
+      "Student Research Project"
+    ]
+  },
+  "home": {
+    "_label": "Home",
+    "meta": {
+      "title": "",
+      "description": ""
+    },
+    "hero": {
+      "eyebrow": "",
+      "title": "Saiga Conservation Alliance",
+      "intro": "Protecting one of the world's most remarkable migratory species, and the steppe grasslands it depends on.",
+      "image": "/images/home-hero-herd.webp",
+      "variant": "overlay",
+      "primaryLabel": "Donate today",
+      "primaryHref": "/support/donate",
+      "secondaryLabel": "See our work",
+      "secondaryHref": "/our-work"
+    },
+    "mission": {
+      "eyebrow": "Our mission",
+      "title": "A future where saiga move freely.",
+      "image": "/images/home-mission-fieldwork.webp",
+      "body": [
+        "We work with local partners to protect saiga habitat, strengthen protection on the ground, and support community-led conservation across the species’ range.",
+        "Our field teams monitor herds, restore migration corridors and share the research that guides action — so that decisions about the steppe are made with evidence, and with the people who live there."
+      ],
+      "linkLabel": "More about SCA",
+      "linkHref": "/about"
+    },
+    "species": {
+      "eyebrow": "The species",
+      "title": "What is a saiga?",
+      "image": "/images/home-saiga-portrait.webp",
+      "body": [
+        "Known for its distinctive nose and ancient lineage, the saiga is one of the steppe’s most extraordinary survivors — yet habitat loss, disease and illegal hunting continue to threaten its future."
+      ],
+      "facts": [
+        {
+          "icon": "leaf",
+          "title": "Unique",
+          "body": "Its oversized nose filters dust in summer and warms cold air in winter."
+        },
+        {
+          "icon": "route",
+          "title": "Migratory",
+          "body": "Herds travel hundreds of kilometres across open grassland each year."
+        },
+        {
+          "icon": "shield",
+          "title": "Vulnerable",
+          "body": "Populations can change dramatically within a single decade."
+        }
+      ],
+      "linkLabel": "Learn more about saigas",
+      "linkHref": "/saigas/what-is-a-saiga"
+    },
+    "numbers": {
+      "eyebrow": "Saigas in numbers",
+      "stats": [
+        {
+          "value": "1",
+          "unit": "species",
+          "label": "At the heart of our work"
+        },
+        {
+          "value": "4",
+          "unit": "range states",
+          "label": "Home to the world's wild saiga populations"
+        },
+        {
+          "value": "20",
+          "unit": "years",
+          "label": "Dedicated to saiga conservation"
+        }
+      ]
+    },
+    "whatWeDo": {
+      "eyebrow": "What we do",
+      "title": "Practical action for a wilder, more resilient steppe.",
+      "intro": "Together with partners and local communities, our work runs from frontline protection to long-term science.",
+      "items": [
+        {
+          "icon": "shield",
+          "title": "Protect saigas in the wild",
+          "body": "Supporting practical action to reduce threats and safeguard saigas and their habitat.",
+          "href": "/our-work/protecting-saigas"
+        },
+        {
+          "icon": "users",
+          "title": "Work with communities",
+          "body": "Supporting local people to shape and lead conservation that works for them and for saigas.",
+          "href": "/our-work/working-with-communities"
+        },
+        {
+          "icon": "chart",
+          "title": "Research saigas and the threats they face",
+          "body": "Using research and monitoring to deepen our understanding of saigas and inform conservation action.",
+          "href": "/our-work/research-and-monitoring"
+        },
+        {
+          "icon": "book",
+          "title": "Educate and inspire",
+          "body": "Building knowledge, awareness, and support for saiga conservation across generations.",
+          "href": "/our-work/education-and-awareness"
+        },
+        {
+          "icon": "award",
+          "title": "Fund conservation action",
+          "body": "Providing grants and awards that help people turn ideas into practical conservation work.",
+          "href": "/our-work/grants-and-awards"
+        },
+        {
+          "icon": "globe",
+          "title": "Support policy and international cooperation",
+          "body": "Sharing expertise and evidence to inform agreements, advice, and coordinated action for saiga conservation.",
+          "href": "/our-work/international-policy"
+        }
+      ],
+      "linkLabel": "Explore all our work",
+      "linkHref": "/our-work"
+    },
+    "featured": {
+      "eyebrow": "Featured work",
+      "title": "Real conservation. Lasting change.",
+      "linkLabel": "View projects archive",
+      "linkHref": "/projects",
+      "projects": [
+        "migration-corridor-mapping",
+        "steppe-stewardship-partnership",
+        "calving-ground-protection"
+      ]
+    },
+    "latest": {
+      "eyebrow": "Latest news",
+      "title": "Updates from the steppe and beyond.",
+      "linkLabel": "All news & updates",
+      "linkHref": "/news",
+      "count": "3"
+    },
+    "showDonationBand": true,
+    "stayConnected": {
+      "title": "Stay connected",
+      "body": "Occasional updates from our work in the steppe — field reports, research and news.",
+      "promptText": "Prefer to read first?",
+      "promptLinkLabel": "Browse the latest stories",
+      "promptLinkHref": "/news"
+    }
+  },
+  "about": {
+    "_label": "About Us — Who We Are",
+    "meta": {
+      "title": "Who We Are",
+      "description": "SCA's mission, approach and governance."
+    },
+    "hero": {
+      "eyebrow": "About us",
+      "title": "Who we are",
+      "intro": "An alliance of researchers, rangers, communities and supporters working for the recovery of the saiga antelope.",
+      "image": "/images/about-hero-steppe.webp",
+      "variant": "overlay"
+    },
+    "mission": {
+      "eyebrow": "Our mission",
+      "statement": "To secure the long-term survival of the saiga antelope across its range, and to keep the steppe grasslands it depends on healthy and connected.",
+      "body": "We work towards a future in which saiga herds move freely across the steppe, in which the people who live alongside them benefit from that recovery, and in which the decisions affecting both are made with evidence and with local knowledge."
+    },
+    "approach": {
+      "eyebrow": "Our approach",
+      "title": "Conservation built with the people of the steppe.",
+      "image": "/images/about-team.webp",
+      "body": [
+        "The Saiga Conservation Alliance brings together field scientists, protected area staff, community organisations and supporters across the saiga’s range. We are small by design: most of what we do is delivered through long-standing local partnerships rather than by parachuting teams into landscapes they do not know.",
+        "That means our work looks different in each country we operate in — but the intent is the same everywhere. Keep herds safe, keep the grasslands intact, and keep the people who live alongside saigas at the centre of the decisions that affect them.",
+        "It also means we work slowly where slow is what the work needs. Village committees, ranger teams and monitoring records all take years to become reliable, and none of them survive being rushed. Where we can move quickly — a small grant to a researcher whose field season is about to be lost — we do.",
+        "We are deliberately not the largest organisation working on the steppe, and we do not try to be. Our role is to connect the people who are already there, to fund the work that falls between larger programmes, and to make sure the evidence reaches the people writing policy."
+      ],
+      "linkLabel": "How we got here",
+      "linkHref": "/about/our-story"
+    },
+    "governance": {
+      "title": "Governance",
+      "bodyHtml": "SCA is a registered charity, overseen by a board of trustees and advised by a steering committee of specialists from across the saiga range. The SCA is governed by its Constitution, which you can read <a href=\"#\">here</a>."
+    },
+    "explore": {
+      "eyebrow": "Explore further",
+      "title": "More about SCA",
+      "items": [
+        {
+          "icon": "route",
+          "title": "Our story",
+          "body": "Twenty years of saiga conservation, milestone by milestone.",
+          "href": "/about/our-story"
+        },
+        {
+          "icon": "users",
+          "title": "Our people",
+          "body": "The staff, steering committee and trustees behind the work.",
+          "href": "/about/our-people"
+        },
+        {
+          "icon": "globe",
+          "title": "Partners & funders",
+          "body": "The organisations we work alongside, and who makes the work possible.",
+          "href": "/about/partners-funders"
+        },
+        {
+          "icon": "mail",
+          "title": "Contact us",
+          "body": "Where to send a question, a proposal or an offer of help.",
+          "href": "/about/contact"
+        }
+      ]
+    },
+    "showDonationBand": true
+  },
+  "our-story": {
+    "_label": "About Us — Our Story",
+    "meta": {
+      "title": "Our Story",
+      "description": "Milestones in the Saiga Conservation Alliance's work since 2006."
+    },
+    "hero": {
+      "eyebrow": "About us",
+      "title": "Our story",
+      "intro": "A shared effort to protect one of the steppe's most extraordinary species, and the landscapes it depends on — read from where we are now, back to where it started.",
+      "image": "",
+      "variant": "plain"
+    },
+    "milestones": [
+      {
+        "year": "2006",
+        "title": "A coalition forms",
+        "body": "A small group of biologists and local partners begins coordinated saiga monitoring across key steppe habitats.",
+        "image": "/images/story-2006.webp",
+        "celebrate": false,
+        "featureLabel": "",
+        "featureHref": "",
+        "featureImage": ""
+      },
+      {
+        "year": "2010",
+        "title": "Communities at the centre",
+        "body": "Community outreach expands, linking conservation goals with local stewardship and seasonal field education.",
+        "image": "/images/story-2010.webp",
+        "celebrate": false,
+        "featureLabel": "",
+        "featureHref": "",
+        "featureImage": ""
+      },
+      {
+        "year": "2015",
+        "title": "Responding to crisis",
+        "body": "After a catastrophic die-off, emergency response teams scale up research, veterinary support and cross-border collaboration.",
+        "image": "/images/story-2015.webp",
+        "celebrate": false,
+        "featureLabel": "",
+        "featureHref": "",
+        "featureImage": ""
+      },
+      {
+        "year": "2020",
+        "title": "Protection strengthens",
+        "body": "New ranger training, habitat mapping and migration tracking strengthen protection along vital movement corridors.",
+        "image": "/images/story-2020.webp",
+        "celebrate": false,
+        "featureLabel": "",
+        "featureHref": "",
+        "featureImage": ""
+      },
+      {
+        "year": "2024",
+        "title": "A broader alliance",
+        "body": "SCA launches a wider alliance model, combining science, policy and field partnerships to support long-term recovery.",
+        "image": "",
+        "celebrate": false,
+        "featureLabel": "",
+        "featureHref": "",
+        "featureImage": ""
+      },
+      {
+        "year": "2026",
+        "title": "Twenty years of SCA",
+        "body": "Two decades of work across the saiga range — the partnerships, the setbacks and the recovery — set out in one place.",
+        "image": "",
+        "celebrate": true,
+        "featureLabel": "Celebrate 20 years with us — read our anniversary report",
+        "featureHref": "/downloads/sca-20th-anniversary-report.pdf",
+        "featureImage": "/images/anniversary-report-cover.webp"
+      }
+    ],
+    "related": {
+      "title": "You may also be interested in",
+      "links": [
+        {
+          "label": "Our people",
+          "href": "/about/our-people"
+        },
+        {
+          "label": "Partners & funders",
+          "href": "/about/partners-funders"
+        },
+        {
+          "label": "Our work",
+          "href": "/our-work"
+        }
+      ]
+    }
+  },
+  "our-people": {
+    "_label": "About Us — Our People",
+    "meta": {
+      "title": "Our People",
+      "description": "SCA staff, steering committee and trustees."
+    },
+    "hero": {
+      "eyebrow": "About us",
+      "title": "Our people",
+      "intro": "The staff, specialists and trustees behind SCA's work across the saiga's range.",
+      "image": "",
+      "variant": "plain"
+    },
+    "groups": [
+      {
+        "title": "Staff",
+        "intro": "The team delivering SCA's programmes day to day.",
+        "people": [
+          {
+            "name": "Team member name",
+            "role": "Executive Director",
+            "note": "Strategy and partnerships",
+            "image": "/images/person-portrait-1.webp"
+          },
+          {
+            "name": "Team member name",
+            "role": "Head of Conservation",
+            "note": "Field programme oversight",
+            "image": "/images/person-portrait-2.webp"
+          },
+          {
+            "name": "Team member name",
+            "role": "Science Lead",
+            "note": "Monitoring and research",
+            "image": "/images/person-portrait-3.webp"
+          },
+          {
+            "name": "Team member name",
+            "role": "Community Programmes Manager",
+            "note": "Range-wide outreach",
+            "image": "/images/person-portrait-4.webp"
+          },
+          {
+            "name": "Team member name",
+            "role": "Communications Manager",
+            "note": "Storytelling and media",
+            "image": "/images/person-portrait-5.webp"
+          },
+          {
+            "name": "Team member name",
+            "role": "Finance & Operations",
+            "note": "Grants and compliance",
+            "image": "/images/person-portrait-6.webp"
+          }
+        ]
+      },
+      {
+        "title": "Steering Committee",
+        "intro": "Range-state specialists guiding SCA's technical direction.",
+        "people": [
+          {
+            "name": "Committee member name",
+            "role": "Kazakhstan",
+            "note": "Population ecology",
+            "image": "/images/person-portrait-3.webp"
+          },
+          {
+            "name": "Committee member name",
+            "role": "Mongolia",
+            "note": "Veterinary science",
+            "image": "/images/person-portrait-4.webp"
+          },
+          {
+            "name": "Committee member name",
+            "role": "Uzbekistan",
+            "note": "Protected area management",
+            "image": "/images/person-portrait-5.webp"
+          }
+        ]
+      },
+      {
+        "title": "Trustees",
+        "intro": "The board responsible for SCA's governance.",
+        "people": [
+          {
+            "name": "Trustee name",
+            "role": "Chair of Trustees",
+            "note": "",
+            "image": "/images/person-portrait-5.webp"
+          },
+          {
+            "name": "Trustee name",
+            "role": "Treasurer",
+            "note": "",
+            "image": "/images/person-portrait-6.webp"
+          },
+          {
+            "name": "Trustee name",
+            "role": "Trustee",
+            "note": "",
+            "image": "/images/person-portrait-1.webp"
+          }
+        ]
+      }
+    ]
+  },
+  "partners-funders": {
+    "_label": "About Us — Partners & Funders",
+    "meta": {
+      "title": "Partners & Funders",
+      "description": "The organisations SCA works with and the funders who make the work possible."
+    },
+    "hero": {
+      "eyebrow": "About us",
+      "title": "Partners & funders",
+      "intro": "Almost nothing we do happens alone. These are the organisations we work alongside, and the funders who make the work possible.",
+      "image": "",
+      "variant": "plain"
+    },
+    "groups": [
+      {
+        "title": "Institutional partners",
+        "partners": [
+          {
+            "name": "Range State Agency",
+            "href": "#",
+            "logo": ""
+          },
+          {
+            "name": "National Academy of Sciences",
+            "href": "#",
+            "logo": ""
+          },
+          {
+            "name": "Protected Areas Authority",
+            "href": "#",
+            "logo": ""
+          },
+          {
+            "name": "University Research Group",
+            "href": "#",
+            "logo": ""
+          },
+          {
+            "name": "Regional Wildlife Institute",
+            "href": "#",
+            "logo": ""
+          },
+          {
+            "name": "International NGO Partner",
+            "href": "#",
+            "logo": ""
+          },
+          {
+            "name": "Veterinary Research Centre",
+            "href": "#",
+            "logo": ""
+          },
+          {
+            "name": "Conservation Network",
+            "href": "#",
+            "logo": ""
+          }
+        ]
+      },
+      {
+        "title": "Funders",
+        "partners": [
+          {
+            "name": "Foundation Name",
+            "href": "#",
+            "logo": ""
+          },
+          {
+            "name": "Government Programme",
+            "href": "#",
+            "logo": ""
+          },
+          {
+            "name": "Wildlife Trust",
+            "href": "#",
+            "logo": ""
+          },
+          {
+            "name": "Corporate Supporter",
+            "href": "#",
+            "logo": ""
+          },
+          {
+            "name": "Charitable Fund",
+            "href": "#",
+            "logo": ""
+          },
+          {
+            "name": "Zoological Society",
+            "href": "#",
+            "logo": ""
+          },
+          {
+            "name": "Grant Programme",
+            "href": "#",
+            "logo": ""
+          },
+          {
+            "name": "Individual Donors",
+            "href": "#",
+            "logo": ""
+          }
+        ]
+      }
+    ]
+  },
+  "contact": {
+    "_label": "About Us — Contact",
+    "meta": {
+      "title": "Contact Us",
+      "description": "Get in touch with the Saiga Conservation Alliance."
+    },
+    "hero": {
+      "eyebrow": "About us",
+      "title": "Contact us",
+      "intro": "Questions about our work, partnerships or press enquiries — we would be glad to hear from you.",
+      "image": "",
+      "variant": "plain"
+    },
+    "form": {
+      "title": "Send us a message",
+      "intro": "We read everything that arrives here and aim to reply within a few working days."
+    },
+    "other": {
+      "title": "Other ways to reach us",
+      "emailLabel": "Email",
+      "emailPrimary": "hello@saiga-conservation.org",
+      "emailSecondary": "press@saiga-conservation.org",
+      "postLabel": "Post",
+      "postAddress": "Saiga Conservation Alliance\nRegistered office address\nUnited Kingdom",
+      "followLabel": "Follow"
+    }
+  },
+  "what-is-a-saiga": {
+    "_label": "About Saigas — What is a Saiga?",
+    "meta": {
+      "title": "What is a Saiga?",
+      "description": "Meet the saiga antelope — an ancient migratory species of the Eurasian steppe, and why it needs protecting."
+    },
+    "hero": {
+      "eyebrow": "Species",
+      "title": "What is a saiga?",
+      "intro": "A remarkable antelope. A vital part of the steppe. A species worth protecting.",
+      "image": "/images/saiga-hero-face.webp",
+      "variant": "overlay"
+    },
+    "intro": {
+      "lead": "The saiga is an antelope of the Eurasian steppe, and one of the oldest surviving large mammals in the world — it shared this landscape with mammoths. It is instantly recognisable from its bulbous, downward-facing nose, and almost as instantly forgettable to anyone who has never seen one, which is much of the problem.",
+      "body": "Saigas live in herds, move long distances between seasonal grazing, and give birth in an extraordinary synchronised burst each spring. Everything about them is built for open grassland: the speed, the migration, the nose that filters summer dust and warms winter air. It is also what makes them so exposed when that grassland is cut up, fenced, or emptied of the herders who have always shared it."
+    },
+    "factsheet": {
+      "eyebrow": "Factsheet",
+      "title": "The saiga at a glance",
+      "intro": "The short answers, in one place — for anyone who wants the facts before the story.",
+      "facts": [
+        {
+          "icon": "leaf",
+          "label": "Scientific name",
+          "value": "Saiga tatarica"
+        },
+        {
+          "icon": "shield",
+          "label": "Conservation status",
+          "value": "Near Threatened"
+        },
+        {
+          "icon": "ruler",
+          "label": "Shoulder height",
+          "value": "50–80 cm"
+        },
+        {
+          "icon": "weight",
+          "label": "Adult weight",
+          "value": "20–50 kg"
+        },
+        {
+          "icon": "clock",
+          "label": "Lifespan",
+          "value": "6–10 years"
+        },
+        {
+          "icon": "gauge",
+          "label": "Top speed",
+          "value": "Up to 80 km/h"
+        },
+        {
+          "icon": "route",
+          "label": "Annual migration",
+          "value": "Up to 1,000 km"
+        },
+        {
+          "icon": "grass",
+          "label": "Diet",
+          "value": "Grasses, herbs and shrubs"
+        },
+        {
+          "icon": "nose",
+          "label": "That nose",
+          "value": "Filters dust, warms cold air"
+        },
+        {
+          "icon": "horns",
+          "label": "Horns",
+          "value": "Males only, amber and ridged"
+        },
+        {
+          "icon": "calf",
+          "label": "Calving",
+          "value": "Often twins, born in days"
+        },
+        {
+          "icon": "users",
+          "label": "Herd size",
+          "value": "Tens to tens of thousands"
+        },
+        {
+          "icon": "paw",
+          "label": "Predators",
+          "value": "Wolves, foxes, eagles"
+        },
+        {
+          "icon": "globe",
+          "label": "Range states",
+          "value": "Kazakhstan, Mongolia, Russia, Uzbekistan"
+        }
+      ]
+    },
+    "behaviour": {
+      "eyebrow": "Appearance & behaviour",
+      "title": "Built for the steppe",
+      "image": "/images/saiga-behaviour.webp",
+      "body": [
+        "Saigas are shaped almost entirely by the demands of open grassland. The distinctive nose warms cold air in winter and filters dust thrown up by moving herds in summer, and their long legs are built for covering distance rather than for cover.",
+        "They form large herds and undertake long seasonal migrations in search of food and water. Calving is highly synchronised — most calves in a population are born within a week — which is both a remarkable survival strategy and a moment of extreme vulnerability."
+      ],
+      "linkLabel": "More about saiga biology",
+      "linkHref": "/saigas/why-saigas-matter"
+    },
+    "distribution": {
+      "eyebrow": "Distribution",
+      "title": "Where saigas live",
+      "body": [
+        "Almost all the world’s wild saigas live in Kazakhstan, across the vast steppe and semi-desert of the country’s centre and west. Smaller populations survive in Mongolia, in the Russian Federation, and in Uzbekistan, where herds cross seasonally from neighbouring range states.",
+        "Within those countries, saigas are not evenly spread. Herds concentrate where grazing and water allow, which means a large share of a national population can occupy a comparatively small area at certain times of year — most dramatically at calving, when tens of thousands of animals gather in a matter of days.",
+        "They also move. Seasonal migrations of several hundred kilometres are routine, and the routes shift year to year with rainfall and disturbance. Protecting saigas therefore means protecting a landscape rather than a place: the grazing, the water, and the corridors that join them."
+      ],
+      "mapImage": "/images/saiga-range-map.webp",
+      "caption": "Saiga populations are concentrated in Kazakhstan, with smaller populations in Mongolia, Uzbekistan and the Russian Federation."
+    },
+    "explore": {
+      "eyebrow": "Explore further",
+      "title": "Learn more about saigas",
+      "items": [
+        {
+          "icon": "leaf",
+          "title": "Why saigas matter",
+          "body": "Their ecological, cultural and global significance.",
+          "href": "/saigas/why-saigas-matter"
+        },
+        {
+          "icon": "chart",
+          "title": "Population history & threats",
+          "body": "From past highs to present challenges, and the pressures that remain.",
+          "href": "/saigas/population-history-and-threats"
+        },
+        {
+          "icon": "shield",
+          "title": "Saiga policy & protection",
+          "body": "Legal status, international agreements and how you can help.",
+          "href": "/saigas/policy-and-protection"
+        }
+      ]
+    },
+    "showDonationBand": true
+  },
+  "why-saigas-matter": {
+    "_label": "About Saigas — Why Saigas Matter",
+    "meta": {
+      "title": "Why Saigas Matter",
+      "description": "The ecological, cultural and global significance of the saiga antelope."
+    },
+    "hero": {
+      "eyebrow": "About saigas",
+      "title": "Why saigas matter",
+      "intro": "A grazing species that shapes the grassland, and a cultural presence far older than any border on the map.",
+      "image": "/images/saigas-matter-hero.webp",
+      "variant": "overlay"
+    },
+    "intro": "Saigas are not simply a species that happens to live on the steppe — they are part of how the steppe works, and part of how the people there understand where they live. Losing them would mean losing a functioning grassland and a piece of cultural memory at the same time.",
+    "blocks": [
+      {
+        "eyebrow": "Ecological significance",
+        "title": "A keystone of the grassland",
+        "image": "/images/work-protection.webp",
+        "imageSide": "left",
+        "body": [
+          "Grazing by large herds prevents any single plant community from dominating, maintaining the mosaic of grasses and herbs that a healthy steppe depends on. Where saigas disappear, that mosaic simplifies — and with it goes much of the wider biodiversity the grassland supports.",
+          "Their long-distance movements carry nutrients and seeds across landscapes that would otherwise be far more fragmented. Few other species on the steppe operate at that scale, and none can replace it.",
+          "Saigas are also prey. Wolves, foxes, eagles and scavenging birds all depend to some degree on a species that arrives in numbers and moves on again, and a steppe without saigas is a thinner place for all of them."
+        ]
+      },
+      {
+        "eyebrow": "Cultural significance",
+        "title": "Older than any border on the map",
+        "image": "/images/work-communities.webp",
+        "imageSide": "right",
+        "body": [
+          "Saigas appear in the folklore, songs and decorative traditions of communities across the range, and in petroglyphs that predate every state now responsible for protecting them. They are part of how the steppe is described by the people who live in it.",
+          "That memory is not evenly held. In places where herds have been absent for a generation, younger people may never have seen one, and the species survives locally as a story rather than as an animal.",
+          "Where saigas do return, they carry a good deal with them. Communities that once counted their disappearance as a loss now count their recovery as something achieved locally — which is a far more durable basis for conservation than any external programme."
+        ]
+      }
+    ],
+    "summary": {
+      "title": "A species worth keeping",
+      "body": "The case for saigas is not sentimental. They hold a grassland ecosystem together, they connect landscapes that human infrastructure keeps dividing, and they matter to the communities who share the steppe with them. A species that has survived since the Pleistocene has now come within a decade of disappearing twice in living memory — and both times, it was people who turned it around."
+    },
+    "related": {
+      "title": "You may also be interested in",
+      "links": [
+        {
+          "label": "What is a saiga?",
+          "href": "/saigas/what-is-a-saiga"
+        },
+        {
+          "label": "Population history & threats",
+          "href": "/saigas/population-history-and-threats"
+        },
+        {
+          "label": "Saiga policy & protection",
+          "href": "/saigas/policy-and-protection"
+        }
+      ]
+    },
+    "showDonationBand": true
+  },
+  "population-history-and-threats": {
+    "_label": "About Saigas — Population History & Threats",
+    "meta": {
+      "title": "Population History & Threats",
+      "description": "How saiga numbers have changed over time, and the pressures the species still faces."
+    },
+    "hero": {
+      "eyebrow": "About saigas",
+      "title": "Population history & threats",
+      "intro": "From millions, to near collapse, to a fragile recovery — and the pressures that remain.",
+      "image": "/images/population-history-hero.webp",
+      "variant": "overlay"
+    },
+    "intro": "Within living memory the saiga has gone from one of the most numerous large mammals on earth to a species reduced by more than ninety per cent, and back again to a recovering population. That volatility is the defining feature of saiga conservation: numbers can move faster than policy can respond.",
+    "history": {
+      "eyebrow": "A century of change",
+      "title": "How we got here",
+      "intro": "Four broad phases, rather than a year-by-year record — the detail changes by country, but the shape of it does not.",
+      "items": [
+        {
+          "year": "Early 1900s",
+          "title": "Near collapse",
+          "body": "Sustained hunting across the range reduces saiga numbers to a few thousand animals, and the species disappears entirely from large parts of its former range."
+        },
+        {
+          "year": "1950s–1980s",
+          "title": "Soviet-era recovery",
+          "body": "Strict hunting controls and a managed harvest allow numbers to recover to well over a million animals, in what remains one of the largest recoveries of any large mammal."
+        },
+        {
+          "year": "1990s",
+          "title": "Post-Soviet collapse",
+          "body": "The breakdown of state protection and a sharp rise in illegal hunting for horn cut the global population by more than ninety per cent within a decade."
+        },
+        {
+          "year": "2015",
+          "title": "Mass mortality",
+          "body": "A bacterial die-off removes a large share of one recovering population within weeks, a reminder that recovery is never secure on its own."
+        },
+        {
+          "year": "Recent years",
+          "title": "A fragile recovery",
+          "body": "Sustained protection, particularly of calving grounds, has allowed numbers to rise again — though the population remains concentrated, and concentrated populations remain vulnerable."
+        }
+      ]
+    },
+    "graph": {
+      "eyebrow": "The numbers",
+      "title": "Saiga population over time",
+      "intro": "Estimated global population, drawn from range-state survey data.",
+      "image": "",
+      "placeholderText": "Population graph to be supplied",
+      "caption": "SCA will provide the population figures for this chart. The frame is sized for a wide time-series so the surrounding layout will not move once the data arrives."
+    },
+    "threats": {
+      "eyebrow": "Pressures",
+      "title": "The threats saigas face",
+      "intro": "Rarely one at a time. Most of the losses of the last century came from two or more of these arriving together.",
+      "items": [
+        {
+          "icon": "users",
+          "title": "Human-wildlife conflict",
+          "body": "Saigas share the steppe with livestock and the people who depend on it. Where grazing, water and space are contested, wildlife is easily seen as a cost rather than an asset."
+        },
+        {
+          "icon": "shield",
+          "title": "Poaching and illegal trade",
+          "body": "Demand for horn continues to drive illegal hunting, and because only males carry horns it can skew the sex ratio of a population far beyond the number of animals killed."
+        },
+        {
+          "icon": "virus",
+          "title": "Disease",
+          "body": "Mass mortality events can remove a large share of a population within weeks. The triggers are still not fully understood, which makes prevention extremely difficult."
+        },
+        {
+          "icon": "weather",
+          "title": "Climate and extreme weather",
+          "body": "Severe winters and long droughts both hit saigas hard, and a changing climate is making the extremes that herds cannot walk away from more frequent."
+        },
+        {
+          "icon": "barrier",
+          "title": "Barriers to movement",
+          "body": "Roads, railways, fencing and border infrastructure can cut herds off from the seasonal grazing and water they need, turning a long migration into a dead end."
+        }
+      ]
+    },
+    "summary": {
+      "title": "Recovery is not the end of it",
+      "body": "Saiga numbers are higher today than at any point since the collapse of the 1990s, and that is genuinely worth saying. But the population remains concentrated, the threats have not gone away, and this species has twice shown how quickly a good count can become a bad one. What holds a recovery in place is unglamorous and continuous: patrols through the calving season, monitoring that does not stop when the funding cycle does, and communities with a reason to want herds on their land."
+    },
+    "related": {
+      "title": "You may also be interested in",
+      "links": [
+        {
+          "label": "Saiga policy & protection",
+          "href": "/saigas/policy-and-protection"
+        },
+        {
+          "label": "Research & monitoring",
+          "href": "/our-work/research-and-monitoring"
+        },
+        {
+          "label": "What is a saiga?",
+          "href": "/saigas/what-is-a-saiga"
+        }
+      ]
+    },
+    "showDonationBand": true
+  },
+  "policy-and-protection": {
+    "_label": "About Saigas — Policy & Protection",
+    "meta": {
+      "title": "Saiga Policy & Protection",
+      "description": "Legal status, international agreements and the protection framework for saigas."
+    },
+    "hero": {
+      "eyebrow": "About saigas",
+      "title": "Saiga policy & protection",
+      "intro": "The agreements, laws and enforcement that stand between the saiga and another collapse.",
+      "image": "/images/policy-protection-hero.webp",
+      "variant": "overlay"
+    },
+    "intro": "Protecting a species that crosses international borders means protection has to cross them too. Saiga conservation rests on a framework of national law, regional cooperation and international agreement — and on the enforcement capacity to make any of it real on the ground.",
+    "agreements": {
+      "eyebrow": "The framework",
+      "title": "International agreements",
+      "items": [
+        {
+          "name": "Convention on Migratory Species (CMS)",
+          "body": [
+            "The saiga is listed under the Convention on Migratory Species, the international treaty concerned with animals that cross national borders. Under it, range states have agreed a shared Memorandum of Understanding and a work programme for saiga conservation.",
+            "In practice this is what makes range-wide planning possible: it gives the countries involved a common set of objectives, a schedule for reporting against them, and a forum in which problems that cross borders can be raised as shared problems rather than someone else's."
+          ]
+        },
+        {
+          "name": "Convention on International Trade in Endangered Species (CITES)",
+          "body": [
+            "CITES governs international trade in saiga products, principally horn. The species is listed on Appendix II, which means commercial international trade is permitted only under strict conditions and with export permits from the country of origin.",
+            "The listing matters because demand for horn is what drove the collapse of the 1990s and continues to drive illegal hunting today. CITES gives enforcement agencies a legal basis for acting on seizures, and gives range and consumer states a common vocabulary for the trade they are trying to control."
+          ]
+        }
+      ]
+    },
+    "national": {
+      "title": "National protection",
+      "body": [
+        "Each range state protects saigas in its own law. Hunting is banned outright across the range, protected areas cover key calving grounds and wintering areas, and penalties for possession and trafficking of horn have been strengthened in most range states over the past decade.",
+        "The binding constraint is rarely the law itself but the capacity to apply it: patrol coverage across enormous areas, evidence handling that stands up in court, coordination between agencies on either side of a border, and the resources available to the people responsible for all of it."
+      ]
+    },
+    "callout": {
+      "title": "How the system fits together",
+      "body": "International agreement sets the direction, national law makes it enforceable, and rangers make it real. Each layer depends on the one below it — which is why much of SCA’s policy work is translation: turning commitments made in meeting rooms into funded patrols, trained teams and equipment that actually arrives."
+    },
+    "related": {
+      "title": "You may also be interested in",
+      "links": [
+        {
+          "label": "Protecting saigas on the ground",
+          "href": "/our-work/protecting-saigas"
+        },
+        {
+          "label": "International policy",
+          "href": "/our-work/international-policy"
+        },
+        {
+          "label": "Population history & threats",
+          "href": "/saigas/population-history-and-threats"
+        }
+      ]
+    },
+    "showDonationBand": true
+  },
+  "our-work": {
+    "_label": "Our Work — Overview",
+    "meta": {
+      "title": "Our Work",
+      "description": "How SCA delivers conservation across the saiga's range."
+    },
+    "hero": {
+      "eyebrow": "Our work",
+      "title": "Our work at a glance",
+      "intro": "From grasslands to communities, our work spans conservation, science and partnership across the saiga’s range — securing a wilder, healthier future for people and nature alike.",
+      "image": "/images/work-overview-hero.webp",
+      "buttonLabel": "View projects archive",
+      "buttonHref": "/projects"
+    },
+    "strands": {
+      "eyebrow": "How we work",
+      "title": "Six strands, one goal.",
+      "intro": "Each strand supports the others. Research tells protection where to go; communities make protection stick; education keeps both alive beyond any one funding cycle."
+    },
+    "grantsStrand": {
+      "title": "Grants & Awards",
+      "href": "/our-work/grants-and-awards",
+      "image": "/images/work-grants.webp",
+      "body": "We fund and recognise outstanding conservation work, supporting the individuals and organisations making a real difference for saigas and their habitats.",
+      "stat": {
+        "value": "40+",
+        "label": "grants and awards to date",
+        "icon": "award"
+      }
+    },
+    "linkLabel": "Explore every project in the archive",
+    "linkHref": "/projects",
+    "showDonationBand": true,
+    "themeTemplate": {
+      "heroEyebrow": "Our work",
+      "roleEyebrow": "Our role",
+      "roleTitle": "What SCA does",
+      "impactEyebrow": "Impact so far",
+      "relatedEyebrow": "From the archive",
+      "relatedTitle": "Related projects",
+      "exploreAllLabel": "Explore all {title} projects",
+      "futureEyebrow": "Looking ahead",
+      "ctaTitle": "Support this work",
+      "ctaBody": "Your donation helps sustain {title_lower} across the saiga's range."
+    }
+  },
+  "grants-and-awards": {
+    "_label": "Our Work — Grants & Awards",
+    "meta": {
+      "title": "Grants & Awards",
+      "description": "SCA's grant and award programmes supporting conservationists across the saiga range."
+    },
+    "hero": {
+      "eyebrow": "Our work",
+      "title": "Grants & awards",
+      "intro": "Small amounts of money, placed well, change what is possible on the steppe.",
+      "image": "/images/grants-hero.webp",
+      "variant": "overlay"
+    },
+    "intro": "Much of the most valuable conservation work across the saiga’s range is done by people and organisations too small to reach conventional funders. Our grant and award programmes exist to close that gap — quickly, with minimal bureaucracy, and with decisions made by people who know the region.",
+    "programmes": {
+      "eyebrow": "Programmes",
+      "title": "Three routes to support",
+      "buttonLabel": "View programme"
+    },
+    "cta": {
+      "title": "Fund a grant",
+      "body": "Donations to SCA help keep these programmes open, and keep decisions about them in the hands of people working in the range."
+    },
+    "programmeTemplate": {
+      "heroEyebrow": "Grants & awards",
+      "heroButtonLabel": "How to apply",
+      "aboutEyebrow": "About the programme",
+      "whoTitle": "Who it’s for",
+      "supportsTitle": "What it supports",
+      "applyTitle": "How to apply",
+      "applyBody": "Applications are made through a short online form. We ask for a clear description of the work, a simple budget and one referee — nothing longer than is genuinely needed.",
+      "applyButtonLabel": "Start an application",
+      "applyButtonHref": "/about/contact",
+      "questionsEyebrow": "Before you apply",
+      "keyDatesEyebrow": "Key dates",
+      "recipientsEyebrow": "Previous recipients",
+      "recipientsTitle": "Where the funding has gone",
+      "exploreMoreLabel": "Explore more {title} projects"
+    }
+  },
+  "projects": {
+    "_label": "Projects Archive",
+    "meta": {
+      "title": "Projects Archive",
+      "description": "Browse SCA's current and past conservation projects across the saiga range."
+    },
+    "hero": {
+      "eyebrow": "Our work",
+      "title": "Projects archive",
+      "intro": "Current and past work across the saiga's range — filter by country, theme, year or type.",
+      "image": "/images/projects-hero.webp",
+      "variant": "overlay"
+    },
+    "filters": {
+      "countryAll": "All countries",
+      "themeAll": "All themes",
+      "yearAll": "All years",
+      "typeAll": "All types"
+    },
+    "showDonationBand": true,
+    "projectTemplate": {
+      "heroEyebrow": "Project",
+      "backLabel": "← Back to archive",
+      "outcomesEyebrow": "Outcomes",
+      "yearsEyebrow": "Year by year",
+      "yearsTitle": "How the work has developed",
+      "yearsIntro": "Activities and outputs for each year of the project. Further years are added as the work continues.",
+      "relatedEyebrow": "Related",
+      "relatedTitle": "More projects"
+    }
+  },
+  "news": {
+    "_label": "News & Updates",
+    "meta": {
+      "title": "News & Updates",
+      "description": "Field stories, conservation milestones and research highlights from SCA."
+    },
+    "hero": {
+      "eyebrow": "News & updates",
+      "title": "News & updates",
+      "intro": "Field stories, conservation milestones, research highlights and updates from the saiga steppe.",
+      "image": "/images/news-hero.webp",
+      "variant": "overlay"
+    },
+    "filters": {
+      "yearAll": "All years",
+      "typeAll": "All types"
+    },
+    "saigaNews": {
+      "title": "Saiga News",
+      "body": "The long-running multilingual bulletin covering saiga conservation across the range states.",
+      "href": "#",
+      "icon": "book"
+    },
+    "email": {
+      "title": "Get it by email instead",
+      "body": "Most of our regular updates go out by newsletter. Sign up and we’ll bring the steppe to you."
+    },
+    "articleTemplate": {
+      "backLabel": "← All news",
+      "byPrefix": "By",
+      "moreEyebrow": "Keep reading",
+      "moreTitle": "More stories"
+    }
+  },
+  "resources": {
+    "_label": "Resources",
+    "meta": {
+      "title": "Resources",
+      "description": "Specialist saiga resources, publications and news maintained by SCA and partners."
+    },
+    "hero": {
+      "eyebrow": "Resources",
+      "title": "Resources",
+      "intro": "Where to go for the detailed material — research, publications and the specialist bulletins we help produce.",
+      "image": "/images/resources-hero.webp",
+      "variant": "overlay"
+    },
+    "items": [
+      {
+        "title": "Saiga Resource Centre",
+        "body": "The specialist library of saiga research, reports and reference material, maintained separately from this site.",
+        "href": "#",
+        "icon": "document"
+      },
+      {
+        "title": "Saiga News",
+        "body": "The long-running multilingual bulletin covering saiga conservation across the range states.",
+        "href": "#",
+        "icon": "book"
+      }
+    ],
+    "note": "We deliberately keep this page short. Rather than duplicating the specialist resource sites, we point to them — so that material stays in one place and stays current.",
+    "report": {
+      "eyebrow": "Publication",
+      "title": "Our 20th anniversary report",
+      "body": "Two decades of saiga conservation — the partnerships, the setbacks and the recovery — in one document.",
+      "href": "/downloads/sca-20th-anniversary-report.pdf",
+      "image": "/images/anniversary-report-cover.webp",
+      "linkLabel": "Read the report"
+    },
+    "related": {
+      "title": "You may also be interested in",
+      "links": [
+        {
+          "label": "News & updates",
+          "href": "/news"
+        },
+        {
+          "label": "Projects archive",
+          "href": "/projects"
+        },
+        {
+          "label": "Contact us",
+          "href": "/about/contact"
+        }
+      ]
+    }
+  },
+  "donate": {
+    "_label": "Support Us — Donate",
+    "meta": {
+      "title": "Donate",
+      "description": "Support saiga conservation across the Eurasian steppe."
+    },
+    "hero": {
+      "eyebrow": "Support SCA",
+      "title": "Donate to SCA",
+      "intro": "Your support helps protect saigas and the people working to conserve them. Choose the option that applies to you.",
+      "image": "/images/donate-hero.webp",
+      "variant": "overlay",
+      "buttonLabel": "Donate now",
+      "buttonHref": "#give"
+    },
+    "routes": [
+      {
+        "icon": "globe",
+        "title": "For people in the US",
+        "body": "Donate through the Wildlife Conservation Network (WCN). US gifts are tax-deductible.",
+        "ctaLabel": "Donate via WCN",
+        "ctaHref": "#"
+      },
+      {
+        "icon": "card",
+        "title": "For people outside the US",
+        "body": "Support SCA directly through PayPal, in the currency that suits you.",
+        "ctaLabel": "Donate via PayPal",
+        "ctaHref": "#"
+      }
+    ],
+    "monthlyHtml": "Prefer to give monthly, or to discuss a larger gift? <a href=\"/about/contact\">Get in touch</a> and we will find the simplest way to do it.",
+    "impact": {
+      "eyebrow": "Your impact",
+      "title": "What your donation can support",
+      "intro": "These are examples of the kind of work your support can help make possible, rather than a promise that a specific gift will fund one exact item.",
+      "tiers": [
+        {
+          "icon": "grass",
+          "amount": "£15",
+          "title": "Field supplies",
+          "body": "Could help provide basic supplies for conservation teams working in the field."
+        },
+        {
+          "icon": "shield",
+          "amount": "£40",
+          "title": "Ranger equipment",
+          "body": "Could contribute towards equipment for rangers protecting saigas in remote landscapes."
+        },
+        {
+          "icon": "users",
+          "amount": "£75",
+          "title": "Community activities",
+          "body": "Could support conservation activities with children and communities living alongside saigas."
+        },
+        {
+          "icon": "chart",
+          "amount": "£150",
+          "title": "Saiga monitoring",
+          "body": "Could help teams collect the field data needed to understand and protect saiga populations."
+        },
+        {
+          "icon": "leaf",
+          "amount": "£500",
+          "title": "Local conservation action",
+          "body": "Could help local conservationists put practical ideas into action for saigas."
+        },
+        {
+          "icon": "mountain",
+          "amount": "£1,000+",
+          "title": "Conservation projects",
+          "body": "Could provide significant support for locally led conservation across the saiga range."
+        }
+      ]
+    },
+    "confidence": {
+      "eyebrow": "Transparency",
+      "title": "Donate with confidence",
+      "image": "/images/donate-confidence.webp",
+      "body": [
+        "We think you should know what happens to a donation before you make one. SCA is a registered charity, and our accounts are published each year alongside a plain account of what the money achieved."
+      ],
+      "facts": [
+        {
+          "icon": "chart",
+          "title": "Where the money goes",
+          "body": "The large majority of our income goes directly to field programmes and grants."
+        },
+        {
+          "icon": "users",
+          "title": "Who spends it",
+          "body": "Funds are largely administered by partners based in the range states themselves."
+        },
+        {
+          "icon": "document",
+          "title": "How we report",
+          "body": "Our annual report and accounts set out income, spending and results in full."
+        }
+      ],
+      "linkLabel": "Read the latest annual report",
+      "linkHref": "#"
+    },
+    "notReady": {
+      "title": "Not ready to give?",
+      "body": "Follow the work first. We send occasional updates from the field — nothing more."
+    }
+  },
+  "sign-up": {
+    "_label": "Support Us — Sign Up for Updates",
+    "meta": {
+      "title": "Sign Up for Updates",
+      "description": "Join the SCA mailing list for occasional updates from the steppe."
+    },
+    "eyebrow": "Support us",
+    "title": "Sign up for updates",
+    "intro": "A few emails a year, written by the people doing the work: field reports, research findings and the occasional piece of good news from the steppe.",
+    "note": "We never show newsletter pop-ups on this site, and we do not share your address with anyone else.",
+    "image": "/images/newsletter-steppe.webp",
+    "related": {
+      "title": "Other ways to help",
+      "links": [
+        {
+          "label": "Donate",
+          "href": "/support/donate"
+        },
+        {
+          "label": "Work with us",
+          "href": "/support/work-with-us"
+        },
+        {
+          "label": "Contact us",
+          "href": "/about/contact"
+        }
+      ]
+    }
+  },
+  "work-with-us": {
+    "_label": "Support Us — Work With Us",
+    "meta": {
+      "title": "Work With Us",
+      "description": "Partner with SCA, volunteer, or explore current opportunities."
+    },
+    "hero": {
+      "eyebrow": "Support us",
+      "title": "Work with us",
+      "intro": "Whether you are an organisation, a researcher or someone who simply wants to help — there is usually a way in.",
+      "image": "/images/work-with-us-hero.webp",
+      "variant": "overlay"
+    },
+    "intro": "SCA works through partnership. Most of what we achieve depends on organisations and individuals who bring something we do not have — local knowledge, technical expertise, funding, or simply time.",
+    "contact": {
+      "eyebrow": "Get in touch",
+      "title": "Tell us what you have in mind",
+      "intro": "A short message is enough to start. Let us know who you are and what you are hoping to do, and we will point you to the right person."
+    },
+    "related": {
+      "title": "Other ways to help",
+      "links": [
+        {
+          "label": "Our work",
+          "href": "/our-work"
+        },
+        {
+          "label": "Grants & awards",
+          "href": "/our-work/grants-and-awards"
+        },
+        {
+          "label": "Contact us",
+          "href": "/about/contact"
+        }
+      ]
+    }
+  }
+}

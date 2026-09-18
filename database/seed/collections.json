@@ -1,0 +1,1244 @@
+{
+  "theme": [
+    {
+      "slug": "working-with-communities",
+      "data": {
+        "title": "Working with Communities",
+        "strapline": "Conservation that works for the people who share the steppe.",
+        "heroImage": "/images/theme-hero.webp",
+        "image": "/images/work-communities.webp",
+        "summary": "Stronger conservation happens when people thrive. We partner with communities across the saiga's range to support sustainable livelihoods and shared stewardship of the steppe.",
+        "overviewStat": {
+          "value": "25+",
+          "label": "communities engaged",
+          "icon": "users"
+        },
+        "challenge": {
+          "eyebrow": "Context",
+          "title": "The challenge",
+          "body": [
+            "The steppe is not empty land. It is grazed, farmed and travelled by communities whose livelihoods depend on the same grasslands the saiga needs. Where conservation is imposed from outside, it rarely lasts.",
+            "Rural incomes across much of the range are seasonal and fragile, and wildlife can be seen as competition rather than an asset. Changing that means working with people over years, not months."
+          ]
+        },
+        "actions": [
+          {
+            "icon": "users",
+            "title": "Community rangers",
+            "body": "Local people trained, equipped and paid to monitor and protect their own landscapes."
+          },
+          {
+            "icon": "leaf",
+            "title": "Sustainable livelihoods",
+            "body": "Support for herding, craft and small enterprise that does not depend on wildlife loss."
+          },
+          {
+            "icon": "book",
+            "title": "Shared decision-making",
+            "body": "Village committees help shape where and how conservation work happens."
+          }
+        ],
+        "stats": [
+          {
+            "value": "25+",
+            "unit": "communities",
+            "label": "Engaged with our work across the saiga range"
+          },
+          {
+            "value": "140",
+            "unit": "households",
+            "label": "Supported through livelihood schemes"
+          },
+          {
+            "value": "12",
+            "unit": "years",
+            "label": "Of continuous local partnership"
+          }
+        ],
+        "futureOpportunities": {
+          "title": "Where this could go next",
+          "body": "We would like to extend village-led planning into two further districts, and to place a share of programme funding under community control from the outset rather than at review. Both depend on unrestricted funding, which is the hardest kind to find."
+        },
+        "relatedProjects": [
+          "steppe-stewardship-partnership",
+          "grassland-restoration-trial"
+        ]
+      }
+    },
+    {
+      "slug": "education-and-awareness",
+      "data": {
+        "title": "Education & Awareness",
+        "strapline": "A generation growing up knowing what a saiga is.",
+        "heroImage": "/images/theme-hero.webp",
+        "image": "/images/work-education.webp",
+        "summary": "We inspire the next generation through education, outreach and storytelling, building understanding and support for saigas and the landscapes they depend on.",
+        "overviewStat": {
+          "value": "100,000+",
+          "label": "people reached through education",
+          "icon": "book"
+        },
+        "challenge": {
+          "eyebrow": "Context",
+          "title": "The challenge",
+          "body": [
+            "Many people living within the saiga's range have never seen one, and awareness of the species' decline is uneven both locally and internationally.",
+            "Without public understanding, conservation policy has little to hold it up. Education is slow work, but it is what makes everything else durable."
+          ]
+        },
+        "actions": [
+          {
+            "icon": "book",
+            "title": "School programmes",
+            "body": "Classroom materials and field days built around the steppe children already know."
+          },
+          {
+            "icon": "globe",
+            "title": "Public campaigns",
+            "body": "Saiga Day and range-wide outreach linking communities across four countries."
+          },
+          {
+            "icon": "users",
+            "title": "Teacher training",
+            "body": "Local educators supported to run the programme long after we leave."
+          }
+        ],
+        "stats": [
+          {
+            "value": "100k+",
+            "unit": "people",
+            "label": "Reached through our education programmes"
+          },
+          {
+            "value": "220",
+            "unit": "schools",
+            "label": "Taking part across the saiga range"
+          },
+          {
+            "value": "4",
+            "unit": "countries",
+            "label": "Marking Saiga Day each year"
+          }
+        ],
+        "futureOpportunities": {
+          "title": "Where this could go next",
+          "body": "The materials now exist in several languages, and teachers ask for more each year. The opportunity is to move from a programme we run to a curriculum resource that range-state education authorities adopt and maintain themselves."
+        },
+        "relatedProjects": [
+          "steppe-schools-programme"
+        ]
+      }
+    },
+    {
+      "slug": "research-and-monitoring",
+      "data": {
+        "title": "Research & Monitoring",
+        "strapline": "The evidence that makes protection possible.",
+        "heroImage": "/images/theme-hero.webp",
+        "image": "/images/work-research.webp",
+        "summary": "We generate the knowledge needed for effective conservation, from population surveys to satellite tracking, working with partners across the range.",
+        "overviewStat": {
+          "value": "12",
+          "label": "years of continuous monitoring",
+          "icon": "chart"
+        },
+        "challenge": {
+          "eyebrow": "Context",
+          "title": "The challenge",
+          "body": [
+            "Saigas move across vast, remote and often politically divided landscapes. Counting them, understanding their movements and detecting die-offs early all require sustained, coordinated fieldwork.",
+            "Data gathered once is of limited use. What protects a migratory species is a long, consistent record that governments and partners trust."
+          ]
+        },
+        "actions": [
+          {
+            "icon": "chart",
+            "title": "Population surveys",
+            "body": "Annual counts contributing to the range-wide picture of recovery and risk."
+          },
+          {
+            "icon": "route",
+            "title": "Movement tracking",
+            "body": "Satellite collars revealing the corridors herds actually use."
+          },
+          {
+            "icon": "document",
+            "title": "Open science",
+            "body": "Findings published and shared with range-state agencies and partners."
+          }
+        ],
+        "stats": [
+          {
+            "value": "12",
+            "unit": "years",
+            "label": "Of continuous population monitoring"
+          },
+          {
+            "value": "60+",
+            "unit": "animals",
+            "label": "Tracked by satellite collar"
+          },
+          {
+            "value": "30",
+            "unit": "papers",
+            "label": "Peer-reviewed studies supported"
+          }
+        ],
+        "futureOpportunities": {
+          "title": "Where this could go next",
+          "body": "A shared range-wide data platform would let partners in every country see the same picture at the same time. The science is not the obstacle; agreeing how data is held and shared across five states is."
+        },
+        "relatedProjects": [
+          "migration-corridor-mapping"
+        ]
+      }
+    },
+    {
+      "slug": "protecting-saigas",
+      "data": {
+        "title": "Protecting Saigas on the Ground",
+        "strapline": "Rangers, patrols and practical protection where it counts.",
+        "heroImage": "/images/theme-hero.webp",
+        "image": "/images/work-protection.webp",
+        "summary": "We support rangers, strengthen protection and tackle illegal hunting, helping to keep saigas safe across their range.",
+        "overviewStat": {
+          "value": "330+",
+          "label": "rangers supported",
+          "icon": "shield"
+        },
+        "challenge": {
+          "eyebrow": "Context",
+          "title": "The challenge",
+          "body": [
+            "Illegal hunting for horn remains the single most immediate threat to saiga populations, and the areas that need patrolling are enormous relative to the teams covering them.",
+            "Rangers often work long rotations in difficult conditions with limited equipment. Practical support — vehicles, radios, training, pay — makes a measurable difference."
+          ]
+        },
+        "actions": [
+          {
+            "icon": "shield",
+            "title": "Ranger support",
+            "body": "Equipment, training and operating costs for frontline patrol teams."
+          },
+          {
+            "icon": "pin",
+            "title": "Priority landscapes",
+            "body": "Focused effort where calving grounds and migration bottlenecks overlap."
+          },
+          {
+            "icon": "globe",
+            "title": "Cross-border cooperation",
+            "body": "Coordinated response with agencies on both sides of national boundaries."
+          }
+        ],
+        "stats": [
+          {
+            "value": "330+",
+            "unit": "rangers",
+            "label": "Supported across the saiga range"
+          },
+          {
+            "value": "3",
+            "unit": "landscapes",
+            "label": "Priority areas under active patrol"
+          },
+          {
+            "value": "18",
+            "unit": "field teams",
+            "label": "Local partners working alongside us"
+          }
+        ],
+        "futureOpportunities": {
+          "title": "Where this could go next",
+          "body": "Patrol coverage during the calving window is the single change that would most reduce losses. Extending the seasonal teams to a third calving ground is ready to go, and waiting only on funding."
+        },
+        "relatedProjects": [
+          "calving-ground-protection"
+        ]
+      }
+    },
+    {
+      "slug": "international-policy",
+      "data": {
+        "title": "International Policy",
+        "strapline": "Shared commitments, turned into protection on the ground.",
+        "heroImage": "/images/theme-hero.webp",
+        "image": "/images/policy-protection-hero.webp",
+        "summary": "We bring field evidence into the agreements, advice and coordinated action that shape saiga conservation — so that what is agreed internationally is workable in the landscapes it applies to.",
+        "overviewStat": {
+          "value": "4",
+          "label": "range states working together",
+          "icon": "globe"
+        },
+        "challenge": {
+          "eyebrow": "Context",
+          "title": "The challenge",
+          "body": [
+            "A saiga herd does not stop at a border, but protection usually does. Enforcement, funding and legal status all change from one range state to the next, and a gap in any one of them undoes work done in the others.",
+            "International agreements exist to close those gaps. They only do so, though, if the people writing them can see what is actually happening on the steppe — and if range states have the capacity to act on what they sign."
+          ]
+        },
+        "actions": [
+          {
+            "icon": "globe",
+            "title": "Evidence into agreements",
+            "body": "Bringing survey and monitoring data to the bodies that set international commitments."
+          },
+          {
+            "icon": "document",
+            "title": "Technical advice",
+            "body": "Supporting range states as they draft, review and report against national commitments."
+          },
+          {
+            "icon": "users",
+            "title": "Cross-border coordination",
+            "body": "Convening partners so protection is planned across the range rather than country by country."
+          }
+        ],
+        "stats": [
+          {
+            "value": "4",
+            "unit": "range states",
+            "label": "Party to the regional saiga agreement"
+          },
+          {
+            "value": "2",
+            "unit": "conventions",
+            "label": "International instruments covering the species"
+          },
+          {
+            "value": "20",
+            "unit": "years",
+            "label": "Of continuous engagement in the policy process"
+          }
+        ],
+        "futureOpportunities": {
+          "title": "Where this could go next",
+          "body": "The agreements are largely in place. The opportunity now is in implementation: helping range states turn reporting obligations into funded work programmes, and keeping saigas on the agenda between the meetings rather than only at them."
+        },
+        "relatedProjects": [
+          "range-state-policy-support"
+        ]
+      }
+    }
+  ],
+  "programme": [
+    {
+      "slug": "young-conservation-leaders",
+      "data": {
+        "title": "Young Conservation Leaders",
+        "strapline": "Backing the next generation of steppe conservationists.",
+        "image": "/images/grants-young-leaders.webp",
+        "summary": "A programme for early-career conservationists working in saiga range states, combining a small award with training, mentoring and a network of peers.",
+        "archiveType": "Young Conservation Leaders Project",
+        "whatItIs": [
+          "The Young Conservation Leaders programme supports people at the start of their conservation careers who are working on saigas or the steppe grasslands.",
+          "Each participant receives a modest award towards their work, alongside mentoring from established researchers and practitioners across the range."
+        ],
+        "whoItsFor": [
+          "Applicants under 30 based in a saiga range state",
+          "Students, early-career researchers and community practitioners",
+          "No formal institutional affiliation required"
+        ],
+        "whatItSupports": [
+          "Fieldwork and travel costs",
+          "Basic equipment and materials",
+          "Training courses and conference attendance",
+          "Small community outreach initiatives"
+        ],
+        "keyDates": [
+          {
+            "label": "Applications open",
+            "value": "1 February"
+          },
+          {
+            "label": "Applications close",
+            "value": "31 March"
+          },
+          {
+            "label": "Decisions announced",
+            "value": "Mid-May"
+          },
+          {
+            "label": "Funding period begins",
+            "value": "1 July"
+          }
+        ],
+        "applicationQuestions": [
+          {
+            "question": "Do I need to be affiliated with a university or an organisation?",
+            "answer": "No. We fund individuals as well as institutions, and applications from people working independently are read on exactly the same terms."
+          },
+          {
+            "question": "Can I apply in a language other than English?",
+            "answer": "Yes. Applications are accepted in Russian and in the national languages of the range states, and are reviewed by panel members who read them."
+          },
+          {
+            "question": "Can I apply again if I have held an award before?",
+            "answer": "Yes, once the previous award has been reported on. We do give some preference to applicants who have not been funded before."
+          },
+          {
+            "question": "How much detail does the budget need?",
+            "answer": "A single page is enough. We want to see the main costs and roughly what each covers, not a line-by-line breakdown."
+          }
+        ],
+        "recipients": [
+          {
+            "project": "Calving ground disturbance study",
+            "year": "2025",
+            "country": "Kazakhstan",
+            "recipient": "Recipient name",
+            "image": "/images/person-portrait-3.webp"
+          },
+          {
+            "project": "Community rangers training pilot",
+            "year": "2024",
+            "country": "Mongolia",
+            "recipient": "Recipient name",
+            "image": "/images/person-portrait-4.webp"
+          },
+          {
+            "project": "School outreach across three districts",
+            "year": "2024",
+            "country": "Uzbekistan",
+            "recipient": "Recipient name",
+            "image": "/images/person-portrait-5.webp"
+          }
+        ]
+      }
+    },
+    {
+      "slug": "small-grants-programme",
+      "data": {
+        "title": "Small Grants Programme",
+        "strapline": "Modest funding, applied close to the ground.",
+        "image": "/images/grants-small-grants.webp",
+        "summary": "Small, flexible grants for practical conservation, research and outreach work that would otherwise struggle to find funding.",
+        "archiveType": "Small Grants Project",
+        "whatItIs": [
+          "The Small Grants Programme funds focused pieces of work that make a clear difference to saiga conservation but fall below the threshold of most funders.",
+          "Grants are deliberately simple to apply for and quick to decide, so that time-sensitive fieldwork is not lost to a long funding cycle."
+        ],
+        "whoItsFor": [
+          "Individuals and small organisations in saiga range states",
+          "Community groups working on grassland or wildlife issues",
+          "Researchers needing bridge funding for a defined piece of work"
+        ],
+        "whatItSupports": [
+          "Field surveys and monitoring",
+          "Equipment for ranger and monitoring teams",
+          "Local awareness and education activity",
+          "Data analysis and publication costs"
+        ],
+        "keyDates": [
+          {
+            "label": "Round one opens",
+            "value": "1 March"
+          },
+          {
+            "label": "Round one closes",
+            "value": "30 April"
+          },
+          {
+            "label": "Round two opens",
+            "value": "1 September"
+          },
+          {
+            "label": "Round two closes",
+            "value": "31 October"
+          }
+        ],
+        "applicationQuestions": [
+          {
+            "question": "How much can I apply for?",
+            "answer": "Most grants fall between a few hundred and a few thousand pounds. Tell us what the work needs rather than what you think we want to hear."
+          },
+          {
+            "question": "How long does a decision take?",
+            "answer": "Usually six to eight weeks after a round closes. If the work is genuinely time-critical, say so in the application and we will try to look at it sooner."
+          },
+          {
+            "question": "Can the grant cover salary or my own time?",
+            "answer": "A reasonable contribution towards the applicant's time is eligible, provided it is a minority of the budget and clearly explained."
+          },
+          {
+            "question": "What reporting is expected?",
+            "answer": "A short written report and a simple statement of spend within three months of the work finishing. Photographs are welcome but not required."
+          }
+        ],
+        "recipients": [
+          {
+            "project": "Waterpoint mapping in a dry season",
+            "year": "2024",
+            "country": "Turkmenistan",
+            "recipient": "Recipient name",
+            "image": "/images/person-portrait-3.webp"
+          },
+          {
+            "project": "Camera trap network expansion",
+            "year": "2024",
+            "country": "Russia",
+            "recipient": "Recipient name",
+            "image": "/images/person-portrait-4.webp"
+          },
+          {
+            "project": "Veterinary sampling after a die-off",
+            "year": "2023",
+            "country": "Mongolia",
+            "recipient": "Recipient name",
+            "image": "/images/person-portrait-5.webp"
+          }
+        ]
+      }
+    },
+    {
+      "slug": "excellence-in-saiga-protection-award",
+      "data": {
+        "title": "Excellence in Saiga Protection Award",
+        "strapline": "Recognising the people who hold the line.",
+        "image": "/images/grants-excellence-award.webp",
+        "summary": "An annual award recognising outstanding contributions to saiga protection, most often by rangers and field teams whose work rarely receives attention.",
+        "archiveType": "Excellence in Saiga Protection Awardee",
+        "whatItIs": [
+          "The award recognises sustained, practical contributions to protecting saigas — usually by people working in difficult conditions with limited resources.",
+          "Nominations come from colleagues, partner organisations and communities, and are reviewed by a panel drawn from across the range."
+        ],
+        "whoItsFor": [
+          "Rangers, patrol teams and protected area staff",
+          "Community members leading local protection efforts",
+          "Nominations only — there is no self-application"
+        ],
+        "whatItSupports": [
+          "A cash award to the recipient",
+          "Equipment for the recipient's team",
+          "Public recognition across the SCA network"
+        ],
+        "keyDates": [
+          {
+            "label": "Nominations open",
+            "value": "1 June"
+          },
+          {
+            "label": "Nominations close",
+            "value": "31 August"
+          },
+          {
+            "label": "Award announced",
+            "value": "Saiga Day, spring"
+          }
+        ],
+        "applicationQuestions": [
+          {
+            "question": "Can I nominate myself?",
+            "answer": "No. The award is decided on nominations from colleagues, partner organisations or the communities a person works with."
+          },
+          {
+            "question": "Can a whole team be nominated?",
+            "answer": "Yes. Much of this work is done by patrol teams rather than individuals, and teams are regularly nominated and recognised."
+          },
+          {
+            "question": "How long should a nomination be?",
+            "answer": "A page is plenty. What the panel needs is a clear account of what the person or team actually did, and over what period."
+          },
+          {
+            "question": "Does the recipient need to travel to receive it?",
+            "answer": "No. Where travel is difficult the award is presented locally by a partner organisation, and nothing is conditional on attending."
+          }
+        ],
+        "recipients": [
+          {
+            "project": "Winter die-off emergency response",
+            "year": "2025",
+            "country": "Mongolia",
+            "recipient": "Recipient name",
+            "image": "/images/person-portrait-3.webp"
+          },
+          {
+            "project": "Community anti-poaching network",
+            "year": "2024",
+            "country": "Uzbekistan",
+            "recipient": "Recipient name",
+            "image": "/images/person-portrait-4.webp"
+          },
+          {
+            "project": "Fifteen years of patrol leadership",
+            "year": "2023",
+            "country": "Kazakhstan",
+            "recipient": "Recipient name",
+            "image": "/images/person-portrait-5.webp"
+          }
+        ]
+      }
+    }
+  ],
+  "project": [
+    {
+      "slug": "migration-corridor-mapping",
+      "data": {
+        "title": "Mapping migration corridors with satellite data",
+        "image": "/images/featured-migration-mapping.webp",
+        "heroImage": "/images/project-hero.webp",
+        "type": "SCA Project",
+        "countries": [
+          "Kazakhstan",
+          "Russia"
+        ],
+        "themes": [
+          "Research & Monitoring",
+          "International Policy"
+        ],
+        "years": [
+          "2023",
+          "2024",
+          "2025"
+        ],
+        "excerpt": "Combining collar data and field survey to identify the corridors herds rely on.",
+        "body": [
+          "Saiga migrations shift year to year in response to rainfall, grazing and disturbance. Protecting a corridor that herds abandoned a decade ago achieves very little, so the first task is knowing where animals actually move now.",
+          "This project combined satellite collar data with ground survey across three seasons, producing a corridor map that range-state agencies can use in infrastructure planning.",
+          "The resulting maps are now shared with regional planning authorities, and are being used to inform where fencing, roads and rail alignments are reviewed before construction."
+        ],
+        "outcomes": [
+          {
+            "value": "1,800 km",
+            "label": "of corridor mapped"
+          },
+          {
+            "value": "3",
+            "label": "planning authorities using the data"
+          },
+          {
+            "value": "60+",
+            "label": "collared animals contributing"
+          }
+        ],
+        "timeline": [
+          {
+            "year": "2023",
+            "title": "Collaring and baseline survey",
+            "body": [
+              "The first field season concentrated on fitting and testing satellite collars, and on establishing ground survey routes that could be repeated in later years.",
+              "A baseline vegetation and disturbance survey was completed along two suspected corridors."
+            ]
+          },
+          {
+            "year": "2024",
+            "title": "A full migration year",
+            "body": [
+              "Twelve months of continuous tracking gave the first complete picture of seasonal movement, including two crossings that had not previously been recorded."
+            ]
+          },
+          {
+            "year": "2025",
+            "title": "Into planning decisions",
+            "body": [
+              "Corridor maps were handed to three regional planning authorities, and are now consulted when road and rail alignments are reviewed.",
+              "Work began on extending coverage into the neighbouring range state."
+            ]
+          }
+        ],
+        "gallery": [
+          "/images/project-gallery-a.webp",
+          "/images/project-gallery-b.webp",
+          "/images/project-gallery-c.webp"
+        ]
+      }
+    },
+    {
+      "slug": "steppe-stewardship-partnership",
+      "data": {
+        "title": "Steppe stewardship partnership",
+        "image": "/images/featured-community.webp",
+        "heroImage": "/images/project-hero.webp",
+        "type": "SCA Project",
+        "countries": [
+          "Uzbekistan"
+        ],
+        "themes": [
+          "Working with Communities"
+        ],
+        "years": [
+          "2023",
+          "2024",
+          "2025"
+        ],
+        "excerpt": "Village committees shaping how conservation work happens on their own land.",
+        "body": [
+          "Working through existing village structures rather than creating new ones, this partnership put decisions about where conservation activity happens into the hands of the communities living there.",
+          "Committees in four villages now review and approve annual workplans, and a share of programme funding is allocated directly to priorities they identify."
+        ],
+        "outcomes": [
+          {
+            "value": "4",
+            "label": "village committees established"
+          },
+          {
+            "value": "140",
+            "label": "households involved"
+          },
+          {
+            "value": "3 yrs",
+            "label": "of continuous operation"
+          }
+        ],
+        "timeline": [
+          {
+            "year": "2023",
+            "title": "The first two committees",
+            "body": [
+              "Two villages agreed to pilot the approach, each nominating a committee through their existing council rather than through an election run by us."
+            ]
+          },
+          {
+            "year": "2024",
+            "title": "Funding follows the decisions",
+            "body": [
+              "A fixed share of the annual budget was placed under committee control, with reporting kept to a single page.",
+              "Two further villages joined after visiting the pilot sites."
+            ]
+          },
+          {
+            "year": "2025",
+            "title": "Workplans without us",
+            "body": [
+              "Annual workplans were drafted and agreed by the committees themselves, with SCA staff attending only as observers."
+            ]
+          }
+        ],
+        "gallery": [
+          "/images/project-gallery-a.webp",
+          "/images/project-gallery-b.webp",
+          "/images/project-gallery-c.webp"
+        ]
+      }
+    },
+    {
+      "slug": "calving-ground-protection",
+      "data": {
+        "title": "Calving ground protection",
+        "image": "/images/work-protection.webp",
+        "heroImage": "/images/project-hero.webp",
+        "type": "SCA Project",
+        "countries": [
+          "Kazakhstan"
+        ],
+        "themes": [
+          "Protecting Saigas on the Ground"
+        ],
+        "years": [
+          "2024"
+        ],
+        "excerpt": "Seasonal patrols concentrated where and when herds are most vulnerable.",
+        "body": [
+          "Saiga calving is highly synchronised, concentrating a large share of a population into a small area for a matter of days. It is the moment of greatest vulnerability, and the moment protection matters most.",
+          "This project funded seasonal patrol teams, vehicle costs and radio equipment across the calving window, coordinated with the regional protected area authority."
+        ],
+        "outcomes": [
+          {
+            "value": "2",
+            "label": "calving grounds covered"
+          },
+          {
+            "value": "45",
+            "label": "rangers deployed seasonally"
+          },
+          {
+            "value": "0",
+            "label": "confirmed incidents in the window"
+          }
+        ],
+        "timeline": [],
+        "gallery": [
+          "/images/project-gallery-a.webp",
+          "/images/project-gallery-b.webp",
+          "/images/project-gallery-c.webp"
+        ]
+      }
+    },
+    {
+      "slug": "grassland-restoration-trial",
+      "data": {
+        "title": "Grassland restoration trial",
+        "image": "/images/project-card-b.webp",
+        "heroImage": "/images/project-hero.webp",
+        "type": "Small Grants Project",
+        "countries": [
+          "Kazakhstan"
+        ],
+        "themes": [
+          "Working with Communities",
+          "Research & Monitoring"
+        ],
+        "years": [
+          "2023",
+          "2024"
+        ],
+        "excerpt": "Testing native seed mixes on degraded pasture alongside local herders.",
+        "body": [
+          "Degraded pasture recovers slowly on the steppe, and restoration methods developed elsewhere often fail in this climate. This trial tested several native seed mixes across paired plots.",
+          "Herders were involved in plot selection and monitoring from the outset, so that whatever worked could be adopted without further external support."
+        ],
+        "outcomes": [
+          {
+            "value": "12",
+            "label": "trial plots established"
+          },
+          {
+            "value": "5",
+            "label": "native seed mixes tested"
+          },
+          {
+            "value": "2 yrs",
+            "label": "of recovery data"
+          }
+        ],
+        "timeline": [
+          {
+            "year": "2023",
+            "title": "Plots established",
+            "body": [
+              "Twelve paired plots were fenced and sown across three grazing areas, each chosen with the herders using them."
+            ]
+          },
+          {
+            "year": "2024",
+            "title": "First recovery data",
+            "body": [
+              "Two of the five mixes established well enough to recommend, and both are now being sown by herders outside the trial without further support."
+            ]
+          }
+        ],
+        "gallery": [
+          "/images/project-gallery-a.webp",
+          "/images/project-gallery-b.webp",
+          "/images/project-gallery-c.webp"
+        ]
+      }
+    },
+    {
+      "slug": "steppe-schools-programme",
+      "data": {
+        "title": "Steppe schools programme",
+        "image": "/images/work-education.webp",
+        "heroImage": "/images/project-hero.webp",
+        "type": "SCA Project",
+        "countries": [
+          "Mongolia"
+        ],
+        "themes": [
+          "Education & Awareness"
+        ],
+        "years": [
+          "2022",
+          "2023"
+        ],
+        "excerpt": "Classroom materials and field days built around the landscape children already know.",
+        "body": [
+          "Rather than importing a curriculum, this programme worked with local teachers to build materials rooted in the grasslands immediately around each school.",
+          "Field days pair classroom work with a morning outdoors, and the materials have since been adopted by schools beyond the original pilot districts."
+        ],
+        "outcomes": [
+          {
+            "value": "220",
+            "label": "schools taking part"
+          },
+          {
+            "value": "40",
+            "label": "teachers trained"
+          },
+          {
+            "value": "8,000+",
+            "label": "children reached"
+          }
+        ],
+        "timeline": [],
+        "gallery": [
+          "/images/project-gallery-a.webp",
+          "/images/project-gallery-b.webp",
+          "/images/project-gallery-c.webp"
+        ]
+      }
+    },
+    {
+      "slug": "range-state-policy-support",
+      "data": {
+        "title": "Range-state policy support",
+        "image": "/images/work-research.webp",
+        "heroImage": "/images/project-hero.webp",
+        "type": "SCA Project",
+        "countries": [
+          "Kazakhstan",
+          "Mongolia",
+          "Uzbekistan"
+        ],
+        "themes": [
+          "International Policy",
+          "Research & Monitoring"
+        ],
+        "years": [
+          "2024",
+          "2025"
+        ],
+        "excerpt": "Helping range states turn international commitments into funded national work.",
+        "body": [
+          "Range states report against a shared set of commitments for saiga conservation, but translating those commitments into national workplans is slow, technical work that rarely has dedicated staff behind it.",
+          "This project provided drafting and evidence support to three range states ahead of the reporting cycle, and convened a short technical exchange so that the same questions were not answered separately three times."
+        ],
+        "outcomes": [
+          {
+            "value": "3",
+            "label": "range states supported"
+          },
+          {
+            "value": "1",
+            "label": "technical exchange convened"
+          },
+          {
+            "value": "2",
+            "label": "national workplans revised"
+          }
+        ],
+        "timeline": [],
+        "gallery": [
+          "/images/project-gallery-a.webp",
+          "/images/project-gallery-b.webp",
+          "/images/project-gallery-c.webp"
+        ]
+      }
+    },
+    {
+      "slug": "winter-die-off-response",
+      "data": {
+        "title": "Winter die-off emergency response",
+        "image": "/images/project-card-a.webp",
+        "heroImage": "/images/project-hero.webp",
+        "type": "Excellence in Saiga Protection Awardee",
+        "countries": [
+          "Mongolia"
+        ],
+        "themes": [
+          "Protecting Saigas on the Ground",
+          "Research & Monitoring"
+        ],
+        "years": [
+          "2023"
+        ],
+        "excerpt": "A ranger team that reached remote herds through the worst winter on record.",
+        "body": [
+          "An unusually severe winter left herds unable to reach forage across a large part of the range, and the first weeks of the response depended almost entirely on local ranger teams working without resupply.",
+          "The award recognised a team that maintained supplementary feeding and carcass sampling through the worst of it, producing the data that later informed the veterinary response."
+        ],
+        "outcomes": [
+          {
+            "value": "11",
+            "label": "weeks of continuous response"
+          },
+          {
+            "value": "9",
+            "label": "rangers in the team"
+          },
+          {
+            "value": "300+",
+            "label": "samples collected for analysis"
+          }
+        ],
+        "timeline": [],
+        "gallery": [
+          "/images/project-gallery-a.webp",
+          "/images/project-gallery-b.webp",
+          "/images/project-gallery-c.webp"
+        ]
+      }
+    },
+    {
+      "slug": "young-rangers-network",
+      "data": {
+        "title": "Young rangers network",
+        "image": "/images/featured-research.webp",
+        "heroImage": "/images/project-hero.webp",
+        "type": "Young Conservation Leaders Project",
+        "countries": [
+          "Kazakhstan"
+        ],
+        "themes": [
+          "Education & Awareness",
+          "Working with Communities"
+        ],
+        "years": [
+          "2025"
+        ],
+        "excerpt": "Early-career conservationists building a peer network across three districts.",
+        "body": [
+          "Young people working on saiga conservation in the range states are often the only person doing that work in their district, which makes the job lonely and the learning slow.",
+          "This project linked fifteen early-career conservationists across three districts into a working network, with a shared field programme and two in-person meetings a year."
+        ],
+        "outcomes": [
+          {
+            "value": "15",
+            "label": "participants in the network"
+          },
+          {
+            "value": "3",
+            "label": "districts connected"
+          },
+          {
+            "value": "2",
+            "label": "joint field seasons run"
+          }
+        ],
+        "timeline": [],
+        "gallery": [
+          "/images/project-gallery-a.webp",
+          "/images/project-gallery-b.webp",
+          "/images/project-gallery-c.webp"
+        ]
+      }
+    },
+    {
+      "slug": "waterpoint-mapping",
+      "data": {
+        "title": "Dry season waterpoint mapping",
+        "image": "/images/project-card-c.webp",
+        "heroImage": "/images/project-hero.webp",
+        "type": "Small Grants Project",
+        "countries": [
+          "Turkmenistan"
+        ],
+        "themes": [
+          "Research & Monitoring"
+        ],
+        "years": [
+          "2024"
+        ],
+        "excerpt": "Recording where herds can still reach water when the season runs long.",
+        "body": [
+          "In a dry year the distribution of surface water, not forage, decides where herds can go. Much of that information existed only in the heads of the herders using the land.",
+          "A single field season recorded and mapped the waterpoints still reachable in late summer, alongside the ones that had failed within living memory."
+        ],
+        "outcomes": [
+          {
+            "value": "70",
+            "label": "waterpoints recorded"
+          },
+          {
+            "value": "1",
+            "label": "dry season surveyed"
+          },
+          {
+            "value": "24",
+            "label": "herders interviewed"
+          }
+        ],
+        "timeline": [],
+        "gallery": [
+          "/images/project-gallery-a.webp",
+          "/images/project-gallery-b.webp",
+          "/images/project-gallery-c.webp"
+        ]
+      }
+    },
+    {
+      "slug": "horn-trade-evidence-review",
+      "data": {
+        "title": "Horn trade evidence review",
+        "image": "/images/work-grants.webp",
+        "heroImage": "/images/project-hero.webp",
+        "type": "Student Research Project",
+        "countries": [
+          "Kazakhstan",
+          "Uzbekistan"
+        ],
+        "themes": [
+          "International Policy",
+          "Research & Monitoring"
+        ],
+        "years": [
+          "2024"
+        ],
+        "excerpt": "Pulling two decades of seizure records into one usable picture.",
+        "body": [
+          "Seizure records for saiga horn are held by different agencies in different formats, which makes it hard to say anything confident about how the trade has changed over time.",
+          "This student project consolidated two decades of published records into a single dataset, and set out plainly what the data can and cannot support."
+        ],
+        "outcomes": [
+          {
+            "value": "20 yrs",
+            "label": "of records consolidated"
+          },
+          {
+            "value": "2",
+            "label": "range states covered"
+          },
+          {
+            "value": "1",
+            "label": "open dataset published"
+          }
+        ],
+        "timeline": [],
+        "gallery": [
+          "/images/project-gallery-a.webp",
+          "/images/project-gallery-b.webp",
+          "/images/project-gallery-c.webp"
+        ]
+      }
+    }
+  ],
+  "news": [
+    {
+      "slug": "spring-census-begins",
+      "data": {
+        "title": "Spring census begins across key range sites",
+        "date": "2026-09-12",
+        "category": "Field Updates",
+        "author": "SCA Field Team",
+        "image": "/images/news-spring-census.webp",
+        "heroImage": "/images/article-hero.webp",
+        "excerpt": "Field teams launch annual surveys to track herd numbers and movements.",
+        "body": [
+          "Survey teams are back on the steppe this month for the annual spring census, the single most important data-gathering exercise in the SCA calendar.",
+          "Counting a migratory species across landscapes this large is never straightforward. Teams work in coordinated transects over several weeks, combining ground observation with aerial survey where conditions and permissions allow.",
+          "Early reports from the western sites are encouraging, with several large aggregations recorded in areas that were quiet during last year's count. Numbers will not be confirmed until all data is reconciled later in the season.",
+          "The census feeds directly into the range-wide population estimate used by governments and the IUCN, which makes consistency between years as important as the count itself."
+        ],
+        "pullQuote": "Counting a migratory species across landscapes this large is never straightforward — consistency between years matters as much as the count itself.",
+        "inlineImage": "/images/article-inline.webp",
+        "inlineCaption": "Field observations are recorded by hand before being reconciled with survey data."
+      }
+    },
+    {
+      "slug": "partnership-expands-ranger-training",
+      "data": {
+        "title": "New partnership expands ranger training",
+        "date": "2026-09-04",
+        "category": "Partnerships",
+        "author": "SCA Communications",
+        "image": "/images/news-ranger-training.webp",
+        "heroImage": "/images/article-hero.webp",
+        "excerpt": "SCA and local partners join forces to strengthen frontline conservation.",
+        "body": [
+          "A new agreement with regional protected area authorities will extend ranger training to three additional landscapes over the next two years.",
+          "The programme covers field navigation, wildlife monitoring, first aid and evidence handling, and is delivered largely by rangers who came through earlier rounds of the same training.",
+          "Equipment support forms part of the agreement, with radios and field kit issued to teams that have been operating without reliable communications."
+        ],
+        "pullQuote": "",
+        "inlineImage": "/images/article-inline.webp",
+        "inlineCaption": "Field observations are recorded by hand before being reconciled with survey data."
+      }
+    },
+    {
+      "slug": "young-leaders-join-field-programme",
+      "data": {
+        "title": "Young conservation leaders join field programme",
+        "date": "2026-08-28",
+        "category": "People",
+        "author": "SCA Programmes",
+        "image": "/images/news-young-leaders.webp",
+        "heroImage": "/images/article-hero.webp",
+        "excerpt": "A new generation is stepping up for saigas and the steppe.",
+        "body": [
+          "Twelve early-career conservationists from four range states have joined this year's Young Conservation Leaders cohort.",
+          "Participants spend part of the year attached to an existing field programme and part working on a project of their own design, supported by a mentor.",
+          "Several alumni of previous cohorts now lead field teams of their own, which was always the point of the programme."
+        ],
+        "pullQuote": "",
+        "inlineImage": "/images/article-inline.webp",
+        "inlineCaption": "Field observations are recorded by hand before being reconciled with survey data."
+      }
+    },
+    {
+      "slug": "restoration-work-expands",
+      "data": {
+        "title": "Restoration work expands across priority grassland zones",
+        "date": "2026-08-19",
+        "category": "Conservation",
+        "author": "SCA Field Team",
+        "image": "/images/news-restoration.webp",
+        "heroImage": "/images/article-hero.webp",
+        "excerpt": "Native vegetation recovery is supporting healthier feeding grounds.",
+        "body": [
+          "Following two seasons of trial plots, restoration work is being extended across a wider area of degraded pasture.",
+          "The approach is deliberately low-technology: native seed, careful timing, and grazing agreements with the herders who use the land."
+        ],
+        "pullQuote": "",
+        "inlineImage": "/images/article-inline.webp",
+        "inlineCaption": "Field observations are recorded by hand before being reconciled with survey data."
+      }
+    },
+    {
+      "slug": "local-schools-join-education-programme",
+      "data": {
+        "title": "Local schools join steppe conservation education programme",
+        "date": "2026-07-28",
+        "category": "Education",
+        "author": "SCA Education Team",
+        "image": "/images/news-school-programme.webp",
+        "heroImage": "/images/article-hero.webp",
+        "excerpt": "A new outreach effort brings wildlife literacy to rural communities.",
+        "body": [
+          "Thirty further schools have joined the steppe education programme this term, bringing the total to more than two hundred across the range.",
+          "Each school receives classroom materials and a field day, with teachers trained to run the sessions themselves in following years."
+        ],
+        "pullQuote": "",
+        "inlineImage": "/images/article-inline.webp",
+        "inlineCaption": "Field observations are recorded by hand before being reconciled with survey data."
+      }
+    },
+    {
+      "slug": "new-equipment-strengthens-response",
+      "data": {
+        "title": "New donor-backed equipment strengthens rapid response",
+        "date": "2026-07-29",
+        "category": "Updates",
+        "author": "SCA Communications",
+        "image": "/images/news-equipment.webp",
+        "heroImage": "/images/article-hero.webp",
+        "excerpt": "Essential field gear is improving safety and on-the-ground coverage.",
+        "body": [
+          "A donor-funded equipment round has delivered vehicles, radios and field kit to four patrol teams working in the most remote parts of the range.",
+          "Reliable communications change what is possible during a die-off or a poaching incident, when the difference between a two-hour and a two-day response is decisive."
+        ],
+        "pullQuote": "",
+        "inlineImage": "/images/article-inline.webp",
+        "inlineCaption": "Field observations are recorded by hand before being reconciled with survey data."
+      }
+    },
+    {
+      "slug": "tracking-migration-corridors",
+      "data": {
+        "title": "Tracking migration corridors with community-led monitoring",
+        "date": "2025-06-14",
+        "category": "Research",
+        "author": "SCA Science Team",
+        "image": "/images/featured-migration-mapping.webp",
+        "heroImage": "/images/article-hero.webp",
+        "excerpt": "New field data is helping protect key habitat routes across the range.",
+        "body": [
+          "Community monitors are now contributing systematic observations to the corridor mapping programme, filling gaps that collar data alone cannot cover.",
+          "The combined dataset gives a far more complete picture of where herds move in years when rainfall shifts the migration east or west."
+        ],
+        "pullQuote": "",
+        "inlineImage": "/images/article-inline.webp",
+        "inlineCaption": "Field observations are recorded by hand before being reconciled with survey data."
+      }
+    },
+    {
+      "slug": "die-off-response-review",
+      "data": {
+        "title": "What we learned from the last die-off response",
+        "date": "2025-03-03",
+        "category": "Research",
+        "author": "SCA Science Team",
+        "image": "/images/article-inline.webp",
+        "heroImage": "/images/article-hero.webp",
+        "excerpt": "A review of how quickly teams mobilised, and what would make it faster.",
+        "body": [
+          "Mass mortality events are the defining risk to saiga populations, and the speed of veterinary sampling in the first days determines what can be learned.",
+          "This review looks honestly at where the last response worked and where it did not, including the delays caused by permitting and by simple distance."
+        ],
+        "pullQuote": "",
+        "inlineImage": "/images/article-inline.webp",
+        "inlineCaption": "Field observations are recorded by hand before being reconciled with survey data."
+      }
+    }
+  ]
+}

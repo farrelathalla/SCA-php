@@ -1,0 +1,249 @@
+@import "tailwindcss";
+
+/* Template sources Tailwind scans for class names. */
+@source "../../app";
+@source "../../public/assets";
+
+/* Font families, loaded from Google Fonts in the layout (next/font in the design). */
+:root {
+  --font-playfair: "Playfair Display";
+  --font-inter: "Inter";
+}
+
+/* ------------------------------------------------------------------
+   SCA design tokens — a light, warm, steppe-inspired palette.
+   Off-white / buff / sand / soft brown, with one muted burnt-orange
+   accent. Deliberately no dark-brown or peach-pink tones.
+------------------------------------------------------------------ */
+@theme {
+  --color-cream: #fbf8f2;
+  --color-cream-deep: #f5efe3;
+  --color-sand: #eadfcb;
+  --color-sand-deep: #ded0b4;
+  --color-buff: #f3e9d8;
+
+  --color-ink: #2e231a;
+  --color-body: #574839;
+  --color-muted: #8b7a66;
+  --color-hairline: #e6ddcc;
+
+  --color-accent: #c87a3c;
+  --color-accent-dark: #ad6530;
+  --color-accent-soft: #f6e7d6;
+
+  --font-display: var(--font-playfair), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-body);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    /* The mobile menu parks off-canvas to the right; `clip` stops that from
+       widening the document, and unlike `hidden` it keeps the sticky header
+       working because it does not create a scroll container. */
+    overflow-x: clip;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    color: var(--color-ink);
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: var(--color-accent-soft);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
+@layer components {
+  /* Page shell: generous outer margins, content never edge-to-edge. */
+  .shell {
+    width: 100%;
+    max-width: 84rem;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .shell {
+      padding-inline: 3rem;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .shell {
+      padding-inline: 4.5rem;
+    }
+  }
+
+  /* Narrower measure for long-form editorial copy. */
+  .shell-narrow {
+    width: 100%;
+    max-width: 46rem;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+
+  /* The section rhythm: sections never touch, they breathe. */
+  .section {
+    padding-block: 5rem;
+  }
+
+  @media (min-width: 768px) {
+    .section {
+      padding-block: 7rem;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .section {
+      padding-block: 8.5rem;
+    }
+  }
+
+  .section-tight {
+    padding-block: 3.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .section-tight {
+      padding-block: 5rem;
+    }
+  }
+
+  .eyebrow {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .link-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-accent);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    transition: color 0.3s var(--ease-soft);
+  }
+
+  .link-arrow svg {
+    transition: transform 0.35s var(--ease-soft);
+  }
+
+  .link-arrow:hover {
+    color: var(--color-accent-dark);
+  }
+
+  .link-arrow:hover svg {
+    transform: translateX(5px);
+  }
+
+  .prose-sca p {
+    margin-block: 1.35em;
+    line-height: 1.8;
+    font-size: 1.0625rem;
+  }
+
+  .prose-sca h2 {
+    font-size: 1.875rem;
+    margin-top: 2.75em;
+    margin-bottom: 0.6em;
+    line-height: 1.25;
+  }
+
+  .prose-sca h3 {
+    font-size: 1.375rem;
+    margin-top: 2em;
+    margin-bottom: 0.5em;
+  }
+
+  .prose-sca > *:first-child {
+    margin-top: 0;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Motion — restrained. Slow fades and short lifts only; the brief
+   explicitly warns against heavy animation.
+------------------------------------------------------------------ */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.9s var(--ease-soft),
+    transform 0.9s var(--ease-soft);
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes sca-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-fade-up {
+  animation: sca-fade-up 1s var(--ease-soft) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .animate-fade-up {
+    animation: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
