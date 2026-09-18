@@ -57,7 +57,7 @@ $prose = function (array $paragraphs): string {
 <section class="section-tight border-t border-hairline pb-24 md:pb-32">
   <div class="shell">
     <?= section_heading((string) ($t['moreEyebrow'] ?? ''), (string) ($t['moreTitle'] ?? '')) ?>
-    <div class="mt-14"><?= card_grid(implode('', array_map(fn ($item, $i) => story_card(article_card($item), $i * 110), $more, array_keys($more)))) ?></div>
+    <div class="mt-14"><?= story_list(array_map('article_card', $more)) ?></div>
   </div>
 </section>
 <?php endif; ?>

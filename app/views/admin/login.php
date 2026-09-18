@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
   <title>Sign in — SCA Admin</title>
-  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="<?= asset('favicon.ico') ?>" sizes="any">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=Playfair+Display:wght@400..700&display=swap">
@@ -14,7 +14,7 @@
 <body class="flex min-h-screen items-center justify-center bg-cream-deep px-4">
   <div class="w-full max-w-sm">
     <div class="mb-8 text-center">
-      <img src="<?= e(site('site.logoFull')) ?>" alt="<?= e(site('site.name')) ?>" class="mx-auto h-20 w-auto">
+      <img src="<?= e(local_url((string) site('site.logoFull'))) ?>" alt="<?= e(site('site.name')) ?>" class="mx-auto h-20 w-auto">
       <p class="mt-4 eyebrow">Content admin</p>
     </div>
     <form method="post" action="/admin/login" class="space-y-4 rounded-2xl border border-hairline bg-cream p-7 shadow-[0_18px_44px_rgba(84,63,38,0.08)]">

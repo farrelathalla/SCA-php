@@ -48,6 +48,7 @@ const LABELS = [
     'pullQuote' => 'Pull quote (optional)',
     'date' => 'Date',
     'logo' => 'Logo (optional — replaces the name)',
+    'mailchimpAction' => 'Mailchimp form action URL (from Mailchimp → Audience → Signup forms → Embedded form; leave empty to only collect sign-ups here)',
 ];
 
 function field_label(string $key): string

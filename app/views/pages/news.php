@@ -12,7 +12,7 @@ $filters = [
 <?= page_hero($p['hero'] ?? []) ?>
 
 <section class="section">
-  <div class="shell"><?= archive_grid($items, $filters) ?></div>
+  <div class="shell"><?= archive_grid($items, $filters, false) ?></div>
 </section>
 
 <?php if (v($p, 'saigaNews.title') !== ''): ?>

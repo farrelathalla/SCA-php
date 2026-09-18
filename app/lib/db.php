@@ -9,7 +9,7 @@
  * overwrites anything an editor has already changed.
  */
 
-const SCHEMA_VERSION = 1;
+const SCHEMA_VERSION = 2;
 
 function db(): PDO
 {
@@ -48,6 +48,7 @@ function ensure_installed(): void
 
     migrate();
     seed_missing_content();
+    migrate_content($version);
     ensure_admin_user();
 
     $stmt = db()->prepare("REPLACE INTO settings (name, value) VALUES ('schema_version', ?)");
@@ -109,6 +110,47 @@ function migrate(): void
     foreach ($statements as $sql) {
         db()->exec($sql);
     }
+}
+
+/**
+ * One-off changes to content that already exists on a server, keyed by the
+ * schema version that introduced them. Each step only fills in or removes
+ * what it is about, so edits made in the admin are kept.
+ */
+function migrate_content(int $from): void
+{
+    if ($from < 2) {
+        // v2 — newsletter forms subscribe to SCA's existing Mailchimp list.
+        $global = page_row('global');
+        if ($global !== null && empty($global['newsletter']['mailchimpAction'])) {
+            $global['newsletter']['mailchimpAction'] = seed_data('pages.json')['global']['newsletter']['mailchimpAction'] ?? '';
+            save_page_row('global', $global);
+        }
+        // v2 — news and updates carry no photos anywhere (client request).
+        $rows = db()->query("SELECT id, data FROM entries WHERE type = 'news'")->fetchAll();
+        $update = db()->prepare('UPDATE entries SET data = ? WHERE id = ?');
+        foreach ($rows as $row) {
+            $data = json_decode($row['data'], true) ?: [];
+            if (array_key_exists('image', $data)) {
+                unset($data['image']);
+                $update->execute([json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $row['id']]);
+            }
+        }
+    }
+}
+
+function page_row(string $slug): ?array
+{
+    $stmt = db()->prepare('SELECT data FROM pages WHERE slug = ?');
+    $stmt->execute([$slug]);
+    $json = $stmt->fetchColumn();
+    return $json === false ? null : (json_decode($json, true) ?: []);
+}
+
+function save_page_row(string $slug, array $data): void
+{
+    db()->prepare('REPLACE INTO pages (slug, data, updated_at) VALUES (?, ?, ?)')
+        ->execute([$slug, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), now()]);
 }
 
 function seed_data(string $file): array

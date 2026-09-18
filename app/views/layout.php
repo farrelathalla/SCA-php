@@ -13,9 +13,9 @@ $description = trim((string) ($meta['description'] ?? '')) ?: (string) site('sit
   <meta property="og:title" content="<?= e($title) ?>">
   <meta property="og:description" content="<?= e($description) ?>">
   <?php if (config('noindex')): ?><meta name="robots" content="noindex, nofollow"><?php endif; ?>
-  <link rel="icon" href="/favicon.ico" sizes="any">
-  <link rel="icon" href="/logo/icon-256.png" type="image/png" sizes="256x256">
-  <link rel="apple-touch-icon" href="/logo/apple-icon.png" sizes="180x180">
+  <link rel="icon" href="<?= asset('favicon.ico') ?>" sizes="any">
+  <link rel="icon" href="<?= asset('logo/icon-256.png') ?>" type="image/png" sizes="256x256">
+  <link rel="apple-touch-icon" href="<?= asset('logo/apple-icon.png') ?>" sizes="180x180">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=Playfair+Display:wght@400..700&display=swap">

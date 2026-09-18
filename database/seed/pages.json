@@ -294,6 +294,7 @@
       ]
     },
     "newsletter": {
+      "mailchimpAction": "https://saiga-conservation.us21.list-manage.com/subscribe/post?u=a0ec084be4a832b4b53e2aae9&id=c865613a38&f_id=00bab3e1f0",
       "placeholder": "Your email address",
       "buttonLabel": "Subscribe",
       "thanks": "Thank you — please check your inbox to confirm.",

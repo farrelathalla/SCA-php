@@ -358,27 +358,36 @@ function story_card(array $item, int $delay = 0): string
     return ob_get_clean();
 }
 
-/** The story card without the photograph (homepage news). */
-function story_list(array $items): string
+/**
+ * The story card without the photograph. News and updates carry no photos
+ * anywhere on the site (client request): the articles moved over from the old
+ * website have none, so a rule above each item gives the structure instead.
+ */
+function story_text_card(array $item, int $delay = 0): string
 {
     ob_start(); ?>
-<div class="grid gap-x-12 gap-y-10 md:grid-cols-3">
-  <?php foreach (array_values($items) as $i => $item): ?>
-  <div <?= reveal('h-full', $i * 110) ?>>
-    <a href="<?= e($item['href']) ?>" class="group flex h-full flex-col border-t border-hairline pt-6">
-      <div class="flex flex-wrap items-center gap-3">
-        <?php if (($item['category'] ?? '') !== ''): ?><?= tag((string) $item['category']) ?><?php endif; ?>
-        <?php if (($item['date'] ?? '') !== ''): ?><span class="text-[0.8rem] text-muted"><?= e($item['date']) ?></span><?php endif; ?>
-      </div>
-      <h3 class="mt-4 text-[1.4rem] leading-snug transition-colors duration-300 group-hover:text-accent-dark"><?= e($item['title'] ?? '') ?></h3>
-      <p class="mt-3 text-[0.9375rem] leading-relaxed text-body"><?= e($item['excerpt'] ?? '') ?></p>
-      <span class="link-arrow mt-auto pt-6"><?= e(site('labels.readMore', 'Read more')) ?><?= icon('arrow-right', 'h-4 w-4') ?></span>
-    </a>
-  </div>
-  <?php endforeach; ?>
+<div <?= reveal('h-full', $delay) ?>>
+  <a href="<?= e($item['href']) ?>" class="group flex h-full flex-col border-t border-hairline pt-6">
+    <div class="flex flex-wrap items-center gap-3">
+      <?php if (($item['category'] ?? '') !== ''): ?><?= tag((string) $item['category']) ?><?php endif; ?>
+      <?php if (($item['date'] ?? '') !== ''): ?><span class="text-[0.8rem] text-muted"><?= e($item['date']) ?></span><?php endif; ?>
+    </div>
+    <h3 class="mt-4 text-[1.4rem] leading-snug transition-colors duration-300 group-hover:text-accent-dark"><?= e($item['title'] ?? '') ?></h3>
+    <p class="mt-3 text-[0.9375rem] leading-relaxed text-body"><?= e($item['excerpt'] ?? '') ?></p>
+    <span class="link-arrow mt-auto pt-6"><?= e(site('labels.readMore', 'Read more')) ?><?= icon('arrow-right', 'h-4 w-4') ?></span>
+  </a>
 </div>
 <?php
     return ob_get_clean();
+}
+
+function story_list(array $items): string
+{
+    $cards = '';
+    foreach (array_values($items) as $i => $item) {
+        $cards .= story_text_card($item, $i * 110);
+    }
+    return '<div class="grid gap-x-12 gap-y-10 md:grid-cols-3">' . $cards . '</div>';
 }
 
 function card_grid(string $cards): string
@@ -579,14 +588,17 @@ function newsletter_form(string $class = '', string $variant = 'default', ?strin
     $note = $note ?? (string) site('newsletter.defaultNote');
     $pad = $large ? 'py-4 sm:py-3' : 'py-3.5 sm:py-2.5';
     $id = 'newsletter-' . $variant . '-' . bin2hex(random_bytes(3));
+    // Subscriptions go to SCA's Mailchimp list (the same list the old site used).
+    $mailchimp = trim((string) site('newsletter.mailchimpAction'));
     ob_start(); ?>
-<form action="/forms/newsletter" method="post" class="w-full <?= e($class) ?>" data-ajax-form data-done-class="rounded-full border border-accent/30 bg-accent-soft px-6 <?= $large ? 'py-4' : 'py-3.5' ?> text-center text-[0.925rem] text-ink <?= e($class) ?>" data-done-text="<?= e(site('newsletter.thanks')) ?>">
+<form action="/forms/newsletter" method="post" class="w-full <?= e($class) ?>" data-ajax-form<?= $mailchimp !== '' ? ' data-mailchimp="' . e($mailchimp) . '"' : '' ?> data-done-class="rounded-full border border-accent/30 bg-accent-soft px-6 <?= $large ? 'py-4' : 'py-3.5' ?> text-center text-[0.925rem] text-ink <?= e($class) ?>" data-done-text="<?= e(site('newsletter.thanks')) ?>">
   <div class="flex w-full flex-col gap-2.5 rounded-2xl sm:flex-row sm:items-center sm:gap-0 sm:rounded-full sm:border sm:border-hairline sm:bg-cream sm:p-1.5 sm:transition-colors sm:duration-300 sm:focus-within:border-accent/50">
     <label for="<?= $id ?>" class="sr-only">Email address</label>
     <input id="<?= $id ?>" type="email" name="email" required placeholder="<?= e(site('newsletter.placeholder')) ?>" class="w-full rounded-full border border-hairline bg-cream px-5 text-[0.95rem] text-ink placeholder:text-muted/80 focus:outline-none sm:border-0 sm:bg-transparent sm:px-5 <?= $pad ?>">
     <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true">
     <button type="submit" class="shrink-0 rounded-full bg-accent px-7 font-medium text-cream transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-accent-dark <?= $pad ?> text-[0.925rem]"><?= e(site('newsletter.buttonLabel')) ?></button>
   </div>
+  <p class="mt-3 hidden text-xs text-accent-dark" role="alert" data-form-error></p>
   <?php if ($note !== ''): ?><p class="mt-3 text-xs text-muted"><?= e($note) ?></p><?php endif; ?>
 </form>
 <?php
@@ -614,6 +626,7 @@ function contact_form(string $source = 'contact'): string
       <label for="contact-message-<?= e($source) ?>" class="mb-2 block text-[0.875rem] text-body"><?= e($f['messageLabel'] ?? '') ?></label>
       <textarea id="contact-message-<?= e($source) ?>" name="message" rows="5" required class="<?= $field ?> resize-none" placeholder="<?= e($f['messagePlaceholder'] ?? '') ?>"></textarea>
     </div>
+    <p class="hidden text-[0.875rem] text-accent-dark" role="alert" data-form-error></p>
     <button type="submit" class="rounded-full bg-accent px-8 py-3.5 text-[0.9375rem] font-medium text-cream shadow-[0_6px_18px_rgba(200,122,60,0.22)] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:bg-accent-dark"><?= e($f['buttonLabel'] ?? '') ?></button>
   </form>
   <div class="hidden rounded-2xl bg-accent-soft p-8" role="status" data-contact-done>
@@ -630,7 +643,7 @@ function contact_form(string $source = 'contact'): string
    rendered; assets/js/app.js filters, pages (six at a time) and applies any
    filter passed in the query string. */
 
-function archive_grid(array $items, array $filters): string
+function archive_grid(array $items, array $filters, bool $photos = true): string
 {
     ob_start(); ?>
 <div data-archive data-page-size="6">
@@ -649,9 +662,9 @@ function archive_grid(array $items, array $filters): string
   </div>
 
   <div class="mt-12 md:mt-14">
-    <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-12 lg:gap-y-16" data-archive-grid>
+    <div class="<?= $photos ? 'grid gap-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-12 lg:gap-y-16' : 'grid gap-x-12 gap-y-10 md:grid-cols-3' ?>" data-archive-grid>
       <?php foreach (array_values($items) as $i => $item): ?>
-      <div data-archive-item data-facets="<?= e(json_encode($item['facets'], JSON_UNESCAPED_UNICODE)) ?>"<?= $i >= 6 ? ' hidden' : '' ?>><?= story_card($item, ($i % 3) * 110) ?></div>
+      <div data-archive-item data-facets="<?= e(json_encode($item['facets'], JSON_UNESCAPED_UNICODE)) ?>"<?= $i >= 6 ? ' hidden' : '' ?>><?= $photos ? story_card($item, ($i % 3) * 110) : story_text_card($item, ($i % 3) * 110) ?></div>
       <?php endforeach; ?>
     </div>
     <p class="hidden py-16 text-center text-[1rem] text-muted" data-archive-empty><?= e(site('labels.noResults')) ?></p>

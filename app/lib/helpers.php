@@ -202,6 +202,19 @@ function asset(string $path): string
     return '/' . ltrim($path, '/') . '?v=' . $version;
 }
 
+/**
+ * A stored path (e.g. a logo chosen in the admin) with a cache-busting
+ * version when it is a local file, so replacing a file under the same name
+ * shows up immediately. External URLs pass through unchanged.
+ */
+function local_url(string $path): string
+{
+    if ($path === '' || $path[0] !== '/' || strpos($path, '//') === 0) {
+        return $path;
+    }
+    return is_file(PUB . parse_url($path, PHP_URL_PATH)) ? asset($path) : $path;
+}
+
 /** Wraps a public page in the site layout and sends it. */
 function render(string $viewName, array $vars = [], array $meta = [], int $status = 200): void
 {

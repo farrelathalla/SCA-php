@@ -31,7 +31,7 @@ $isActive = fn ($href) => $href === '/admin' ? $path === '/admin' : ($path === $
   <meta name="robots" content="noindex, nofollow">
   <meta name="csrf-token" content="<?= e(csrf_token()) ?>">
   <title><?= e($title) ?> — SCA Admin</title>
-  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="<?= asset('favicon.ico') ?>" sizes="any">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=Playfair+Display:wght@400..700&display=swap">
@@ -42,7 +42,7 @@ $isActive = fn ($href) => $href === '/admin' ? $path === '/admin' : ($path === $
     <aside class="border-b border-hairline bg-cream lg:sticky lg:top-0 lg:h-screen lg:w-64 lg:shrink-0 lg:overflow-y-auto lg:border-r lg:border-b-0">
       <div class="flex items-center justify-between px-5 py-4">
         <a href="/admin" class="flex items-center gap-2.5">
-          <img src="<?= e(site('site.logoMark')) ?>" alt="" class="h-8 w-auto">
+          <img src="<?= e(local_url((string) site('site.logoMark'))) ?>" alt="" class="h-8 w-auto">
           <span class="leading-tight"><span class="block font-display text-lg text-ink">SCA</span><span class="block text-[10px] tracking-[0.14em] text-muted uppercase">Content admin</span></span>
         </a>
         <button type="button" class="rounded-lg border border-hairline px-3 py-1.5 text-[0.8rem] text-ink lg:hidden" data-admin-menu-toggle>Menu</button>

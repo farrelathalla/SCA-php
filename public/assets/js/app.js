@@ -301,20 +301,80 @@
 
   /* --------------------------------------------------------------- Forms */
 
+  function postLocal(form) {
+    return fetch(form.action, {
+      method: "POST",
+      body: new FormData(form),
+      headers: { Accept: "application/json" },
+    })
+      .then(function (response) { return response.json(); })
+      .then(function (result) {
+        if (!result.ok) throw new Error(result.error || "Something went wrong.");
+        return result;
+      });
+  }
+
+  /*
+   * Mailchimp's embedded-form endpoint, called as JSONP so the visitor stays
+   * on the page. The form action is the list's usual
+   * …list-manage.com/subscribe/post?u=…&id=… URL, as set in the admin.
+   */
+  function subscribeMailchimp(action, email) {
+    return new Promise(function (resolve, reject) {
+      var url = action.replace("/subscribe/post?", "/subscribe/post-json?");
+      var params = new URL(url, window.location.href).searchParams;
+      var callback = "scaMailchimp" + Date.now();
+      var script = document.createElement("script");
+      var timer = setTimeout(function () {
+        cleanup();
+        reject(new Error("The sign-up service did not respond. Please try again."));
+      }, 15000);
+      function cleanup() {
+        clearTimeout(timer);
+        delete window[callback];
+        script.remove();
+      }
+      window[callback] = function (data) {
+        cleanup();
+        var message = String(data.msg || "").replace(/<[^>]*>/g, "").replace(/^\d+\s*-\s*/, "");
+        if (data.result === "success" || /already subscribed/i.test(message)) resolve();
+        else reject(new Error(message || "That address could not be subscribed."));
+      };
+      script.src = url
+        + "&EMAIL=" + encodeURIComponent(email)
+        + "&b_" + params.get("u") + "_" + params.get("id") + "="
+        + "&c=" + callback;
+      script.onerror = function () {
+        cleanup();
+        reject(new Error("The sign-up service could not be reached. Please try again."));
+      };
+      document.body.appendChild(script);
+    });
+  }
+
   document.querySelectorAll("form[data-ajax-form]").forEach(function (form) {
+    var errorEl = form.querySelector("[data-form-error]");
     form.addEventListener("submit", function (event) {
       event.preventDefault();
       var button = form.querySelector("button[type=submit]");
       if (button) button.disabled = true;
+      if (errorEl) errorEl.classList.add("hidden");
 
-      fetch(form.action, {
-        method: "POST",
-        body: new FormData(form),
-        headers: { Accept: "application/json" },
-      })
-        .then(function (response) { return response.json(); })
-        .then(function (result) {
-          if (!result.ok) throw new Error(result.error || "Something went wrong.");
+      var mailchimp = form.getAttribute("data-mailchimp");
+      var honeypot = form.querySelector("input[name=website]");
+      var request;
+      if (mailchimp && !(honeypot && honeypot.value)) {
+        var email = form.querySelector("input[type=email]").value;
+        request = subscribeMailchimp(mailchimp, email).then(function () {
+          // Keep a copy in the admin as well; a failure here does not matter.
+          postLocal(form).catch(function () {});
+        });
+      } else {
+        request = postLocal(form);
+      }
+
+      request
+        .then(function () {
           if (form.hasAttribute("data-contact")) {
             var wrap = form.closest("[data-contact-wrap]");
             form.classList.add("hidden");
@@ -329,7 +389,12 @@
         })
         .catch(function (error) {
           if (button) button.disabled = false;
-          window.alert(error.message);
+          if (errorEl) {
+            errorEl.textContent = error.message;
+            errorEl.classList.remove("hidden");
+          } else {
+            window.alert(error.message);
+          }
         });
     });
   });

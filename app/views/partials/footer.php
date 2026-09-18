@@ -4,7 +4,7 @@
     <div class="grid gap-12 lg:grid-cols-[1.15fr_2fr] lg:gap-16">
       <div>
         <a href="/" class="inline-block">
-          <img src="<?= e(site('site.logoFull')) ?>" alt="<?= e(site('site.name')) ?>" width="660" height="379" class="h-24 w-auto">
+          <img src="<?= e(local_url((string) site('site.logoFull'))) ?>" alt="<?= e(site('site.name')) ?>" width="660" height="379" class="h-24 w-auto">
         </a>
         <p class="mt-6 max-w-xs text-[0.925rem] leading-relaxed text-body"><?= e($f['tagline'] ?? '') ?></p>
         <div class="mt-6 space-y-1 text-[0.9rem] text-muted">
