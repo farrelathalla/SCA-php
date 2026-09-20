@@ -168,6 +168,11 @@
     transform: translateX(5px);
   }
 
+  /* Same link, pointing to a section further down the same page. */
+  .link-arrow-down:hover svg {
+    transform: translateY(4px);
+  }
+
   .prose-sca p {
     margin-block: 1.35em;
     line-height: 1.8;

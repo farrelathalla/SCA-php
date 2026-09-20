@@ -16,7 +16,7 @@ const LONG_TEXT_KEYS = [
     'body', 'intro', 'summary', 'excerpt', 'strapline', 'caption', 'note', 'answer', 'description',
     'statement', 'lead', 'tagline', 'pullQuote', 'postAddress', 'inlineCaption', 'ctaBody', 'applyBody',
     'yearsIntro', 'thanks', 'thanksBody', 'noResults', 'defaultNote', 'signupNote', 'whatItIs',
-    'placeholderText', 'monthlyHtml', 'bodyHtml',
+    'placeholderText', 'monthlyHtml', 'bodyHtml', 'captionHtml', 'hint', 'text',
 ];
 
 const LABELS = [
@@ -49,6 +49,53 @@ const LABELS = [
     'date' => 'Date',
     'logo' => 'Logo (optional — replaces the name)',
     'mailchimpAction' => 'Mailchimp form action URL (from Mailchimp → Audience → Signup forms → Embedded form; leave empty to only collect sign-ups here)',
+    'analyticsId' => 'Google Analytics measurement ID (e.g. G-XXXXXXXXXX — leave empty for no tracking)',
+    'jumpLabel' => 'Jump link under the buttons (e.g. “See what your donation can support” — leave empty for none)',
+    'jumpHref' => 'Jump link target (an anchor on this page, e.g. #impact)',
+    'documents' => 'Files to download (optional)',
+    'points' => 'Data points',
+    'xLabel' => 'Horizontal axis label',
+    'yLabel' => 'Vertical axis label',
+    'captionHtml' => 'Caption (links allowed: <a href="…">…</a>)',
+    'anchorId' => 'Anchor (lets a link jump straight here, e.g. “what-we-do” — optional)',
+    'background' => 'Background',
+    'showPhotos' => 'Show photographs',
+    'newestFirst' => 'Newest year first',
+    'sections' => 'Page blocks',
+    'gallery' => 'Photographs',
+    'stats' => 'Figures',
+    'buttons' => 'Buttons',
+];
+
+/**
+ * Item shapes for lists that start out empty, so the admin still knows what a
+ * new item looks like. (A seeded list supplies its own shape from its first
+ * item; these are for the lists that begin with nothing in them.)
+ */
+const LIST_ITEM_SHAPES = [
+    'documents' => ['title' => '', 'href' => ''],
+];
+
+/**
+ * The document key whose list is edited with the block builder rather than as
+ * an ordinary repeater. Set by the admin router for built pages.
+ */
+function blocks_key(?string $set = null): ?string
+{
+    static $key = null;
+    if ($set !== null) {
+        $key = $set;
+    }
+    return $key;
+}
+
+/** Leaf values that are picked from a short list rather than typed. */
+const CHOICE_FIELDS = [
+    'align' => ['left' => 'Left', 'center' => 'Centred'],
+    'tone' => ['sand' => 'Sand', 'cream' => 'Soft beige'],
+    'background' => BLOCK_BACKGROUNDS,
+    'columns' => ['1' => 'One per row', '2' => 'Two per row', '3' => 'Three per row', '4' => 'Four per row'],
+    'style' => ['primary' => 'Solid button', 'outline' => 'Outlined button', 'ghost' => 'Light button'],
 ];
 
 function field_label(string $key): string
@@ -68,6 +115,12 @@ function field_kind(string $key, $value): string
     }
     if ($key === 'icon' || substr($key, -4) === 'Icon') {
         return 'icon';
+    }
+    if ($key === 'block') {
+        return 'hidden';
+    }
+    if (isset(CHOICE_FIELDS[$key]) && !is_array($value)) {
+        return 'choice';
     }
     if ($key === 'variant') {
         return 'variant';
@@ -124,6 +177,15 @@ function item_summary($item): string
     if (!is_array($item)) {
         return mb_strimwidth((string) $item, 0, 80, '…');
     }
+    if (isset($item['block'])) {
+        $name = block_label((string) $item['block']);
+        foreach (['title', 'text'] as $k) {
+            if (trim((string) ($item[$k] ?? '')) !== '') {
+                return mb_strimwidth($name . ' — ' . $item[$k], 0, 80, '…');
+            }
+        }
+        return $name;
+    }
     foreach (['title', 'label', 'name', 'year', 'project', 'question', 'amount', 'value'] as $k) {
         if (isset($item[$k]) && is_string($item[$k]) && trim($item[$k]) !== '') {
             $extra = ($k === 'year' && !empty($item['title'])) ? ' — ' . $item['title'] : '';
@@ -151,6 +213,11 @@ function render_value_input(string $key, $value, string $kind): string
                 $out .= '<option value="' . e($name) . '"' . ($name === $val ? ' selected' : '') . '>' . e($name) . '</option>';
             }
             return $out . '</select></div>';
+        case 'hidden':
+            return '<input type="hidden" data-input value="' . e($val) . '">';
+        case 'choice':
+            $options = CHOICE_FIELDS[$key];
+            break;
         case 'variant':
             $options = ['overlay' => 'Text over photo', 'split' => 'Text beside photo', 'plain' => 'No photo'];
             break;
@@ -195,9 +262,16 @@ function render_node(?string $key, $value, $shape, int $depth = 0, string $paren
     $keyAttr = $key !== null ? ' data-key="' . e($key) . '"' : '';
     $labelKey = $key ?? $parentKey;
 
+    // The block builder replaces the ordinary repeater for a built page's blocks.
+    if ($key !== null && $key === blocks_key() && $depth === 0) {
+        return render_blocks_field(is_array($value) ? $value : [], $key);
+    }
+
     // Lists
     if (is_array($value) && array_is_list_compat($value) && (!is_array($shape) || array_is_list_compat($shape))) {
-        $itemShape = (is_array($shape) && isset($shape[0])) ? $shape[0] : ($value[0] ?? '');
+        $itemShape = (is_array($shape) && isset($shape[0]))
+            ? $shape[0]
+            : (LIST_ITEM_SHAPES[(string) $key] ?? ($value[0] ?? ''));
         $template = render_list_item(blank_of($itemShape), $itemShape, $depth + 1, (string) $key);
 
         $out = '<div data-node="list"' . $keyAttr . ' class="space-y-2">';
@@ -242,7 +316,7 @@ function render_node(?string $key, $value, $shape, int $depth = 0, string $paren
     $input = render_value_input($labelKey, $value, $kind);
     $type = is_bool($value) ? 'bool' : 'string';
     $wrapper = '<div data-node="value" data-type="' . $type . '"' . $keyAttr . '>';
-    if ($key !== null && $kind !== 'bool') {
+    if ($key !== null && $kind !== 'bool' && $kind !== 'hidden') {
         $wrapper .= '<label class="mb-1.5 block text-[0.85rem] text-body">' . e(field_label($key)) . '</label>';
     }
     if ($depth === 0 && $key !== null) {
@@ -269,6 +343,45 @@ function render_list_item($item, $shape, int $depth, string $parentKey): string
 
     return '<div data-item class="flex items-start gap-2"><div class="min-w-0 flex-1">'
         . render_node(null, $item, $shape, $depth, $parentKey) . '</div>' . $controls . '</div>';
+}
+
+/**
+ * The block builder: the blocks already on a built page, one collapsible panel
+ * each, plus a "+ Add new block" picker. Every block type gets a <template>
+ * holding an empty copy of itself, which assets/admin/admin.js clones — the
+ * same mechanism the ordinary repeaters use, with a menu in front of it.
+ */
+function render_blocks_field(array $blocks, string $key): string
+{
+    $select = 'rounded-lg border border-hairline bg-white px-3 py-2 text-[0.9rem] text-ink focus:border-accent focus:outline-none';
+
+    $items = '';
+    foreach ($blocks as $block) {
+        $type = is_array($block) ? (string) ($block['block'] ?? '') : '';
+        if (isset(BLOCK_TYPES[$type])) {
+            $items .= render_list_item($block, block_shape($type), 1, $key);
+        }
+    }
+
+    $templates = '';
+    $options = '';
+    foreach (BLOCK_TYPES as $type => $meta) {
+        $templates .= '<template data-block-template="' . e($type) . '">'
+            . render_list_item(block_shape($type), block_shape($type), 1, $key) . '</template>';
+        $options .= '<option value="' . e($type) . '" data-hint="' . e($meta['hint']) . '">' . e($meta['label']) . '</option>';
+    }
+    $firstHint = BLOCK_TYPES[array_key_first(BLOCK_TYPES)]['hint'];
+
+    return '<section data-node="list" data-key="' . e($key) . '" class="rounded-2xl border border-hairline bg-white p-5 md:p-6">'
+        . '<h2 class="mb-1 font-display text-xl text-ink">Page blocks</h2>'
+        . '<p class="mb-4 text-[0.85rem] text-muted">Stack the same building blocks the rest of the site is made of. Drag order with ↑ ↓, and leave a field empty to hide that part of a block.</p>'
+        . $templates
+        . '<div data-items class="space-y-2">' . $items . '</div>'
+        . '<div class="mt-4 flex flex-wrap items-center gap-2 rounded-xl border border-dashed border-accent/50 p-3">'
+        . '<select data-block-picker class="' . $select . '">' . $options . '</select>'
+        . '<button type="button" data-add-block class="rounded-full bg-accent px-4 py-2 text-[0.85rem] font-medium text-cream hover:bg-accent-dark">+ Add new block</button>'
+        . '<span class="basis-full text-[0.8rem] text-muted sm:basis-auto" data-block-hint>' . e($firstHint) . '</span>'
+        . '</div></section>';
 }
 
 /** The whole editing form body for a document. */

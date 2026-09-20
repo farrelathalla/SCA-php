@@ -3,7 +3,7 @@ $cards = [
     ['href' => '/admin/news/new', 'title' => 'Write a news story', 'body' => 'Publish a new update to News & Updates and the homepage.'],
     ['href' => '/admin/pages/home', 'title' => 'Edit the homepage', 'body' => 'Hero, mission, numbers, what we do and more.'],
     ['href' => '/admin/projects/new', 'title' => 'Add a project', 'body' => 'A new entry in the filterable projects archive.'],
-    ['href' => '/admin/media', 'title' => 'Media library', 'body' => 'Upload photographs and documents to use across the site.'],
+    ['href' => '/admin/built-pages/new', 'title' => 'Build a new page', 'body' => 'Stack the site’s own design blocks into a page of your own.'],
 ];
 ?>
 <h1 class="font-display text-3xl text-ink">Welcome back</h1>
@@ -26,6 +26,7 @@ $cards = [
       <li><a class="hover:text-accent-dark" href="/admin/projects"><?= $counts['projects'] ?> projects</a></li>
       <li><a class="hover:text-accent-dark" href="/admin/themes"><?= $counts['themes'] ?> Our Work themes</a></li>
       <li><a class="hover:text-accent-dark" href="/admin/programmes"><?= $counts['programmes'] ?> grant programmes</a></li>
+      <li><a class="hover:text-accent-dark" href="/admin/built-pages"><?= $counts['built-pages'] ?> pages you built</a></li>
     </ul>
   </div>
   <div class="rounded-2xl border border-hairline bg-cream p-5">

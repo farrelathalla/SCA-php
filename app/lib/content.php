@@ -13,7 +13,40 @@ const COLLECTIONS = [
     'project' => ['label' => 'Projects', 'singular' => 'project', 'base' => '/projects/'],
     'theme' => ['label' => 'Our Work themes', 'singular' => 'theme', 'base' => '/our-work/'],
     'programme' => ['label' => 'Grants & Awards programmes', 'singular' => 'programme', 'base' => '/our-work/grants-and-awards/'],
+    // Pages built from blocks in the admin. Their slug is the whole path, so
+    // they can live anywhere that is not already a fixed route.
+    'custom' => ['label' => 'Built pages', 'singular' => 'page', 'base' => '/'],
 ];
+
+/**
+ * The site's fixed routes: path => [view, page slug whose meta sets the title].
+ * public/index.php dispatches from this, and the admin checks it so a page
+ * built from blocks cannot be given a path that already belongs to one.
+ */
+const FIXED_PAGES = [
+    '/' => ['home', 'home'],
+    '/about' => ['about', 'about'],
+    '/about/our-story' => ['our-story', 'our-story'],
+    '/about/our-people' => ['our-people', 'our-people'],
+    '/about/partners-funders' => ['partners-funders', 'partners-funders'],
+    '/about/contact' => ['contact', 'contact'],
+    '/saigas/what-is-a-saiga' => ['what-is-a-saiga', 'what-is-a-saiga'],
+    '/saigas/why-saigas-matter' => ['why-saigas-matter', 'why-saigas-matter'],
+    '/saigas/population-history-and-threats' => ['population-history-and-threats', 'population-history-and-threats'],
+    '/saigas/policy-and-protection' => ['policy-and-protection', 'policy-and-protection'],
+    '/our-work' => ['our-work', 'our-work'],
+    '/our-work/grants-and-awards' => ['grants-and-awards', 'grants-and-awards'],
+    '/projects' => ['projects', 'projects'],
+    '/news' => ['news', 'news'],
+    '/resources' => ['resources', 'resources'],
+    '/support/donate' => ['donate', 'donate'],
+    '/support/donor-tours' => ['donor-tours', 'donor-tours'],
+    '/support/sign-up' => ['sign-up', 'sign-up'],
+    '/support/work-with-us' => ['work-with-us', 'work-with-us'],
+];
+
+/** Path prefixes a built page may not use, because a route already owns them. */
+const RESERVED_PREFIXES = ['admin', 'forms', 'assets', 'images', 'uploads', 'downloads', 'logo', 'our-work', 'projects', 'news'];
 
 function page(string $slug): array
 {
@@ -62,8 +95,21 @@ function entries(string $type, bool $includeDrafts = false): array
     if ($type === 'news') {
         usort($items, fn ($a, $b) => strcmp((string) ($b['date'] ?? ''), (string) ($a['date'] ?? '')) ?: $b['id'] <=> $a['id']);
     }
+    if ($type === 'project') {
+        // Newest work first: a project is placed by the most recent year it is
+        // tagged with, so 2026 projects lead, then those whose latest year is
+        // 2025, and so on. "Order" only settles ties.
+        usort($items, fn ($a, $b) => strcmp(latest_year($b), latest_year($a)) ?: ($a['sort_order'] <=> $b['sort_order']));
+    }
 
     return $cache[$key] = $items;
+}
+
+/** The most recent year an entry is tagged with, '' when it has none. */
+function latest_year(array $item): string
+{
+    $years = array_filter(array_map('strval', $item['years'] ?? []), 'strlen');
+    return $years ? max($years) : '';
 }
 
 function entry(string $type, string $slug): ?array

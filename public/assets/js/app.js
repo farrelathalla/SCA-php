@@ -299,6 +299,45 @@
     });
   });
 
+  /* --------------------------------------------------------------- Chart
+     The population graph is drawn server-side as SVG; this only adds the
+     tooltip, which follows whichever data point is hovered or focused. There
+     is one point per actual estimate, so nothing is read off the curve
+     between them. */
+
+  document.querySelectorAll("[data-chart]").forEach(function (chart) {
+    var tooltip = chart.querySelector("[data-chart-tooltip]");
+    var valueEl = chart.querySelector("[data-chart-value]");
+    var yearEl = chart.querySelector("[data-chart-year]");
+    if (!tooltip || !valueEl || !yearEl) return;
+
+    var show = function (point) {
+      var dot = point.querySelector("[data-chart-dot]");
+      var box = dot.getBoundingClientRect();
+      var frame = chart.getBoundingClientRect();
+      valueEl.textContent = point.getAttribute("data-value");
+      yearEl.textContent = point.getAttribute("data-year");
+      tooltip.style.left = box.left + box.width / 2 - frame.left + "px";
+      tooltip.style.top = box.top - frame.top - 14 + "px";
+      tooltip.classList.remove("hidden");
+      dot.setAttribute("r", "6.5");
+    };
+
+    var hide = function (point) {
+      tooltip.classList.add("hidden");
+      point.querySelector("[data-chart-dot]").setAttribute("r", "4.5");
+    };
+
+    chart.querySelectorAll("[data-chart-point]").forEach(function (point) {
+      ["mouseenter", "focus"].forEach(function (name) {
+        point.addEventListener(name, function () { show(point); });
+      });
+      ["mouseleave", "blur"].forEach(function (name) {
+        point.addEventListener(name, function () { hide(point); });
+      });
+    });
+  });
+
   /* --------------------------------------------------------------- Forms */
 
   function postLocal(form) {

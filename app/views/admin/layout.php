@@ -12,6 +12,9 @@ $sections = [
         ['href' => '/admin/themes', 'label' => 'Our Work themes'],
         ['href' => '/admin/programmes', 'label' => 'Grants programmes'],
     ]],
+    ['title' => 'Build a page', 'links' => [
+        ['href' => '/admin/built-pages', 'label' => 'Pages you build'],
+    ]],
 ];
 foreach (['Pages', 'About Us', 'About Saigas', 'Our Work', 'Support Us', 'Site'] as $g) {
     $sections[] = ['title' => $g, 'links' => $groups[$g] ?? []];
@@ -91,6 +94,7 @@ $isActive = fn ($href) => $href === '/admin' ? $path === '/admin' : ($path === $
   </datalist>
 
   <script type="application/json" id="icon-paths"><?= json_encode(ICON_PATHS, JSON_HEX_TAG | JSON_UNESCAPED_SLASHES) ?></script>
+  <script type="application/json" id="block-labels"><?= json_encode(array_map(fn ($b) => $b['label'], BLOCK_TYPES), JSON_HEX_TAG | JSON_UNESCAPED_SLASHES) ?></script>
   <script src="<?= asset('assets/admin/admin.js') ?>" defer></script>
 </body>
 </html>

@@ -4,6 +4,8 @@ $t = v(page('projects'), 'projectTemplate', []);
 $pr = $project;
 $related = array_slice(array_values(array_filter(entries('project'), fn ($item) => $item['slug'] !== $pr['slug'])), 0, 3);
 $gallery = array_values(array_filter($pr['gallery'] ?? [], fn ($src) => trim((string) $src) !== ''));
+// Reports and other files are optional: most projects will not have any.
+$documents = document_links($pr['documents'] ?? []);
 ?>
 <?= page_hero(['eyebrow' => $t['heroEyebrow'] ?? '', 'title' => $pr['title'] ?? '', 'intro' => $pr['excerpt'] ?? '', 'image' => $pr['heroImage'] ?? '', 'variant' => 'overlay']) ?>
 
@@ -46,6 +48,15 @@ $gallery = array_values(array_filter($pr['gallery'] ?? [], fn ($src) => trim((st
   <div class="shell">
     <?= section_heading((string) ($t['yearsEyebrow'] ?? ''), (string) ($t['yearsTitle'] ?? ''), (string) ($t['yearsIntro'] ?? '')) ?>
     <div class="mt-12"><?= year_accordion($pr['timeline']) ?></div>
+  </div>
+</section>
+<?php endif; ?>
+
+<?php if ($documents !== ''): ?>
+<section class="section-tight pb-20 md:pb-28">
+  <div class="shell">
+    <?= section_heading((string) ($t['documentsEyebrow'] ?? ''), (string) ($t['documentsTitle'] ?? '')) ?>
+    <div class="mt-10"><?= $documents ?></div>
   </div>
 </section>
 <?php endif; ?>

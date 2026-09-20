@@ -21,6 +21,11 @@ $description = trim((string) ($meta['description'] ?? '')) ?: (string) site('sit
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=Playfair+Display:wght@400..700&display=swap">
   <link rel="stylesheet" href="<?= asset('assets/css/app.css') ?>">
   <noscript><style>.reveal{opacity:1;transform:none}</style></noscript>
+  <?php $analytics = trim((string) site('site.analyticsId')); if ($analytics !== '' && !config('noindex')): ?>
+  <!-- Google Analytics, only once a measurement ID is set in the admin. -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=<?= e(rawurlencode($analytics)) ?>"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config',<?= json_encode($analytics, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>);</script>
+  <?php endif; ?>
 </head>
 <body class="min-h-screen antialiased">
   <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[60] focus:rounded-full focus:bg-accent focus:px-5 focus:py-2.5 focus:text-cream"><?= e(site('labels.skipToContent', 'Skip to content')) ?></a>

@@ -34,12 +34,11 @@ $isActive = function (array $item) use ($path): bool {
 <header class="sticky top-0 z-50" data-header>
   <div class="border-b border-hairline bg-cream/95 backdrop-blur-sm transition-[padding,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] py-4" data-scrolled-on="py-2 shadow-[0_1px_20px_rgba(84,63,38,0.06)]" data-scrolled-off="py-4">
     <div class="shell flex items-center justify-between gap-6">
-      <a href="/" class="group flex shrink-0 items-center gap-2.5" aria-label="<?= e(site('site.name')) ?> — home">
-        <img src="<?= e(local_url((string) site('site.logoMark'))) ?>" alt="" aria-hidden="true" width="360" height="180" class="w-auto transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] h-9" data-scrolled-on="h-7" data-scrolled-off="h-9">
-        <span class="leading-tight">
-          <span class="block font-display text-lg text-ink transition-colors group-hover:text-accent-dark"><?= e(site('site.shortName')) ?></span>
-          <span class="hidden text-[9.5px] tracking-[0.16em] text-muted uppercase sm:block"><?= e(site('site.name')) ?></span>
-        </span>
+      <!-- Landing state: the mark above the wordmark. Once the page scrolls the
+           same two parts line up horizontally, vertically centred on each other. -->
+      <a href="/" class="group flex shrink-0 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] flex-col items-center gap-2" data-scrolled-on="flex-row items-center gap-3" data-scrolled-off="flex-col items-center gap-2" aria-label="<?= e(site('site.name')) ?> — home">
+        <img src="<?= e(local_url((string) site('site.logoMark'))) ?>" alt="" aria-hidden="true" width="360" height="180" class="w-auto transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] h-12 sm:h-14 md:h-16" data-scrolled-on="h-8 sm:h-8 md:h-9" data-scrolled-off="h-12 sm:h-14 md:h-16">
+        <span class="text-center leading-tight text-muted uppercase transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:text-accent-dark text-[0.5rem] tracking-[0.14em] sm:text-[0.7rem] sm:tracking-[0.2em]" data-scrolled-on="text-[0.5rem] tracking-[0.14em] sm:text-[0.6rem] sm:tracking-[0.16em]" data-scrolled-off="text-[0.5rem] tracking-[0.14em] sm:text-[0.7rem] sm:tracking-[0.2em]"><?= e(site('site.name')) ?></span>
       </a>
 
       <nav class="hidden items-center gap-0.5 xl:flex" aria-label="Main">

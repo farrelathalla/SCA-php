@@ -6,7 +6,8 @@
       "shortName": "SCA",
       "description": "Protecting saiga antelope and the steppe grasslands they depend on, together with the people who live alongside them.",
       "logoMark": "/logo/sca-mark.webp",
-      "logoFull": "/logo/sca-logo.webp"
+      "logoFull": "/logo/sca-logo.webp",
+      "analyticsId": ""
     },
     "header": {
       "donateLabel": "Donate",
@@ -153,15 +154,21 @@
               "listProgrammes": false
             },
             {
-              "label": "Sign Up for Updates",
-              "href": "/support/sign-up",
-              "description": "Our newsletter",
+              "label": "Donor Tours",
+              "href": "/support/donor-tours",
+              "description": "Join us in the field",
               "listProgrammes": false
             },
             {
               "label": "Work With Us",
               "href": "/support/work-with-us",
               "description": "Partner or get in touch",
+              "listProgrammes": false
+            },
+            {
+              "label": "Sign Up for Updates",
+              "href": "/support/sign-up",
+              "description": "Our newsletter",
               "listProgrammes": false
             }
           ]
@@ -247,6 +254,10 @@
               "href": "/support/donate"
             },
             {
+              "label": "Donor Tours",
+              "href": "/support/donor-tours"
+            },
+            {
               "label": "Sign Up for Updates",
               "href": "/support/sign-up"
             },
@@ -273,25 +284,7 @@
       "body": "Saiga herds cross hundreds of kilometres of open steppe every year. Your support helps keep those routes open, protected and safe.",
       "ctaLabel": "Make a donation",
       "ctaHref": "/support/donate",
-      "note": "Every donation goes to work in the range states.",
-      "amounts": [
-        {
-          "label": "£15",
-          "href": "/support/donate#give"
-        },
-        {
-          "label": "£40",
-          "href": "/support/donate#give"
-        },
-        {
-          "label": "£75",
-          "href": "/support/donate#give"
-        },
-        {
-          "label": "Other",
-          "href": "/support/donate#give"
-        }
-      ]
+      "note": "Every donation goes to work in the range states."
     },
     "newsletter": {
       "mailchimpAction": "https://saiga-conservation.us21.list-manage.com/subscribe/post?u=a0ec084be4a832b4b53e2aae9&id=c865613a38&f_id=00bab3e1f0",
@@ -355,7 +348,9 @@
       "primaryLabel": "Donate today",
       "primaryHref": "/support/donate",
       "secondaryLabel": "See our work",
-      "secondaryHref": "/our-work"
+      "secondaryHref": "/our-work",
+      "jumpLabel": "",
+      "jumpHref": ""
     },
     "mission": {
       "eyebrow": "Our mission",
@@ -498,7 +493,9 @@
       "title": "Who we are",
       "intro": "An alliance of researchers, rangers, communities and supporters working for the recovery of the saiga antelope.",
       "image": "/images/about-hero-steppe.webp",
-      "variant": "overlay"
+      "variant": "overlay",
+      "jumpLabel": "",
+      "jumpHref": ""
     },
     "mission": {
       "eyebrow": "Our mission",
@@ -565,7 +562,9 @@
       "title": "Our story",
       "intro": "A shared effort to protect one of the steppe's most extraordinary species, and the landscapes it depends on — read from where we are now, back to where it started.",
       "image": "",
-      "variant": "plain"
+      "variant": "plain",
+      "jumpLabel": "",
+      "jumpHref": ""
     },
     "milestones": [
       {
@@ -658,7 +657,9 @@
       "title": "Our people",
       "intro": "The staff, specialists and trustees behind SCA's work across the saiga's range.",
       "image": "",
-      "variant": "plain"
+      "variant": "plain",
+      "jumpLabel": "",
+      "jumpHref": ""
     },
     "groups": [
       {
@@ -764,7 +765,9 @@
       "title": "Partners & funders",
       "intro": "Almost nothing we do happens alone. These are the organisations we work alongside, and the funders who make the work possible.",
       "image": "",
-      "variant": "plain"
+      "variant": "plain",
+      "jumpLabel": "",
+      "jumpHref": ""
     },
     "groups": [
       {
@@ -870,7 +873,9 @@
       "title": "Contact us",
       "intro": "Questions about our work, partnerships or press enquiries — we would be glad to hear from you.",
       "image": "",
-      "variant": "plain"
+      "variant": "plain",
+      "jumpLabel": "",
+      "jumpHref": ""
     },
     "form": {
       "title": "Send us a message",
@@ -897,7 +902,9 @@
       "title": "What is a saiga?",
       "intro": "A remarkable antelope. A vital part of the steppe. A species worth protecting.",
       "image": "/images/saiga-hero-face.webp",
-      "variant": "overlay"
+      "variant": "overlay",
+      "jumpLabel": "",
+      "jumpHref": ""
     },
     "intro": {
       "lead": "The saiga is an antelope of the Eurasian steppe, and one of the oldest surviving large mammals in the world — it shared this landscape with mammoths. It is instantly recognisable from its bulbous, downward-facing nose, and almost as instantly forgettable to anyone who has never seen one, which is much of the problem.",
@@ -1039,7 +1046,9 @@
       "title": "Why saigas matter",
       "intro": "A grazing species that shapes the grassland, and a cultural presence far older than any border on the map.",
       "image": "/images/saigas-matter-hero.webp",
-      "variant": "overlay"
+      "variant": "overlay",
+      "jumpLabel": "",
+      "jumpHref": ""
     },
     "intro": "Saigas are not simply a species that happens to live on the steppe — they are part of how the steppe works, and part of how the people there understand where they live. Losing them would mean losing a functioning grassland and a piece of cultural memory at the same time.",
     "blocks": [
@@ -1100,7 +1109,9 @@
       "title": "Population history & threats",
       "intro": "From millions, to near collapse, to a fragile recovery — and the pressures that remain.",
       "image": "/images/population-history-hero.webp",
-      "variant": "overlay"
+      "variant": "overlay",
+      "jumpLabel": "",
+      "jumpHref": ""
     },
     "intro": "Within living memory the saiga has gone from one of the most numerous large mammals on earth to a species reduced by more than ninety per cent, and back again to a recovering population. That volatility is the defining feature of saiga conservation: numbers can move faster than policy can respond.",
     "history": {
@@ -1137,11 +1148,63 @@
     },
     "graph": {
       "eyebrow": "The numbers",
-      "title": "Saiga population over time",
-      "intro": "Estimated global population, drawn from range-state survey data.",
+      "title": "Estimated global saiga population over time",
+      "intro": "Saiga numbers have changed dramatically over time, with periods of steep decline followed by strong recovery. This graph shows the combined total across all five populations, which can hide the fact that some remain much smaller than others.",
       "image": "",
-      "placeholderText": "Population graph to be supplied",
-      "caption": "SCA will provide the population figures for this chart. The frame is sized for a wide time-series so the surrounding layout will not move once the data arrives."
+      "placeholderText": "Population graph",
+      "xLabel": "Year",
+      "yLabel": "Estimated number of saiga",
+      "points": [
+        {
+          "year": "1981",
+          "value": "1251000"
+        },
+        {
+          "year": "1982",
+          "value": "1236000"
+        },
+        {
+          "year": "1984",
+          "value": "835000"
+        },
+        {
+          "year": "1988",
+          "value": "824000"
+        },
+        {
+          "year": "1993",
+          "value": "1124000"
+        },
+        {
+          "year": "1994",
+          "value": "952000"
+        },
+        {
+          "year": "2000",
+          "value": "178000"
+        },
+        {
+          "year": "2006",
+          "value": "69669"
+        },
+        {
+          "year": "2010",
+          "value": "108496"
+        },
+        {
+          "year": "2015",
+          "value": "103889"
+        },
+        {
+          "year": "2020",
+          "value": "348120"
+        },
+        {
+          "year": "2024",
+          "value": "2889440"
+        }
+      ],
+      "captionHtml": "Covers the five major saiga populations: Ustyurt, Betpak-Dala, Ural, Northwest Pre-Caspian, and Mongolia.<br>Source: <a href=\"/downloads/cms-cop9-ii-6-population-estimates.pdf\">CMS COP9 II/6 historical population estimates</a>; <a href=\"/downloads/cms-saiga-mos5-overview-report-2025.pdf\">CMS Saiga MOS5 Overview Report (2025)</a>."
     },
     "threats": {
       "eyebrow": "Pressures",
@@ -1209,7 +1272,9 @@
       "title": "Saiga policy & protection",
       "intro": "The agreements, laws and enforcement that stand between the saiga and another collapse.",
       "image": "/images/policy-protection-hero.webp",
-      "variant": "overlay"
+      "variant": "overlay",
+      "jumpLabel": "",
+      "jumpHref": ""
     },
     "intro": "Protecting a species that crosses international borders means protection has to cross them too. Saiga conservation rests on a framework of national law, regional cooperation and international agreement — and on the enforcement capacity to make any of it real on the ground.",
     "agreements": {
@@ -1274,7 +1339,9 @@
       "intro": "From grasslands to communities, our work spans conservation, science and partnership across the saiga’s range — securing a wilder, healthier future for people and nature alike.",
       "image": "/images/work-overview-hero.webp",
       "buttonLabel": "View projects archive",
-      "buttonHref": "/projects"
+      "buttonHref": "/projects",
+      "jumpLabel": "",
+      "jumpHref": ""
     },
     "strands": {
       "eyebrow": "How we work",
@@ -1319,7 +1386,9 @@
       "title": "Grants & awards",
       "intro": "Small amounts of money, placed well, change what is possible on the steppe.",
       "image": "/images/grants-hero.webp",
-      "variant": "overlay"
+      "variant": "overlay",
+      "jumpLabel": "",
+      "jumpHref": ""
     },
     "intro": "Much of the most valuable conservation work across the saiga’s range is done by people and organisations too small to reach conventional funders. Our grant and award programmes exist to close that gap — quickly, with minimal bureaucracy, and with decisions made by people who know the region.",
     "programmes": {
@@ -1359,13 +1428,15 @@
       "title": "Projects archive",
       "intro": "Current and past work across the saiga's range — filter by country, theme, year or type.",
       "image": "/images/projects-hero.webp",
-      "variant": "overlay"
+      "variant": "overlay",
+      "jumpLabel": "",
+      "jumpHref": ""
     },
     "filters": {
-      "countryAll": "All countries",
       "themeAll": "All themes",
-      "yearAll": "All years",
-      "typeAll": "All types"
+      "typeAll": "All project types",
+      "countryAll": "All countries",
+      "yearAll": "All years"
     },
     "showDonationBand": true,
     "projectTemplate": {
@@ -1376,7 +1447,9 @@
       "yearsTitle": "How the work has developed",
       "yearsIntro": "Activities and outputs for each year of the project. Further years are added as the work continues.",
       "relatedEyebrow": "Related",
-      "relatedTitle": "More projects"
+      "relatedTitle": "More projects",
+      "documentsEyebrow": "Downloads",
+      "documentsTitle": "Project documents"
     }
   },
   "news": {
@@ -1390,7 +1463,9 @@
       "title": "News & updates",
       "intro": "Field stories, conservation milestones, research highlights and updates from the saiga steppe.",
       "image": "/images/news-hero.webp",
-      "variant": "overlay"
+      "variant": "overlay",
+      "jumpLabel": "",
+      "jumpHref": ""
     },
     "filters": {
       "yearAll": "All years",
@@ -1424,7 +1499,9 @@
       "title": "Resources",
       "intro": "Where to go for the detailed material — research, publications and the specialist bulletins we help produce.",
       "image": "/images/resources-hero.webp",
-      "variant": "overlay"
+      "variant": "overlay",
+      "jumpLabel": "",
+      "jumpHref": ""
     },
     "items": [
       {
@@ -1480,7 +1557,9 @@
       "image": "/images/donate-hero.webp",
       "variant": "overlay",
       "buttonLabel": "Donate now",
-      "buttonHref": "#give"
+      "buttonHref": "#give",
+      "jumpLabel": "See what your donation can support",
+      "jumpHref": "#impact"
     },
     "routes": [
       {
@@ -1488,14 +1567,14 @@
         "title": "For people in the US",
         "body": "Donate through the Wildlife Conservation Network (WCN). US gifts are tax-deductible.",
         "ctaLabel": "Donate via WCN",
-        "ctaHref": "#"
+        "ctaHref": "https://give.wildnet.org/campaign/805193/donate"
       },
       {
         "icon": "card",
         "title": "For people outside the US",
         "body": "Support SCA directly through PayPal, in the currency that suits you.",
         "ctaLabel": "Donate via PayPal",
-        "ctaHref": "#"
+        "ctaHref": "https://www.paypal.com/donate/?hosted_button_id=369CUD6DD3NTA"
       }
     ],
     "monthlyHtml": "Prefer to give monthly, or to discuss a larger gift? <a href=\"/about/contact\">Get in touch</a> and we will find the simplest way to do it.",
@@ -1567,12 +1646,77 @@
         }
       ],
       "linkLabel": "Read the latest annual report",
-      "linkHref": "#"
+      "linkHref": "#",
+      "buttonLabel": "Donate now",
+      "buttonHref": "#give"
     },
     "notReady": {
       "title": "Not ready to give?",
       "body": "Follow the work first. We send occasional updates from the field — nothing more."
     }
+  },
+  "donor-tours": {
+    "_label": "Support Us — Donor Tours",
+    "meta": {
+      "title": "Donor Tours",
+      "description": "Join a small group of supporters in saiga country and meet the teams behind the work."
+    },
+    "hero": {
+      "eyebrow": "Support SCA",
+      "title": "Donor tours",
+      "intro": "See the steppe for yourself. A small number of supporters travel with us each year to meet the people doing the work, in the places where it happens.",
+      "image": "/images/about-hero-steppe.webp",
+      "variant": "overlay",
+      "jumpLabel": "",
+      "jumpHref": ""
+    },
+    "intro": "A donor tour is time spent in saiga country with the rangers, researchers, teachers and herders who work there all year. Groups are deliberately small, the dates follow the season rather than the calendar, and every place taken helps fund the work you have come to see.",
+    "blocks": [
+      {
+        "eyebrow": "What to expect",
+        "title": "Time in the field, not on a coach",
+        "image": "/images/work-communities.webp",
+        "imageSide": "left",
+        "body": [
+          "Tours are built around whatever the season allows: a calving-ground survey in spring, a ranger patrol in the summer pastures, an afternoon in a village school that has run a saiga club for years. Nothing is staged for visitors.",
+          "Days are long and conditions are simple. Accommodation is usually a field camp or a guesthouse in a small town, travel is by 4x4 over open ground, and the weather on the steppe decides a good deal of the itinerary.",
+          "In return, you spend your time with the people who know the landscape best, and you see the work as it actually is rather than as a report describes it."
+        ]
+      },
+      {
+        "eyebrow": "How it works",
+        "title": "Small groups, planned well ahead",
+        "image": "/images/about-team.webp",
+        "imageSide": "right",
+        "body": [
+          "Each tour takes a small group and is arranged with our partners in the range state months in advance, so that a visit adds to the work rather than interrupting it.",
+          "We will talk through visas, permits, travel insurance, fitness and the realities of remote fieldwork before anyone commits, and trips can be adjusted where health or mobility needs it.",
+          "Costs cover travel, accommodation and local guiding, with a contribution to SCA's programmes. We set out exactly what that contribution supports before you book."
+        ]
+      }
+    ],
+    "summary": {
+      "title": "Register your interest",
+      "body": "Tours are announced to supporters first, and places usually go quickly. Tell us you would like to hear about the next one and we will be in touch with dates, costs and what the trip involves as soon as they are set."
+    },
+    "related": {
+      "title": "Other ways to help",
+      "links": [
+        {
+          "label": "Donate",
+          "href": "/support/donate"
+        },
+        {
+          "label": "Work with us",
+          "href": "/support/work-with-us"
+        },
+        {
+          "label": "Sign up for updates",
+          "href": "/support/sign-up"
+        }
+      ]
+    },
+    "showDonationBand": true
   },
   "sign-up": {
     "_label": "Support Us — Sign Up for Updates",
@@ -1614,7 +1758,9 @@
       "title": "Work with us",
       "intro": "Whether you are an organisation, a researcher or someone who simply wants to help — there is usually a way in.",
       "image": "/images/work-with-us-hero.webp",
-      "variant": "overlay"
+      "variant": "overlay",
+      "jumpLabel": "",
+      "jumpHref": ""
     },
     "intro": "SCA works through partnership. Most of what we achieve depends on organisations and individuals who bring something we do not have — local knowledge, technical expertise, funding, or simply time.",
     "contact": {

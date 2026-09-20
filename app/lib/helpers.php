@@ -98,6 +98,13 @@ function slugify(string $text): string
     return trim($text, '-') ?: 'item';
 }
 
+/** Like slugify(), but keeps the / between the parts of a page path. */
+function slugify_path(string $text): string
+{
+    $parts = array_filter(explode('/', $text), fn ($part) => trim($part) !== '');
+    return implode('/', array_map('slugify', $parts)) ?: 'page';
+}
+
 /* --------------------------------------------------------------- Requests */
 
 function request_path(): string

@@ -18,7 +18,8 @@ $input = 'w-full rounded-lg border border-hairline bg-white px-3 py-2 text-[0.9r
   <section class="mb-5 grid gap-4 rounded-2xl border border-hairline bg-white p-5 md:grid-cols-[2fr_1fr_1fr] md:p-6">
     <div>
       <label class="mb-1.5 block text-[0.85rem] text-body" for="slug">Web address</label>
-      <div class="flex items-center gap-1"><span class="shrink-0 font-mono text-[0.8rem] text-muted"><?= e($meta['base']) ?></span><input id="slug" name="slug" value="<?= e($entry['slug']) ?>" placeholder="made from the title if left empty" class="<?= $input ?> font-mono text-[0.8rem]" data-slug></div>
+      <div class="flex items-center gap-1"><span class="shrink-0 font-mono text-[0.8rem] text-muted"><?= e($meta['base']) ?></span><input id="slug" name="slug" value="<?= e($entry['slug']) ?>" placeholder="<?= $type === 'custom' ? 'e.g. support/donor-tours' : 'made from the title if left empty' ?>" class="<?= $input ?> font-mono text-[0.8rem]" data-slug></div>
+      <?php if ($type === 'custom'): ?><p class="mt-1.5 text-[0.75rem] text-muted">Use / to place the page in a section, e.g. <span class="font-mono">support/donor-tours</span>.</p><?php endif; ?>
     </div>
     <div>
       <label class="mb-1.5 block text-[0.85rem] text-body" for="sort_order"><?= $type === 'news' ? 'Order (ties only)' : 'Order' ?></label>

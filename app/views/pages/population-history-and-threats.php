@@ -1,4 +1,14 @@
-<?php $p = page('population-history-and-threats'); $graphImage = trim((string) v($p, 'graph.image')); ?>
+<?php
+$p = page('population-history-and-threats');
+$graphImage = trim((string) v($p, 'graph.image'));
+// Preference order: an uploaded image of the graph, else the chart drawn from
+// the editable data points, else the placeholder frame.
+$chart = $graphImage === '' ? line_chart(v($p, 'graph.points', []), [
+    'title' => (string) v($p, 'graph.title'),
+    'xLabel' => (string) v($p, 'graph.xLabel'),
+    'yLabel' => (string) v($p, 'graph.yLabel'),
+]) : '';
+?>
 <?= page_hero($p['hero'] ?? []) ?>
 
 <section class="section-tight">
@@ -21,6 +31,8 @@
       <figure>
         <?php if ($graphImage !== ''): ?>
         <img src="<?= e($graphImage) ?>" alt="<?= e(v($p, 'graph.title')) ?>" class="w-full rounded-2xl">
+        <?php elseif ($chart !== ''): ?>
+        <div class="rounded-2xl bg-cream p-4 sm:p-8"><?= $chart ?></div>
         <?php else: ?>
         <div class="relative aspect-[16/9] w-full overflow-hidden rounded-2xl bg-sand/40 md:aspect-[21/9]">
           <svg aria-hidden="true" class="absolute inset-0 h-full w-full text-sand-deep" viewBox="0 0 900 380" preserveAspectRatio="none" fill="none">
@@ -35,7 +47,7 @@
           </div>
         </div>
         <?php endif; ?>
-        <?php if (v($p, 'graph.caption') !== ''): ?><figcaption class="mt-5 max-w-2xl text-[0.9rem] leading-relaxed text-muted"><?= e(v($p, 'graph.caption')) ?></figcaption><?php endif; ?>
+        <?php if (v($p, 'graph.captionHtml') !== ''): ?><figcaption class="mt-5 max-w-2xl text-[0.9rem] leading-relaxed text-muted"><?= safe_html(v($p, 'graph.captionHtml')) ?></figcaption><?php endif; ?>
       </figure>
     </div>
   </div>

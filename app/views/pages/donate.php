@@ -21,7 +21,7 @@
   </div>
 </section>
 
-<section class="section-tight bg-cream-deep pb-20 md:pb-28">
+<section id="impact" class="section-tight scroll-mt-28 bg-cream-deep pb-20 md:pb-28">
   <div class="shell">
     <?= section_heading((string) v($p, 'impact.eyebrow'), (string) v($p, 'impact.title'), (string) v($p, 'impact.intro')) ?>
     <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 md:gap-8">
@@ -44,7 +44,10 @@
     <?= photo_text(
         ['eyebrow' => $c['eyebrow'] ?? '', 'title' => $c['title'] ?? '', 'image' => $c['image'] ?? '', 'imageSide' => 'right', 'align' => 'start'],
         paragraphs($c['body'] ?? []),
-        fact_list($c['facts'] ?? [], 1, 'max-w-lg') . arrow_link((string) ($c['linkHref'] ?? '#'), (string) ($c['linkLabel'] ?? ''), 'mt-8')
+        fact_list($c['facts'] ?? [], 1, 'max-w-lg') . arrow_link((string) ($c['linkHref'] ?? '#'), (string) ($c['linkLabel'] ?? ''), 'mt-8'),
+        // A second way back up to the WCN / PayPal cards, for readers who have
+        // scrolled this far before deciding.
+        ($c['buttonLabel'] ?? '') !== '' ? button((string) ($c['buttonHref'] ?? '#give'), (string) $c['buttonLabel']) : ''
     ) ?>
   </div>
 </section>

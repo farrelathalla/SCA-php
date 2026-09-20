@@ -2,7 +2,9 @@
   <h1 class="font-display text-3xl text-ink"><?= e($meta['label']) ?></h1>
   <a href="/admin/<?= e($route) ?>/new" class="rounded-full bg-accent px-5 py-2.5 text-[0.9rem] font-medium text-cream hover:bg-accent-dark">+ New <?= e($meta['singular']) ?></a>
 </div>
-<?php if ($type !== 'news'): ?>
+<?php if ($type === 'custom'): ?>
+<p class="mt-2 max-w-3xl text-[0.875rem] text-muted">Pages you have built yourself out of blocks. Each one has its own web address — add it to the menu under <a class="text-accent-dark hover:underline" href="/admin/pages/global">Header, footer &amp; site-wide</a> once it is published.</p>
+<?php elseif ($type !== 'news'): ?>
 <p class="mt-2 text-[0.875rem] text-muted">Shown on the site in the order below (lowest “order” number first).</p>
 <?php else: ?>
 <p class="mt-2 text-[0.875rem] text-muted">Newest first. The three most recent appear on the homepage.</p>

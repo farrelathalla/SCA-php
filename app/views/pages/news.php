@@ -11,17 +11,17 @@ $filters = [
 ?>
 <?= page_hero($p['hero'] ?? []) ?>
 
-<section class="section">
-  <div class="shell"><?= archive_grid($items, $filters, false) ?></div>
-</section>
-
 <?php if (v($p, 'saigaNews.title') !== ''): ?>
-<section class="section-tight border-t border-hairline pb-0">
+<section class="section-tight pb-0">
   <div class="shell"><div class="max-w-4xl"><?= resource_link(v($p, 'saigaNews', [])) ?></div></div>
 </section>
 <?php endif; ?>
 
-<section class="section-tight">
+<section class="section pt-14 md:pt-16">
+  <div class="shell"><?= archive_grid($items, $filters, false) ?></div>
+</section>
+
+<section class="section-tight border-t border-hairline">
   <div class="shell">
     <div <?= reveal('flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-16') ?>>
       <div class="max-w-md">

@@ -18,6 +18,7 @@ require APP . '/lib/db.php';
 require APP . '/lib/content.php';
 require APP . '/lib/icons.php';
 require APP . '/lib/components.php';
+require APP . '/lib/blocks.php';
 
 error_reporting(E_ALL);
 ini_set('display_errors', config('debug') ? '1' : '0');

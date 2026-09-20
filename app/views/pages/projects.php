@@ -14,11 +14,12 @@ foreach (array_unique($usedTypes) as $t) {
     }
 }
 
+// Order requested by SCA: themes, project types, countries, years.
 $filters = [
-    ['id' => 'country', 'label' => 'Country', 'options' => facet_options((string) v($p, 'filters.countryAll'), array_merge([], ...array_column($projects, 'countries')))],
     ['id' => 'theme', 'label' => 'Theme', 'options' => facet_options((string) v($p, 'filters.themeAll'), array_merge([], ...array_column($projects, 'themes')))],
+    ['id' => 'type', 'label' => 'Project type', 'options' => array_merge([(string) v($p, 'filters.typeAll')], $types)],
+    ['id' => 'country', 'label' => 'Country', 'options' => facet_options((string) v($p, 'filters.countryAll'), array_merge([], ...array_column($projects, 'countries')))],
     ['id' => 'year', 'label' => 'Year', 'options' => facet_options((string) v($p, 'filters.yearAll'), array_merge([], ...array_column($projects, 'years')), true)],
-    ['id' => 'type', 'label' => 'Type', 'options' => array_merge([(string) v($p, 'filters.typeAll')], $types)],
 ];
 ?>
 <?= page_hero($p['hero'] ?? []) ?>

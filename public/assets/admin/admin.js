@@ -13,6 +13,8 @@
   var csrf = (document.querySelector('meta[name="csrf-token"]') || {}).content || "";
   var iconPaths = {};
   try { iconPaths = JSON.parse(document.getElementById("icon-paths").textContent); } catch (e) {}
+  var blockLabels = {};
+  try { blockLabels = JSON.parse(document.getElementById("block-labels").textContent); } catch (e) {}
 
   /* ----------------------------------------------------------- Serialize */
 
@@ -67,6 +69,21 @@
       var target = event.target.closest("button");
       if (!target || !form.contains(target)) return;
 
+      // + Add new block: the picker chooses which template to clone.
+      if (target.hasAttribute("data-add-block")) {
+        var list = target.closest("[data-node=list]");
+        var picker = list.querySelector("[data-block-picker]");
+        var blockTemplate = list.querySelector('template[data-block-template="' + picker.value + '"]');
+        if (!blockTemplate) return;
+        var blockFragment = blockTemplate.content.cloneNode(true);
+        var block = blockFragment.querySelector("[data-item]");
+        list.querySelector(":scope > [data-items]").appendChild(blockFragment);
+        if (block.tagName === "DETAILS") block.open = true;
+        block.scrollIntoView({ block: "nearest" });
+        markDirty();
+        return;
+      }
+
       // + Add
       if (target.hasAttribute("data-add-item")) {
         var list = target.closest("[data-node=list]");
@@ -111,6 +128,12 @@
       var group = details.querySelector(":scope > div > [data-node=group]");
       if (!summary || !group) return;
       var data = read(group);
+      if (data.block) {
+        var name = blockLabels[data.block] || data.block;
+        var first = (data.title || data.text || "").trim();
+        summary.textContent = first ? name + " — " + first : name;
+        return;
+      }
       var keys = ["title", "label", "name", "year", "project", "question", "amount", "value"];
       for (var i = 0; i < keys.length; i++) {
         if (typeof data[keys[i]] === "string" && data[keys[i]].trim()) {
@@ -118,6 +141,14 @@
           return;
         }
       }
+    });
+
+    // One line of help under the block picker, for whichever type is selected.
+    form.addEventListener("change", function (event) {
+      if (!event.target.hasAttribute("data-block-picker")) return;
+      var option = event.target.options[event.target.selectedIndex];
+      var hint = event.target.closest("[data-node=list]").querySelector("[data-block-hint]");
+      if (hint && option) hint.textContent = option.getAttribute("data-hint") || "";
     });
 
     // Icon preview

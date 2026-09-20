@@ -39,12 +39,16 @@ const ADMIN_PAGES = [
     'resources' => ['Resources', '/resources', 'Pages'],
     'news' => ['News & Updates page', '/news', 'Pages'],
     'donate' => ['Donate', '/support/donate', 'Support Us'],
+    'donor-tours' => ['Donor Tours', '/support/donor-tours', 'Support Us'],
     'sign-up' => ['Sign Up for Updates', '/support/sign-up', 'Support Us'],
     'work-with-us' => ['Work With Us', '/support/work-with-us', 'Support Us'],
     'global' => ['Header, footer & site-wide', '/', 'Site'],
 ];
 
-const COLLECTION_ROUTES = ['news' => 'news', 'projects' => 'project', 'themes' => 'theme', 'programmes' => 'programme'];
+const COLLECTION_ROUTES = [
+    'news' => 'news', 'projects' => 'project', 'themes' => 'theme',
+    'programmes' => 'programme', 'built-pages' => 'custom',
+];
 
 function current_user(): ?array
 {
@@ -182,7 +186,11 @@ if (isset(COLLECTION_ROUTES[$parts[0] ?? ''])) {
     $type = COLLECTION_ROUTES[$route];
     $meta = COLLECTIONS[$type];
     $seedItems = seed_data('collections.json')[$type] ?? [];
-    $shape = $seedItems[0]['data'] ?? [];
+    // Built pages have no seed: their shape and their block list come from code.
+    $shape = $type === 'custom' ? custom_page_shape() : ($seedItems[0]['data'] ?? []);
+    if ($type === 'custom') {
+        blocks_key('sections');
+    }
 
     // List
     if (!isset($parts[1])) {
@@ -210,18 +218,24 @@ if (isset(COLLECTION_ROUTES[$parts[0] ?? ''])) {
         }
 
         $data = json_decode((string) ($_POST['data'] ?? ''), true);
-        $slug = slugify((string) ($_POST['slug'] ?? '') ?: (string) ($data['title'] ?? ''));
+        $raw = (string) ($_POST['slug'] ?? '') ?: (string) ($data['title'] ?? '');
+        $slug = $type === 'custom' ? slugify_path($raw) : slugify($raw);
         $published = !empty($_POST['published']) ? 1 : 0;
         $sort = (int) ($_POST['sort_order'] ?? 0);
 
         $reserved = $type === 'theme' && $slug === 'grants-and-awards';
+        if ($type === 'custom') {
+            // A built page may not take a path one of the site's own routes owns.
+            $reserved = isset(FIXED_PAGES['/' . $slug])
+                || in_array(explode('/', $slug)[0], RESERVED_PREFIXES, true);
+        }
         $clash = db()->prepare('SELECT COUNT(*) FROM entries WHERE type = ? AND slug = ? AND id <> ?');
         $clash->execute([$type, $slug, $row['id'] ?? 0]);
 
         if (!is_array($data)) {
             flash('Nothing was saved — the form data could not be read.', 'error');
         } elseif ($reserved || (int) $clash->fetchColumn() > 0) {
-            flash('That URL slug is already in use. Choose another.', 'error');
+            flash('That web address is already used by the site. Choose another.', 'error');
         } else {
             $json = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
             if ($row) {
@@ -246,7 +260,7 @@ if (isset(COLLECTION_ROUTES[$parts[0] ?? ''])) {
     } else {
         // A new entry starts from the shape of the originals, empty, with
         // sensible defaults so it looks finished straight away.
-        $data = blank_of($shape);
+        $data = $type === 'custom' ? $shape : blank_of($shape);
         foreach (['heroImage'] as $keep) {
             if (isset($shape[$keep])) {
                 $data[$keep] = $shape[$keep];

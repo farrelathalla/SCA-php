@@ -33,6 +33,7 @@ const ICON_PATHS = [
     'barrier' => '<path d="M5 5v15M12 5v15M19 5v15" /><path d="M3 9.5h18M3 14.5h18" />',
     'card' => '<rect x="2.5" y="5.5" width="19" height="13" rx="2.5" /><path d="M2.5 10h19" /><path d="M6 14.5h3" />',
     'arrow-right' => '<path d="M4 12h15" /><path d="m13 6 6 6-6 6" />',
+    'arrow-down' => '<path d="M12 4.5v15" /><path d="m6 13.5 6 6 6-6" />',
     'chevron-down' => '<path d="m6 9.5 6 6 6-6" />',
     'chevron-right' => '<path d="m9.5 6 6 6-6 6" />',
     'search' => '<circle cx="11" cy="11" r="6.5" /><path d="m16 16 4.5 4.5" />',

@@ -76,13 +76,25 @@ function button(string $href, string $label, string $variant = 'primary', string
         'outline' => 'border border-ink/20 text-ink hover:border-ink/45 hover:bg-ink/[0.03]',
         'ghost' => 'bg-cream/85 text-ink backdrop-blur-sm hover:bg-cream',
     ];
-    return '<a href="' . e($href) . '" class="inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-[0.9375rem] font-medium transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 '
+    // Off-site buttons (the WCN and PayPal donation pages) open in a new tab.
+    $external = preg_match('~^https?://~', $href) ? ' target="_blank" rel="noreferrer"' : '';
+    return '<a href="' . e($href) . '"' . $external . ' class="inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-[0.9375rem] font-medium transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 '
         . $styles[$variant] . ' ' . e($class) . '">' . e($label) . ($arrow ? icon('arrow-right', 'h-4 w-4') : '') . '</a>';
 }
 
 function arrow_link(string $href, string $label, string $class = ''): string
 {
     return '<a href="' . e($href) . '" class="link-arrow ' . e($class) . '">' . e($label) . icon('arrow-right', 'h-4 w-4') . '</a>';
+}
+
+/**
+ * "See what your donation can support ↓" — the same accent link as above, but
+ * pointing further down the page it is already on. Every hero can carry one
+ * (hero.jumpLabel / hero.jumpHref), and so can a block on a built page.
+ */
+function jump_link(string $href, string $label, string $class = ''): string
+{
+    return '<a href="' . e($href) . '" class="link-arrow link-arrow-down ' . e($class) . '">' . e($label) . icon('arrow-down', 'h-4 w-4') . '</a>';
 }
 
 function eyebrow_rule(string $text, string $rule = 'bg-sand-deep'): string
@@ -202,6 +214,10 @@ function page_hero(array $hero, string $actions = ''): string
 
     $eyebrowHtml = $eyebrow !== '' ? eyebrow_rule($eyebrow) : '';
     $actionsHtml = $actions !== '' ? '<div class="mt-9 flex flex-wrap gap-3">' . $actions . '</div>' : '';
+    $jumpLabel = trim((string) ($hero['jumpLabel'] ?? ''));
+    $jumpHtml = $jumpLabel !== ''
+        ? '<div class="' . ($actionsHtml !== '' ? 'mt-5' : 'mt-9') . '">' . jump_link((string) ($hero['jumpHref'] ?? '#'), $jumpLabel) . '</div>'
+        : '';
 
     ob_start();
     if ($variant === 'plain'): ?>
@@ -212,6 +228,7 @@ function page_hero(array $hero, string $actions = ''): string
       <h1 class="mt-5 text-[2.6rem] leading-[1.08] md:text-6xl"><?= e($title) ?></h1>
       <?php if ($intro !== ''): ?><p class="mt-6 max-w-xl text-lg leading-relaxed text-body"><?= e($intro) ?></p><?php endif; ?>
       <?= $actionsHtml ?>
+      <?= $jumpHtml ?>
     </div>
   </div>
 </section>
@@ -224,6 +241,7 @@ function page_hero(array $hero, string $actions = ''): string
         <h1 class="mt-5 text-[2.5rem] leading-[1.08] md:text-[3.5rem]"><?= e($title) ?></h1>
         <?php if ($intro !== ''): ?><p class="mt-6 max-w-xl text-lg leading-relaxed text-body"><?= e($intro) ?></p><?php endif; ?>
         <?= $actionsHtml ?>
+      <?= $jumpHtml ?>
       </div>
       <div class="animate-fade-up" style="animation-delay: 160ms">
         <?= media($image, ['ratio' => 'landscape', 'priority' => true, 'class' => 'shadow-[0_24px_60px_rgba(84,63,38,0.10)]']) ?>
@@ -242,6 +260,7 @@ function page_hero(array $hero, string $actions = ''): string
       <h1 class="mt-5 text-[2.6rem] leading-[1.06] md:text-6xl"><?= e($title) ?></h1>
       <?php if ($intro !== ''): ?><p class="mt-6 text-lg leading-relaxed text-body"><?= e($intro) ?></p><?php endif; ?>
       <?= $actionsHtml ?>
+      <?= $jumpHtml ?>
     </div>
   </div>
 </section>
@@ -262,7 +281,7 @@ function paragraphs(array $paragraphs, string $class = ''): string
     return $out;
 }
 
-function photo_text(array $o, string $body, string $footer = ''): string
+function photo_text(array $o, string $body, string $footer = '', string $imageFooter = ''): string
 {
     $right = ($o['imageSide'] ?? 'left') === 'right';
     $align = ($o['align'] ?? 'center') === 'start' ? 'items-start' : 'items-center';
@@ -270,6 +289,7 @@ function photo_text(array $o, string $body, string $footer = ''): string
 <div class="grid gap-12 lg:grid-cols-2 lg:gap-20 <?= $align ?>">
   <div <?= reveal('group ' . ($right ? 'lg:order-2' : '')) ?>>
     <?= media($o['image'] ?? '', ['class' => 'shadow-[0_24px_60px_rgba(84,63,38,0.09)]', 'imageClass' => 'group-hover:scale-[1.03]']) ?>
+    <?php if ($imageFooter !== ''): ?><div class="mt-8"><?= $imageFooter ?></div><?php endif; ?>
   </div>
   <div <?= reveal($right ? 'lg:order-1' : '', 120) ?>>
     <?php if (($o['eyebrow'] ?? '') !== ''): ?><?= eyebrow_rule((string) $o['eyebrow']) ?><?php endif; ?>
@@ -288,7 +308,6 @@ function photo_text(array $o, string $body, string $footer = ''): string
 function cta_band(array $overrides = []): string
 {
     $c = array_merge(site('ctaBand', []), array_filter($overrides, fn ($v) => $v !== null && $v !== ''));
-    $amounts = !empty($overrides['noAmounts']) ? [] : ($c['amounts'] ?? []);
     ob_start(); ?>
 <section class="relative overflow-hidden bg-accent-soft">
   <svg aria-hidden="true" class="pointer-events-none absolute inset-0 h-full w-full text-accent" viewBox="0 0 1440 320" preserveAspectRatio="none" fill="none">
@@ -313,13 +332,6 @@ function cta_band(array $overrides = []): string
         <p class="mt-4 text-[1.0625rem] leading-relaxed text-body"><?= e($c['body'] ?? '') ?></p>
       </div>
       <div class="shrink-0 lg:text-right">
-        <?php if ($amounts): ?>
-        <div class="mb-6 flex flex-wrap gap-2.5 lg:justify-end">
-          <?php foreach ($amounts as $amount): ?>
-          <a href="<?= e($amount['href'] ?? '') ?>" class="rounded-full border border-accent/30 bg-cream/70 px-5 py-2 text-[0.9rem] font-medium text-accent-dark transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:border-accent hover:bg-cream"><?= e($amount['label'] ?? '') ?></a>
-          <?php endforeach; ?>
-        </div>
-        <?php endif; ?>
         <?= button((string) ($c['ctaHref'] ?? ''), (string) ($c['ctaLabel'] ?? '')) ?>
         <p class="mt-3.5 text-[0.8rem] text-muted"><?= e($c['note'] ?? '') ?></p>
       </div>
@@ -460,6 +472,201 @@ function resource_link(array $r, int $delay = 0): string
     </div>
     <?= icon('external', 'mt-2 h-5 w-5 shrink-0 text-muted transition-all duration-300 group-hover:-translate-y-0.5 group-hover:text-accent') ?>
   </a>
+</div>
+<?php
+    return ob_get_clean();
+}
+
+/**
+ * Files attached to an entry — project reports and the like. Optional: an item
+ * without both a title and a link is skipped, and an empty list renders nothing.
+ */
+function document_links(array $documents): string
+{
+    $items = array_values(array_filter($documents, fn ($d) => is_array($d)
+        && trim((string) ($d['title'] ?? '')) !== '' && trim((string) ($d['href'] ?? '')) !== ''));
+    if (!$items) {
+        return '';
+    }
+    ob_start(); ?>
+<ul class="max-w-3xl border-t border-hairline">
+  <?php foreach ($items as $i => $doc):
+      $href = (string) $doc['href'];
+      $external = (bool) preg_match('~^https?://~', $href);
+      $ext = strtoupper((string) pathinfo((string) parse_url($href, PHP_URL_PATH), PATHINFO_EXTENSION)); ?>
+  <li <?= reveal('border-b border-hairline', $i * 70) ?>>
+    <a href="<?= e($href) ?>"<?= $external ? ' target="_blank" rel="noreferrer"' : ' download' ?> class="group flex items-center gap-5 py-5 transition-colors duration-300">
+      <?= icon('document', 'h-6 w-6 shrink-0 text-accent', 1.2) ?>
+      <span class="flex-1 text-[1.0625rem] leading-snug text-ink transition-colors duration-300 group-hover:text-accent-dark"><?= e($doc['title']) ?></span>
+      <?php if ($ext !== ''): ?><span class="shrink-0 text-[0.7rem] font-medium tracking-[0.1em] text-muted uppercase"><?= e($ext) ?></span><?php endif; ?>
+      <?= icon($external ? 'external' : 'arrow-down', 'h-5 w-5 shrink-0 text-muted transition-all duration-300 group-hover:text-accent' . ($external ? ' group-hover:-translate-y-0.5' : ' group-hover:translate-y-0.5')) ?>
+    </a>
+  </li>
+  <?php endforeach; ?>
+</ul>
+<?php
+    return ob_get_clean();
+}
+
+/* ------------------------------------------------------------------- Chart
+   A single editable line series (the global saiga population over time).
+   Inline SVG rather than a charting library: it stays sharp, uses the site
+   palette and costs nothing to load. Axis range, gridlines and ticks are
+   derived from the data, so the chart keeps working when SCA edit the points
+   in the admin. The tooltip is wired up in assets/js/app.js. */
+
+/** A readable gridline step (1, 2, 2.5 or 5 × a power of ten) for a range. */
+function chart_step(float $span, int $target = 5): float
+{
+    $raw = $span / max(1, $target);
+    $magnitude = pow(10, floor(log10(max($raw, 1e-9))));
+    foreach ([1, 2, 2.5, 5] as $factor) {
+        if ($raw <= $factor * $magnitude) {
+            return $factor * $magnitude;
+        }
+    }
+    return 10 * $magnitude;
+}
+
+/** 2889440 → "2.9M": short enough for an axis label. */
+function chart_short_number(float $n): string
+{
+    foreach ([1000000 => 'M', 1000 => 'k'] as $unit => $suffix) {
+        if ($n >= $unit) {
+            return rtrim(rtrim(number_format($n / $unit, 1, '.', ''), '0'), '.') . $suffix;
+        }
+    }
+    return (string) round($n);
+}
+
+/**
+ * @param array $points [['year' => '1981', 'value' => '1251000'], …]
+ * @param array $o      xLabel, yLabel, title (used for the screen-reader table)
+ */
+function line_chart(array $points, array $o = []): string
+{
+    $data = [];
+    foreach ($points as $point) {
+        $year = trim((string) (is_array($point) ? ($point['year'] ?? '') : ''));
+        $value = preg_replace('/[^0-9.]/', '', (string) (is_array($point) ? ($point['value'] ?? '') : ''));
+        if ($year === '' || !is_numeric($year) || $value === '' || !is_numeric($value)) {
+            continue;
+        }
+        $data[] = ['x' => (float) $year, 'y' => (float) $value];
+    }
+    if (count($data) < 2) {
+        return '';
+    }
+    usort($data, fn ($a, $b) => $a['x'] <=> $b['x']);
+
+    $width = 920;
+    $height = 460;
+    $left = 84;
+    $right = 26;
+    $top = 28;
+    $bottom = 64;
+    $plotW = $width - $left - $right;
+    $plotH = $height - $top - $bottom;
+
+    $xMin = $data[0]['x'];
+    $xMax = $data[count($data) - 1]['x'];
+    $yMax = max(array_column($data, 'y'));
+    $gridStep = chart_step($yMax, 5);
+    $yTop = ceil($yMax / $gridStep) * $gridStep;
+
+    $px = fn (float $x): float => $left + ($xMax > $xMin ? ($x - $xMin) / ($xMax - $xMin) : 0.5) * $plotW;
+    $py = fn (float $y): float => $top + $plotH - ($yTop > 0 ? min(1, $y / $yTop) : 0) * $plotH;
+
+    // Catmull-Rom through every point, converted to cubic Béziers. The tension
+    // is held back and the handles are clamped inside the plot so a steep step
+    // (2020 → 2024) curves without bulging off the chart.
+    $pts = array_map(fn ($d) => ['x' => $px($d['x']), 'y' => $py($d['y'])], $data);
+    $line = 'M' . round($pts[0]['x'], 1) . ' ' . round($pts[0]['y'], 1);
+    $clamp = fn (float $v, float $lo, float $hi): float => max($lo, min($hi, $v));
+    for ($i = 0; $i < count($pts) - 1; $i++) {
+        $p0 = $pts[max(0, $i - 1)];
+        $p1 = $pts[$i];
+        $p2 = $pts[$i + 1];
+        $p3 = $pts[min(count($pts) - 1, $i + 2)];
+        $c1x = $clamp($p1['x'] + ($p2['x'] - $p0['x']) / 6 * 0.75, $p1['x'], $p2['x']);
+        $c1y = $clamp($p1['y'] + ($p2['y'] - $p0['y']) / 6 * 0.75, $top, $top + $plotH);
+        $c2x = $clamp($p2['x'] - ($p3['x'] - $p1['x']) / 6 * 0.75, $p1['x'], $p2['x']);
+        $c2y = $clamp($p2['y'] - ($p3['y'] - $p1['y']) / 6 * 0.75, $top, $top + $plotH);
+        $line .= ' C' . round($c1x, 1) . ' ' . round($c1y, 1) . ', ' . round($c2x, 1) . ' ' . round($c2y, 1)
+            . ', ' . round($p2['x'], 1) . ' ' . round($p2['y'], 1);
+    }
+    $area = $line . ' L' . round($pts[count($pts) - 1]['x'], 1) . ' ' . ($top + $plotH)
+        . ' L' . round($pts[0]['x'], 1) . ' ' . ($top + $plotH) . ' Z';
+
+    $yTicks = [];
+    for ($value = 0.0; $value <= $yTop + 0.5; $value += $gridStep) {
+        $yTicks[] = $value;
+    }
+    // Decades, plus the first and last year actually in the data.
+    $xTicks = [$xMin, $xMax];
+    for ($year = ceil($xMin / 10) * 10; $year <= $xMax; $year += 10) {
+        if (abs($year - $xMin) > 3 && abs($year - $xMax) > 3) {
+            $xTicks[] = $year;
+        }
+    }
+    sort($xTicks);
+
+    $id = 'chart-' . bin2hex(random_bytes(4));
+    $xLabel = (string) ($o['xLabel'] ?? '');
+    $yLabel = (string) ($o['yLabel'] ?? '');
+
+    ob_start(); ?>
+<div class="relative" data-chart>
+  <svg viewBox="0 0 <?= $width ?> <?= $height ?>" class="w-full" role="img" aria-labelledby="<?= $id ?>-title" preserveAspectRatio="xMidYMid meet">
+    <title id="<?= $id ?>-title"><?= e($o['title'] ?? 'Line chart') ?></title>
+    <defs>
+      <linearGradient id="<?= $id ?>-fill" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="currentColor" stop-opacity="0.16" />
+        <stop offset="100%" stop-color="currentColor" stop-opacity="0" />
+      </linearGradient>
+    </defs>
+
+    <g class="text-accent">
+      <?php foreach ($yTicks as $value): $y = round($py((float) $value), 1); ?>
+      <line x1="<?= $left ?>" y1="<?= $y ?>" x2="<?= $left + $plotW ?>" y2="<?= $y ?>" class="stroke-hairline" stroke-width="1" <?= $value > 0 ? 'stroke-dasharray="3 7"' : '' ?> />
+      <text x="<?= $left - 14 ?>" y="<?= $y + 4 ?>" text-anchor="end" class="fill-muted text-[13px]"><?= e(chart_short_number((float) $value)) ?></text>
+      <?php endforeach; ?>
+
+      <?php foreach ($xTicks as $year): ?>
+      <text x="<?= round($px((float) $year), 1) ?>" y="<?= $top + $plotH + 30 ?>" text-anchor="middle" class="fill-muted text-[13px]"><?= e((string) (int) $year) ?></text>
+      <?php endforeach; ?>
+
+      <path d="<?= e($area) ?>" fill="url(#<?= $id ?>-fill)" />
+      <path d="<?= e($line) ?>" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+
+      <?php foreach ($data as $i => $d): $x = round($px($d['x']), 1); $y = round($py($d['y']), 1); ?>
+      <g data-chart-point data-year="<?= e((string) (int) $d['x']) ?>" data-value="<?= e(number_format($d['y'], 0, '.', ',')) ?>" tabindex="0" class="focus:outline-none">
+        <circle cx="<?= $x ?>" cy="<?= $y ?>" r="16" fill="transparent" />
+        <circle cx="<?= $x ?>" cy="<?= $y ?>" r="4.5" fill="currentColor" stroke="var(--color-cream-deep)" stroke-width="2" class="transition-[r] duration-200" data-chart-dot />
+      </g>
+      <?php endforeach; ?>
+
+      <?php if ($xLabel !== ''): ?>
+      <text x="<?= $left + $plotW / 2 ?>" y="<?= $height - 8 ?>" text-anchor="middle" class="fill-muted text-[13px] tracking-[0.12em] uppercase"><?= e($xLabel) ?></text>
+      <?php endif; ?>
+      <?php if ($yLabel !== ''): ?>
+      <text transform="translate(20 <?= $top + $plotH / 2 ?>) rotate(-90)" text-anchor="middle" class="fill-muted text-[13px] tracking-[0.12em] uppercase"><?= e($yLabel) ?></text>
+      <?php endif; ?>
+    </g>
+  </svg>
+
+  <div class="pointer-events-none absolute top-0 left-0 hidden -translate-x-1/2 -translate-y-full rounded-xl border border-hairline bg-cream px-3.5 py-2 text-center whitespace-nowrap shadow-[0_12px_30px_rgba(84,63,38,0.14)]" role="status" data-chart-tooltip>
+    <span class="block font-display text-[1.05rem] leading-none text-ink" data-chart-value></span>
+    <span class="mt-1.5 block text-[0.7rem] tracking-[0.12em] text-muted uppercase" data-chart-year></span>
+  </div>
+
+  <table class="sr-only">
+    <caption><?= e($o['title'] ?? '') ?></caption>
+    <thead><tr><th><?= e($xLabel ?: 'Year') ?></th><th><?= e($yLabel ?: 'Value') ?></th></tr></thead>
+    <tbody>
+      <?php foreach ($data as $d): ?><tr><td><?= e((string) (int) $d['x']) ?></td><td><?= e(number_format($d['y'], 0, '.', ',')) ?></td></tr><?php endforeach; ?>
+    </tbody>
+  </table>
 </div>
 <?php
     return ob_get_clean();

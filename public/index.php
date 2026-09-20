@@ -29,32 +29,10 @@ if ($path === '/forms/contact' || $path === '/forms/newsletter') {
     exit;
 }
 
-/* ------------------------------------------------------------ Fixed pages
-   path => [view, page slug whose meta sets the <title>] */
+/* ------------------------------------------------------------ Fixed pages */
 
-$pages = [
-    '/' => ['home', 'home'],
-    '/about' => ['about', 'about'],
-    '/about/our-story' => ['our-story', 'our-story'],
-    '/about/our-people' => ['our-people', 'our-people'],
-    '/about/partners-funders' => ['partners-funders', 'partners-funders'],
-    '/about/contact' => ['contact', 'contact'],
-    '/saigas/what-is-a-saiga' => ['what-is-a-saiga', 'what-is-a-saiga'],
-    '/saigas/why-saigas-matter' => ['why-saigas-matter', 'why-saigas-matter'],
-    '/saigas/population-history-and-threats' => ['population-history-and-threats', 'population-history-and-threats'],
-    '/saigas/policy-and-protection' => ['policy-and-protection', 'policy-and-protection'],
-    '/our-work' => ['our-work', 'our-work'],
-    '/our-work/grants-and-awards' => ['grants-and-awards', 'grants-and-awards'],
-    '/projects' => ['projects', 'projects'],
-    '/news' => ['news', 'news'],
-    '/resources' => ['resources', 'resources'],
-    '/support/donate' => ['donate', 'donate'],
-    '/support/sign-up' => ['sign-up', 'sign-up'],
-    '/support/work-with-us' => ['work-with-us', 'work-with-us'],
-];
-
-if (isset($pages[$path])) {
-    [$viewName, $slug] = $pages[$path];
+if (isset(FIXED_PAGES[$path])) {
+    [$viewName, $slug] = FIXED_PAGES[$path];
     render('pages/' . $viewName, [], v(page($slug), 'meta', []));
 }
 
@@ -78,6 +56,17 @@ foreach ($routes as $pattern => [$type, $viewName, $descriptionField]) {
             'description' => $item[$descriptionField] ?? '',
         ]);
     }
+}
+
+/* --------------------------------------------------- Pages built in the admin
+   Checked last, so a built page can never shadow one of the routes above. */
+
+if (preg_match('#^/([a-z0-9-]+(?:/[a-z0-9-]+)*)$#', $path, $m) && ($built = entry('custom', $m[1]))) {
+    $meta = is_array($built['meta'] ?? null) ? $built['meta'] : [];
+    if (trim((string) ($meta['title'] ?? '')) === '') {
+        $meta['title'] = $built['title'] ?? '';
+    }
+    render('pages/custom', ['custom' => $built], $meta);
 }
 
 not_found();
