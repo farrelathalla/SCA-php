@@ -9,7 +9,7 @@
  * overwrites anything an editor has already changed.
  */
 
-const SCHEMA_VERSION = 4;
+const SCHEMA_VERSION = 5;
 
 function db(): PDO
 {
@@ -266,6 +266,16 @@ function migrate_content(int $from): void
             && in_array(trim((string) ($donate['confidence']['linkHref'] ?? '')), ['', '#'], true)) {
             // "Read the latest annual report" jumps to the reports archive.
             $donate['confidence']['linkHref'] = $seed['donate']['confidence']['linkHref'];
+            save_page_row('donate', $donate);
+        }
+    }
+
+    if ($from < 5) {
+        // v5 — SCA had already pointed the annual report link at /resources;
+        // it now jumps straight down to the Reporting section.
+        if (($donate = page_row('donate')) !== null
+            && rtrim(trim((string) ($donate['confidence']['linkHref'] ?? '')), '/') === '/resources') {
+            $donate['confidence']['linkHref'] = '/resources#reporting';
             save_page_row('donate', $donate);
         }
     }
