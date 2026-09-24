@@ -10,6 +10,7 @@ $chart = $graphImage === '' ? line_chart(v($p, 'graph.points', []), [
 ]) : '';
 ?>
 <?= page_hero($p['hero'] ?? []) ?>
+<?= page_blocks($p, 'top') ?>
 
 <section class="section-tight">
   <div class="shell">
@@ -76,6 +77,8 @@ $chart = $graphImage === '' ? line_chart(v($p, 'graph.points', []), [
     </div>
   </div>
 </section>
+
+<?= page_blocks($p) ?>
 
 <?= related_links($p['related'] ?? []) ?>
 <?php if (!empty($p['showDonationBand'])): ?><?= cta_band() ?><?php endif; ?>

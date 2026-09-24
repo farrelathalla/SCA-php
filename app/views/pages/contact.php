@@ -1,5 +1,6 @@
 <?php $p = page('contact'); $o = $p['other'] ?? []; ?>
 <?= page_hero($p['hero'] ?? []) ?>
+<?= page_blocks($p, 'top') ?>
 
 <section class="section">
   <div class="shell">
@@ -44,3 +45,5 @@
     </div>
   </div>
 </section>
+
+<?= page_blocks($p) ?>

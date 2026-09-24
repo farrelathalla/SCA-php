@@ -65,7 +65,15 @@ const LABELS = [
     'gallery' => 'Photographs',
     'stats' => 'Figures',
     'buttons' => 'Buttons',
+    'reporting' => 'Reporting (the section the donate page’s annual report link jumps to: /resources#reporting)',
+    'report' => 'Reporting — featured publication box',
+    'reports' => 'Reports (newest first — “+ Add” puts the new one at the top)',
+    'extraBlocks' => 'Extra blocks on this page',
+    'placement' => 'Where on the page',
 ];
+
+/** Lists whose newest item belongs at the top, so “+ Add” inserts it there. */
+const PREPEND_LISTS = ['reports'];
 
 /**
  * Item shapes for lists that start out empty, so the admin still knows what a
@@ -96,6 +104,7 @@ const CHOICE_FIELDS = [
     'background' => BLOCK_BACKGROUNDS,
     'columns' => ['1' => 'One per row', '2' => 'Two per row', '3' => 'Three per row', '4' => 'Four per row'],
     'style' => ['primary' => 'Solid button', 'outline' => 'Outlined button', 'ghost' => 'Light button'],
+    'placement' => BLOCK_PLACEMENTS,
 ];
 
 function field_label(string $key): string
@@ -208,11 +217,16 @@ function render_value_input(string $key, $value, string $kind): string
             $rows = max(2, min(10, (int) ceil(mb_strlen($val) / 90)));
             return '<textarea id="' . $id . '" data-input rows="' . $rows . '" class="' . $input . ' leading-relaxed">' . e($val) . '</textarea>';
         case 'icon':
-            $out = '<div class="flex items-center gap-3"><span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent-soft text-accent" data-icon-preview>' . icon($val ?: 'leaf', 'h-5 w-5', 1.3) . '</span><select id="' . $id . '" data-input data-icon-select class="' . $input . '">';
+            // Built-in line icons, plus any icon SCA upload themselves.
+            $out = '<div class="flex flex-wrap items-center gap-3" data-icon-field><span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent-soft text-accent" data-icon-preview>' . icon($val ?: 'leaf', 'h-5 w-5', 1.3) . '</span><select id="' . $id . '" data-input data-icon-select class="' . $input . ' min-w-0 flex-1">';
             foreach (CONTENT_ICONS as $name) {
                 $out .= '<option value="' . e($name) . '"' . ($name === $val ? ' selected' : '') . '>' . e($name) . '</option>';
             }
-            return $out . '</select></div>';
+            if (is_custom_icon($val)) {
+                $out .= '<option value="' . e($val) . '" selected>Uploaded: ' . e(basename($val)) . '</option>';
+            }
+            return $out . '</select>'
+                . '<button type="button" data-icon-upload title="A one-colour PNG or WebP on a transparent background, about 96×96 px. It takes the site’s colours automatically." class="shrink-0 rounded-full border border-hairline px-3.5 py-1.5 text-[0.8rem] text-ink hover:border-ink/40">Upload icon…</button></div>';
         case 'hidden':
             return '<input type="hidden" data-input value="' . e($val) . '">';
         case 'choice':
@@ -237,6 +251,7 @@ function render_value_input(string $key, $value, string $kind): string
                 . '<div class="flex flex-wrap gap-2">'
                 . '<button type="button" data-image-upload class="rounded-full bg-ink px-3.5 py-1.5 text-[0.8rem] text-cream hover:bg-ink/85">Upload…</button>'
                 . '<button type="button" data-image-library class="rounded-full border border-hairline px-3.5 py-1.5 text-[0.8rem] text-ink hover:border-ink/40">Choose from library</button>'
+                . '<button type="button" data-image-crop title="Crop or zoom into this image. Saves a new copy and uses it here." class="rounded-full border border-hairline px-3.5 py-1.5 text-[0.8rem] text-ink hover:border-ink/40">Crop…</button>'
                 . '<button type="button" data-image-clear class="rounded-full px-3 py-1.5 text-[0.8rem] text-muted hover:text-accent-dark">Remove</button>'
                 . '</div></div></div>';
         case 'link':
@@ -282,7 +297,9 @@ function render_node(?string $key, $value, $shape, int $depth = 0, string $paren
         foreach ($value as $item) {
             $out .= render_list_item($item, $itemShape, $depth + 1, (string) $key);
         }
-        $out .= '</div><button type="button" data-add-item class="rounded-full border border-dashed border-accent/50 px-4 py-1.5 text-[0.8rem] text-accent-dark hover:bg-accent-soft">+ Add ' . e(strtolower(field_label((string) $key)) ?: 'item') . '</button></div>';
+        $prepend = in_array((string) $key, PREPEND_LISTS, true);
+        $out .= '</div><button type="button" data-add-item' . ($prepend ? '="top"' : '') . ' class="rounded-full border border-dashed border-accent/50 px-4 py-1.5 text-[0.8rem] text-accent-dark hover:bg-accent-soft">'
+            . ($prepend ? '+ Add a new one at the top' : '+ Add ' . e(strtolower(field_label((string) $key)) ?: 'item')) . '</button></div>';
         return $out;
     }
 
@@ -373,8 +390,10 @@ function render_blocks_field(array $blocks, string $key): string
     $firstHint = BLOCK_TYPES[array_key_first(BLOCK_TYPES)]['hint'];
 
     return '<section data-node="list" data-key="' . e($key) . '" class="rounded-2xl border border-hairline bg-white p-5 md:p-6">'
-        . '<h2 class="mb-1 font-display text-xl text-ink">Page blocks</h2>'
-        . '<p class="mb-4 text-[0.85rem] text-muted">Stack the same building blocks the rest of the site is made of. Drag order with ↑ ↓, and leave a field empty to hide that part of a block.</p>'
+        . '<h2 class="mb-1 font-display text-xl text-ink">' . e(field_label($key)) . '</h2>'
+        . '<p class="mb-4 text-[0.85rem] text-muted">' . (block_placement()
+            ? 'Add new sections to this page with the same building blocks the rest of the site is made of — for example a new text section, a photo, a list of links or downloads. Each block goes straight under the page header or at the end of the page (above the related links and the donation band). Order them with ↑ ↓, and leave a field empty to hide that part of a block.'
+            : 'Stack the same building blocks the rest of the site is made of. Drag order with ↑ ↓, and leave a field empty to hide that part of a block.') . '</p>'
         . $templates
         . '<div data-items class="space-y-2">' . $items . '</div>'
         . '<div class="mt-4 flex flex-wrap items-center gap-2 rounded-xl border border-dashed border-accent/50 p-3">'

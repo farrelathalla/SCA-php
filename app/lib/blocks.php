@@ -120,6 +120,32 @@ const SELF_CONTAINED_BLOCKS = ['numbers', 'relatedLinks', 'donationBand'];
 const BLOCK_BACKGROUNDS = ['' => 'Page background', 'cream-deep' => 'Soft beige', 'sand' => 'Sand'];
 
 /**
+ * The site's own pages (Home, About, Donate, …) keep their designed layout,
+ * and SCA can add blocks to them too: an `extraBlocks` list on the page, each
+ * block placed straight under the page header or at the end of the page
+ * (above the related links and the donation band).
+ */
+const BLOCK_PLACEMENTS = ['end' => 'At the end of the page', 'top' => 'Straight under the page header'];
+
+/** True while the admin edits a fixed page, whose blocks carry a placement. */
+function block_placement(?bool $set = null): bool
+{
+    static $on = false;
+    if ($set !== null) {
+        $on = $set;
+    }
+    return $on;
+}
+
+/** The extra blocks of a fixed page that belong at one placement. */
+function page_blocks(array $page, string $placement = 'end'): string
+{
+    $blocks = array_filter($page['extraBlocks'] ?? [], fn ($b) => is_array($b)
+        && (($b['placement'] ?? 'end') === 'top' ? 'top' : 'end') === $placement);
+    return render_blocks(array_values($blocks));
+}
+
+/**
  * Everything a built page has besides its blocks. This is the "shape" the
  * admin builds the form from, exactly as database/seed/pages.json is for the
  * fixed pages, and it doubles as the starting point for a new page.
@@ -142,7 +168,9 @@ function custom_page_shape(): array
 function block_shape(string $type): array
 {
     return array_merge(
-        ['block' => $type, 'background' => '', 'anchorId' => ''],
+        ['block' => $type],
+        block_placement() ? ['placement' => 'end'] : [],
+        ['background' => '', 'anchorId' => ''],
         BLOCK_TYPES[$type]['fields'] ?? []
     );
 }

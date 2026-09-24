@@ -142,6 +142,12 @@ if ($sub === '') {
 if (($parts[0] ?? '') === 'pages' && isset($parts[1], ADMIN_PAGES[$parts[1]])) {
     $slug = $parts[1];
     $shape = seed_data('pages.json')[$slug] ?? [];
+    if ($slug !== 'global') {
+        // Every page can take extra blocks, edited with the block builder.
+        $shape['extraBlocks'] = [];
+        blocks_key('extraBlocks');
+        block_placement(true);
+    }
 
     if (is_post()) {
         require_csrf();
@@ -290,6 +296,25 @@ if (($parts[0] ?? '') === 'media') {
         }
         $result = handle_upload($_FILES['file'] ?? null, (string) ($_POST['kind'] ?? 'image'));
         json_response($result, $result['ok'] ? 200 : 422);
+    }
+    if ($action === 'crop' && is_post()) {
+        if (!csrf_valid()) {
+            json_response(['ok' => false, 'error' => 'Session expired — reload the page.'], 419);
+        }
+        $result = crop_image(
+            (string) ($_POST['path'] ?? ''),
+            (int) round((float) ($_POST['x'] ?? 0)),
+            (int) round((float) ($_POST['y'] ?? 0)),
+            (int) round((float) ($_POST['width'] ?? 0)),
+            (int) round((float) ($_POST['height'] ?? 0))
+        );
+        json_response($result, $result['ok'] ? 200 : 422);
+    }
+    if ($action === 'meta' && is_post()) {
+        require_csrf();
+        save_media_meta((string) ($_POST['path'] ?? ''), (string) ($_POST['alt'] ?? ''), (string) ($_POST['credit'] ?? ''));
+        flash('Photo details saved.');
+        redirect('/admin/media#' . substr(md5((string) ($_POST['path'] ?? '')), 0, 10));
     }
     if ($action === 'delete' && is_post()) {
         require_csrf();

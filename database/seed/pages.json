@@ -7,7 +7,7 @@
       "description": "Protecting saiga antelope and the steppe grasslands they depend on, together with the people who live alongside them.",
       "logoMark": "/logo/sca-mark.webp",
       "logoFull": "/logo/sca-logo.webp",
-      "analyticsId": ""
+      "analyticsId": "G-YGQKFB1FEJ"
     },
     "header": {
       "donateLabel": "Donate",
@@ -314,7 +314,8 @@
       "results": "results",
       "noResults": "Nothing matches those filters yet. Try widening your selection.",
       "skipToContent": "Skip to content",
-      "menu": "Menu"
+      "menu": "Menu",
+      "photoCredit": "Photo:"
     },
     "notFound": {
       "eyebrow": "404",
@@ -1518,6 +1519,17 @@
       }
     ],
     "note": "We deliberately keep this page short. Rather than duplicating the specialist resource sites, we point to them — so that material stays in one place and stays current.",
+    "reporting": {
+      "eyebrow": "",
+      "title": "Reporting",
+      "intro": "Our annual reports and accounts, newest first.",
+      "reports": [
+        {
+          "title": "2025 Annual Report",
+          "href": "#"
+        }
+      ]
+    },
     "report": {
       "eyebrow": "Publication",
       "title": "Our 20th anniversary report",
@@ -1646,7 +1658,7 @@
         }
       ],
       "linkLabel": "Read the latest annual report",
-      "linkHref": "#",
+      "linkHref": "/resources#reporting",
       "buttonLabel": "Donate now",
       "buttonHref": "#give"
     },

@@ -1,5 +1,6 @@
 <?php $p = page('what-is-a-saiga'); ?>
 <?= page_hero($p['hero'] ?? []) ?>
+<?= page_blocks($p, 'top') ?>
 
 <section class="section-tight">
   <div class="shell">
@@ -46,5 +47,7 @@
     <?= fact_list(v($p, 'explore.items', []), 3, 'mt-12') ?>
   </div>
 </section>
+
+<?= page_blocks($p) ?>
 
 <?php if (!empty($p['showDonationBand'])): ?><?= cta_band() ?><?php endif; ?>

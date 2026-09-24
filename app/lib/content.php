@@ -140,7 +140,34 @@ function image_alt(string $src): string
     if ($alts === null) {
         $alts = seed_data('image-alts.json');
     }
-    return $alts[$src] ?? '';
+    $meta = media_meta($src);
+    return trim((string) ($meta['alt'] ?? '')) !== '' ? (string) $meta['alt'] : ($alts[$src] ?? '');
+}
+
+/** The photographer credit set for an image in the media library, if any. */
+function image_credit(string $src): string
+{
+    return trim((string) (media_meta($src)['credit'] ?? ''));
+}
+
+/** Description and credit per image, as edited in the media library. */
+function media_meta(?string $src = null): array
+{
+    static $all = null;
+    if ($all === null) {
+        $all = [];
+        try {
+            foreach (db()->query('SELECT path, alt, credit FROM media_meta') as $row) {
+                $all[$row['path']] = $row;
+            }
+        } catch (PDOException $e) {
+            // Table not there yet: no credits.
+        }
+    }
+    if ($src === null) {
+        return $all;
+    }
+    return $all[parse_url($src, PHP_URL_PATH) ?: $src] ?? [];
 }
 
 /** A list with its "all" option first and the rest sorted, as the archive expects. */

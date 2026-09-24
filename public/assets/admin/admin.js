@@ -91,7 +91,9 @@
         var items = list.querySelector(":scope > [data-items]");
         var fragment = template.content.cloneNode(true);
         var item = fragment.querySelector("[data-item]");
-        items.appendChild(fragment);
+        // Lists kept newest-first (e.g. the reports archive) grow at the top.
+        if (target.getAttribute("data-add-item") === "top") items.insertBefore(fragment, items.firstChild);
+        else items.appendChild(fragment);
         if (item.tagName === "DETAILS") item.open = true;
         var first = item.querySelector("[data-input]");
         if (first) first.focus();
@@ -154,10 +156,7 @@
     // Icon preview
     form.addEventListener("change", function (event) {
       if (!event.target.hasAttribute("data-icon-select")) return;
-      var preview = event.target.parentElement.querySelector("[data-icon-preview]");
-      if (preview && iconPaths[event.target.value]) {
-        preview.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">' + iconPaths[event.target.value] + "</svg>";
-      }
+      showIcon(event.target.parentElement.querySelector("[data-icon-preview]"), event.target.value);
     });
 
     // Slug from title, for new entries until the slug is typed by hand.
@@ -174,6 +173,23 @@
       }
     }
   });
+
+  // Built-in icons are SVG paths; an uploaded icon (an image path) is shown as
+  // a mask in the text colour, exactly as the site draws it.
+  function showIcon(preview, value) {
+    if (!preview) return;
+    if (value.charAt(0) === "/") {
+      var span = document.createElement("span");
+      span.className = "inline-block h-5 w-5 bg-current";
+      var mask = "url('" + value + "') center / contain no-repeat";
+      span.style.webkitMask = mask;
+      span.style.mask = mask;
+      preview.innerHTML = "";
+      preview.appendChild(span);
+    } else if (iconPaths[value]) {
+      preview.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">' + iconPaths[value] + "</svg>";
+    }
+  }
 
   /* ------------------------------------------------------------- Uploads */
 
@@ -226,6 +242,38 @@
     }
     if (imageField && button.hasAttribute("data-image-clear")) setImage(imageField, "");
     if (imageField && button.hasAttribute("data-image-library")) openLibrary(function (url) { setImage(imageField, url); });
+    if (imageField && button.hasAttribute("data-image-crop")) {
+      var current = imageField.querySelector("[data-input]").value.trim();
+      if (!current) window.alert("Choose or upload an image first, then crop it.");
+      else if (!/\.(jpe?g|png|webp)$/i.test(current)) window.alert("Only JPG, PNG and WebP images can be cropped.");
+      else openCropper(current, function (url) { setImage(imageField, url); });
+    }
+    // Media library: crop, then show the new copy with its details open.
+    if (button.hasAttribute("data-crop")) {
+      openCropper(button.getAttribute("data-crop"), function (url) {
+        window.location.href = "/admin/media?open=" + encodeURIComponent(url);
+      });
+    }
+
+    var iconField = button.closest("[data-icon-field]");
+    if (iconField && button.hasAttribute("data-icon-upload")) {
+      pickFile("image/png,image/webp,image/gif", function (file) {
+        button.textContent = "Uploading…";
+        button.disabled = true;
+        upload(file, "image")
+          .then(function (url) {
+            var select = iconField.querySelector("[data-icon-select]");
+            var option = document.createElement("option");
+            option.value = url;
+            option.textContent = "Uploaded: " + url.split("/").pop();
+            select.appendChild(option);
+            select.value = url;
+            select.dispatchEvent(new Event("change", { bubbles: true }));
+          })
+          .catch(function (error) { window.alert(error.message); })
+          .then(function () { button.textContent = "Upload icon…"; button.disabled = false; });
+      });
+    }
 
     var linkField = button.closest("[data-link-field]");
     if (linkField && button.hasAttribute("data-file-upload")) {
@@ -283,6 +331,73 @@
     modal.querySelector("[data-library-close]").addEventListener("click", closeLibrary);
     modal.addEventListener("click", function (event) { if (event.target === modal) closeLibrary(); });
     document.addEventListener("keydown", function (event) { if (event.key === "Escape") closeLibrary(); });
+  }
+
+  /* ---------------------------------------------------------- Crop & zoom
+     Cropper.js (loaded from cdnjs in the admin layout) picks the rectangle;
+     the server cuts it from the original and saves it as a new file. */
+
+  var cropModal = document.querySelector("[data-crop-modal]");
+  var cropper = null;
+  var cropSource = "";
+  var onCropped = null;
+
+  function openCropper(url, callback) {
+    if (!window.Cropper) {
+      window.alert("The crop tool could not load. Check the internet connection and reload the page.");
+      return;
+    }
+    cropSource = url.split("?")[0];
+    onCropped = callback;
+    var img = cropModal.querySelector("[data-crop-image]");
+    if (cropper) { cropper.destroy(); cropper = null; }
+    cropModal.classList.remove("hidden");
+    cropModal.classList.add("flex");
+    img.onload = function () {
+      img.onload = null;
+      cropper = new window.Cropper(img, { viewMode: 1, autoCropArea: 1, responsive: true, background: false });
+    };
+    img.src = cropSource + "?t=" + Date.now();
+  }
+
+  function closeCropper() {
+    if (cropper) { cropper.destroy(); cropper = null; }
+    cropModal.classList.add("hidden");
+    cropModal.classList.remove("flex");
+  }
+
+  if (cropModal) {
+    cropModal.querySelector("[data-crop-close]").addEventListener("click", closeCropper);
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && !cropModal.classList.contains("hidden")) closeCropper();
+    });
+    cropModal.addEventListener("click", function (event) {
+      var button = event.target.closest("button");
+      if (!button || !cropper) return;
+      if (button.hasAttribute("data-crop-ratio")) cropper.setAspectRatio(parseFloat(button.getAttribute("data-crop-ratio")));
+      if (button.hasAttribute("data-crop-zoom")) cropper.zoom(parseFloat(button.getAttribute("data-crop-zoom")));
+      if (button.hasAttribute("data-crop-save")) {
+        var data = cropper.getData(true);
+        var body = new FormData();
+        body.append("path", cropSource);
+        body.append("x", data.x);
+        body.append("y", data.y);
+        body.append("width", data.width);
+        body.append("height", data.height);
+        body.append("_csrf", csrf);
+        button.disabled = true;
+        button.textContent = "Saving…";
+        fetch("/admin/media/crop", { method: "POST", body: body, headers: { Accept: "application/json" } })
+          .then(function (response) { return response.json(); })
+          .then(function (result) {
+            if (!result.ok) throw new Error(result.error || "The crop could not be saved.");
+            closeCropper();
+            if (onCropped) onCropped(result.url);
+          })
+          .catch(function (error) { window.alert(error.message); })
+          .then(function () { button.disabled = false; button.textContent = "Save cropped copy"; });
+      }
+    });
   }
 
   /* ---------------------------------------------------- Media page upload */

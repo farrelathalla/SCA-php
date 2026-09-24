@@ -13,5 +13,8 @@
     </div>
   </div>
 </section>
+<?= page_blocks($p, 'top') ?>
+
+<?= page_blocks($p) ?>
 
 <?= related_links($p['related'] ?? []) ?>

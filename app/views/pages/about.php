@@ -1,5 +1,6 @@
 <?php $p = page('about'); ?>
 <?= page_hero($p['hero'] ?? []) ?>
+<?= page_blocks($p, 'top') ?>
 
 <section class="section-tight">
   <div class="shell">
@@ -36,5 +37,7 @@
     <?= fact_list(v($p, 'explore.items', []), 4, 'mt-12') ?>
   </div>
 </section>
+
+<?= page_blocks($p) ?>
 
 <?php if (!empty($p['showDonationBand'])): ?><?= cta_band() ?><?php endif; ?>

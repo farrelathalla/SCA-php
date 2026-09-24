@@ -11,6 +11,7 @@ $hero = $p['hero'] ?? [];
     (($hero['primaryLabel'] ?? '') !== '' ? button((string) $hero['primaryHref'], (string) $hero['primaryLabel']) : '')
     . (($hero['secondaryLabel'] ?? '') !== '' ? button((string) $hero['secondaryHref'], (string) $hero['secondaryLabel'], 'outline', '', false) : '')
 ) ?>
+<?= page_blocks($p, 'top') ?>
 
 <section class="section">
   <div class="shell">
@@ -86,3 +87,5 @@ $hero = $p['hero'] ?? [];
     </div>
   </div>
 </section>
+
+<?= page_blocks($p) ?>

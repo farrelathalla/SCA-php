@@ -45,14 +45,45 @@ const ICON_PATHS = [
     'facebook' => '<path d="M14.5 8.5V7a1.5 1.5 0 0 1 1.5-1.5h1.5V3H15a4 4 0 0 0-4 4v1.5H9V11h2v10h3.5V11h2.2l.5-2.5h-2.7Z" />',
     'linkedin' => '<rect x="3.5" y="3.5" width="17" height="17" rx="3" /><path d="M8 10.5V16" /><circle cx="8" cy="7.8" r="0.9" fill="currentColor" stroke="none" /><path d="M12 16v-3a2 2 0 0 1 4 0v3" /><path d="M12 16v-5.5" />',
     'youtube' => '<rect x="2.5" y="5.5" width="19" height="13" rx="4" /><path d="m10.5 9.5 5 2.5-5 2.5v-5Z" />',
+    'x' => '<path d="M4.5 4h4.3l10.7 16h-4.3L4.5 4Z" /><path d="m19.2 4-5.9 6.7M10.7 13.3 4.8 20" />',
+    'tiktok' => '<path d="M13.5 3.5v11.75a3.75 3.75 0 1 1-3.75-3.75" /><path d="M13.5 3.5c.4 2.6 2.3 4.5 5 4.8" />',
+    'bluesky' => '<path d="M12 10.8C10.5 7.8 7.2 4.5 5 4.5c-1.2 0-1.5 1.1-1.5 2.1 0 .9.5 4.3 1.2 5.1 1.2 1.3 3.2 1.3 4.6 1-2.4.6-4.2 1.9-2.2 4.1 2.5 2.8 3.9-.5 4.9-2.7 1 2.2 2.4 5.5 4.9 2.7 2-2.2.2-3.5-2.2-4.1 1.4.3 3.4.3 4.6-1 .7-.8 1.2-4.2 1.2-5.1 0-1-.3-2.1-1.5-2.1-2.2 0-5.5 3.3-7 6.3Z" />',
+    'threads' => '<path d="M18.6 7.6C17.4 5 15.1 3.5 12 3.5c-5 0-8 3.3-8 8.5s3 8.5 8 8.5c3.9 0 6.7-2.1 6.7-5.1 0-2.6-2.2-4.2-6-4.2-2.7 0-4.2 1.2-4.2 2.8 0 1.5 1.3 2.4 3 2.3 2.6-.2 3.8-2.2 3.8-5.6 0-2.5-1.6-4-3.9-4-1.7 0-2.9.8-3.5 2" />',
+    'whatsapp' => '<path d="m3.5 20.5 1.3-4.4a8.5 8.5 0 1 1 3.3 3.1l-4.6 1.3Z" /><path d="M9 8.3c-.3 3.4 3.2 6.9 6.6 6.7l.9-1.6-2.1-1-1 .9c-1.2-.5-2.3-1.6-2.8-2.8l.9-1-1-2.1L9 8.3Z" />',
+    'telegram' => '<path d="M21 4 3 11.2l6.1 2.3L18.5 7l-7.4 8.1V20l3.3-3.6 4.6 3.4L21 4Z" />',
+    'vimeo' => '<path d="m3 8.6.9 1.2c1.2-.9 1.9-1.2 2.4-.3.8 1.4 1.9 6.9 3 8.7 1.4 2.3 3 1.4 5.3-.7 2.5-2.4 5.3-6.3 5.8-9.3.4-3-2.7-4-5.5-1.4 1.8-.5 2.6.5 2 2.1-.8 2-2.8 5-3.6 4.2-.8-.8-1.3-5.5-2.3-7.6-1-2.1-2.7-1.4-8 3.1Z" />',
+    'flickr' => '<circle cx="7.25" cy="12" r="3.75" /><circle cx="16.75" cy="12" r="3.75" />',
+    'rss' => '<path d="M5 4.5A14.5 14.5 0 0 1 19.5 19" /><path d="M5 10.5a8.5 8.5 0 0 1 8.5 8.5" /><circle cx="6" cy="18" r="1.4" fill="currentColor" stroke="none" />',
+    'link' => '<path d="M10 14a4 4 0 0 0 5.7 0l3.2-3.2a4 4 0 0 0-5.7-5.7l-1.2 1.2" /><path d="M14 10a4 4 0 0 0-5.7 0l-3.2 3.2a4 4 0 0 0 5.7 5.7l1.2-1.2" />',
 ];
 
 /** Names offered in the admin icon picker (content icons + social). */
-const CONTENT_ICONS = ['grass', 'route', 'shield', 'users', 'book', 'chart', 'mountain', 'leaf', 'award', 'pin', 'globe', 'document', 'heart', 'mail', 'clock', 'gauge', 'ruler', 'weight', 'horns', 'nose', 'calf', 'paw', 'virus', 'weather', 'barrier', 'card', 'instagram', 'facebook', 'linkedin', 'youtube'];
+const CONTENT_ICONS = [
+    'grass', 'route', 'shield', 'users', 'book', 'chart', 'mountain', 'leaf', 'award', 'pin', 'globe', 'document',
+    'heart', 'mail', 'phone', 'clock', 'gauge', 'ruler', 'weight', 'horns', 'nose', 'calf', 'paw', 'virus', 'weather',
+    'barrier', 'card', 'link', 'rss', 'instagram', 'facebook', 'linkedin', 'youtube', 'x', 'bluesky', 'threads',
+    'tiktok', 'whatsapp', 'telegram', 'vimeo', 'flickr',
+];
 
+/**
+ * An icon by name — or, for an icon SCA uploaded themselves, by image path.
+ * An uploaded icon (a one-colour PNG or WebP on a transparent background) is
+ * drawn as a CSS mask filled with the text colour, so it takes the same colour
+ * and hover colour as the built-in line icons around it.
+ */
 function icon(string $name, string $class = 'h-4 w-4', float $strokeWidth = 1.4): string
 {
+    if (is_custom_icon($name)) {
+        $url = "url('" . str_replace(["'", '"', '(', ')', ' '], ['%27', '%22', '%28', '%29', '%20'], $name) . "')";
+        $mask = $url . ' center / contain no-repeat';
+        return '<span class="inline-block bg-current ' . e($class) . '" style="' . e('-webkit-mask:' . $mask . ';mask:' . $mask) . '" aria-hidden="true"></span>';
+    }
     $paths = ICON_PATHS[$name] ?? ICON_PATHS['leaf'];
     return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' . $strokeWidth
         . '" stroke-linecap="round" stroke-linejoin="round" class="' . e($class) . '" aria-hidden="true">' . $paths . '</svg>';
+}
+
+function is_custom_icon(string $name): bool
+{
+    return (bool) preg_match('~^/(uploads|images)/[A-Za-z0-9/_.-]+\.(png|webp|gif)$~i', $name) && strpos($name, '..') === false;
 }

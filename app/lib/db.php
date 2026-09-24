@@ -9,7 +9,7 @@
  * overwrites anything an editor has already changed.
  */
 
-const SCHEMA_VERSION = 3;
+const SCHEMA_VERSION = 4;
 
 function db(): PDO
 {
@@ -98,6 +98,12 @@ function migrate(): void
             is_read TINYINT(1) NOT NULL DEFAULT 0,
             created_at DATETIME NOT NULL,
             KEY submissions_kind (kind, created_at)
+        ) $opts",
+        "CREATE TABLE IF NOT EXISTS media_meta (
+            path VARCHAR(191) NOT NULL PRIMARY KEY,
+            alt TEXT NULL,
+            credit VARCHAR(255) NULL,
+            updated_at DATETIME NOT NULL
         ) $opts",
         "CREATE TABLE IF NOT EXISTS login_attempts (
             id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -218,6 +224,49 @@ function migrate_content(int $from): void
             }
             $history['graph'] = $graph;
             save_page_row('population-history-and-threats', $history);
+        }
+    }
+
+    if ($from < 4) {
+        // v4 — SCA's second round of feedback.
+        $seed = seed_data('pages.json');
+
+        if (($global = page_row('global')) !== null) {
+            // The Google Analytics measurement ID SCA supplied.
+            if (trim((string) ($global['site']['analyticsId'] ?? '')) === '') {
+                $global['site']['analyticsId'] = $seed['global']['site']['analyticsId'];
+            }
+            // Label in front of a photographer credit ("Photo: …").
+            $global['labels']['photoCredit'] = $global['labels']['photoCredit'] ?? $seed['global']['labels']['photoCredit'];
+            // An X link added before there was an X icon borrowed another one.
+            foreach ($global['footer']['socials'] ?? [] as $i => $social) {
+                if (preg_match('~^https?://(www\.)?(x|twitter)\.com/~i', (string) ($social['href'] ?? ''))
+                    && !is_custom_icon((string) ($social['icon'] ?? ''))) {
+                    $global['footer']['socials'][$i]['icon'] = 'x';
+                }
+            }
+            save_page_row('global', $global);
+        }
+
+        if (($resources = page_row('resources')) !== null && !isset($resources['reporting'])) {
+            // A "Reporting" section under the resource links: the anniversary
+            // report box plus a plain archive of annual reports.
+            $ordered = [];
+            foreach ($resources as $key => $value) {
+                if ($key === 'report') {
+                    $ordered['reporting'] = $seed['resources']['reporting'];
+                }
+                $ordered[$key] = $value;
+            }
+            $ordered['reporting'] = $ordered['reporting'] ?? $seed['resources']['reporting'];
+            save_page_row('resources', $ordered);
+        }
+
+        if (($donate = page_row('donate')) !== null
+            && in_array(trim((string) ($donate['confidence']['linkHref'] ?? '')), ['', '#'], true)) {
+            // "Read the latest annual report" jumps to the reports archive.
+            $donate['confidence']['linkHref'] = $seed['donate']['confidence']['linkHref'];
+            save_page_row('donate', $donate);
         }
     }
 }

@@ -23,9 +23,12 @@ $filters = [
 ];
 ?>
 <?= page_hero($p['hero'] ?? []) ?>
+<?= page_blocks($p, 'top') ?>
 
 <section class="section">
   <div class="shell"><?= archive_grid($items, $filters) ?></div>
 </section>
+
+<?= page_blocks($p) ?>
 
 <?php if (!empty($p['showDonationBand'])): ?><?= cta_band() ?><?php endif; ?>

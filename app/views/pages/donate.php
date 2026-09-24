@@ -1,5 +1,6 @@
 <?php $p = page('donate'); $h = $p['hero'] ?? []; $c = $p['confidence'] ?? []; ?>
 <?= page_hero($h, ($h['buttonLabel'] ?? '') !== '' ? button((string) $h['buttonHref'], (string) $h['buttonLabel'], 'primary', 'px-9 py-4 text-base') : '') ?>
+<?= page_blocks($p, 'top') ?>
 
 <section id="give" class="section-tight scroll-mt-28 pb-20 md:pb-28">
   <div class="shell">
@@ -63,3 +64,5 @@
     </div>
   </div>
 </section>
+
+<?= page_blocks($p) ?>

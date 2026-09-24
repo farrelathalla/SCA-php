@@ -1,5 +1,6 @@
 <?php $p = page('policy-and-protection'); ?>
 <?= page_hero($p['hero'] ?? []) ?>
+<?= page_blocks($p, 'top') ?>
 
 <section class="section-tight">
   <div class="shell">
@@ -35,6 +36,8 @@
 <section class="section-tight pb-24 md:pb-32">
   <div class="shell"><?= callout((string) v($p, 'callout.title'), '<p>' . e(v($p, 'callout.body')) . '</p>') ?></div>
 </section>
+
+<?= page_blocks($p) ?>
 
 <?= related_links($p['related'] ?? []) ?>
 <?php if (!empty($p['showDonationBand'])): ?><?= cta_band() ?><?php endif; ?>

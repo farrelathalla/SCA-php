@@ -41,9 +41,12 @@ function media(?string $src, array $o = []): string
     $radius = ($o['rounded'] ?? true) ? 'rounded-2xl' : '';
     $label = $src !== '' ? basename(parse_url($src, PHP_URL_PATH) ?: $src) : 'image';
     $alt = $o['alt'] ?? ($src !== '' ? image_alt($src) : '');
+    // Photographer credit, shown on hover. Photos under an overlay (full-bleed
+    // heroes) pass 'credit' => false and draw photo_credit() on top instead.
+    $credit = ($o['credit'] ?? true) && $src !== '' ? photo_credit($src) : '';
 
     ob_start(); ?>
-<div class="overflow-hidden bg-cream-deep <?= e($box) ?> <?= $radius ?> <?= e($o['class'] ?? '') ?>">
+<div class="overflow-hidden bg-cream-deep <?= e($box) ?> <?= $radius ?> <?= $credit !== '' ? 'group/media' : '' ?> <?= e($o['class'] ?? '') ?>">
   <div class="absolute inset-0 flex items-center justify-center">
     <svg aria-hidden="true" class="absolute inset-0 h-full w-full" preserveAspectRatio="none" viewBox="0 0 400 300">
       <defs>
@@ -62,9 +65,28 @@ function media(?string $src, array $o = []): string
   <?php if ($src !== ''): ?>
   <img src="<?= e($src) ?>" alt="<?= e($alt) ?>" loading="<?= !empty($o['priority']) ? 'eager' : 'lazy' ?>" decoding="async" onerror="this.remove()" class="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] <?= e($o['imageClass'] ?? '') ?>">
   <?php endif; ?>
+  <?= $credit ?>
 </div>
 <?php
     return ob_get_clean();
+}
+
+/**
+ * "Photo: …" in the corner of a photograph, faded in on hover (or on tap, or
+ * keyboard focus). The credit is set per image in the admin media library.
+ * The nearest group/media or group/hero ancestor controls when it shows.
+ */
+function photo_credit(string $src, string $group = 'media'): string
+{
+    $credit = image_credit($src);
+    if ($credit === '') {
+        return '';
+    }
+    $show = $group === 'hero'
+        ? 'group-hover/hero:opacity-100 group-focus-within/hero:opacity-100'
+        : 'group-hover/media:opacity-100 group-focus-within/media:opacity-100';
+    return '<span class="photo-credit pointer-events-none absolute right-3 bottom-3 z-[2] max-w-[85%] truncate rounded-full bg-ink/65 px-2.5 py-1 text-[0.7rem] leading-snug text-cream opacity-0 backdrop-blur-sm transition-opacity duration-300 ' . $show . '">'
+        . e(trim((string) site('labels.photoCredit')) ?: 'Photo:') . ' ' . e($credit) . '</span>';
 }
 
 /* ---------------------------------------------------------------- Buttons */
@@ -250,8 +272,8 @@ function page_hero(array $hero, string $actions = ''): string
   </div>
 </section>
 <?php else: ?>
-<section class="relative border-b border-hairline">
-  <div class="absolute inset-0"><?= media($image, ['rounded' => false, 'priority' => true, 'fill' => true]) ?></div>
+<section class="group/hero relative border-b border-hairline">
+  <div class="absolute inset-0"><?= media($image, ['rounded' => false, 'priority' => true, 'fill' => true, 'credit' => false]) ?></div>
   <div class="absolute inset-0 bg-gradient-to-r from-cream from-20% via-cream/70 via-50% to-transparent"></div>
   <div class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-cream/45 to-transparent"></div>
   <div class="shell relative py-20 md:py-28 lg:py-36">
@@ -263,6 +285,7 @@ function page_hero(array $hero, string $actions = ''): string
       <?= $jumpHtml ?>
     </div>
   </div>
+  <?= photo_credit($image, 'hero') ?>
 </section>
 <?php endif;
     return ob_get_clean();
@@ -495,7 +518,7 @@ function document_links(array $documents): string
       $external = (bool) preg_match('~^https?://~', $href);
       $ext = strtoupper((string) pathinfo((string) parse_url($href, PHP_URL_PATH), PATHINFO_EXTENSION)); ?>
   <li <?= reveal('border-b border-hairline', $i * 70) ?>>
-    <a href="<?= e($href) ?>"<?= $external ? ' target="_blank" rel="noreferrer"' : ' download' ?> class="group flex items-center gap-5 py-5 transition-colors duration-300">
+    <a href="<?= e($href) ?>"<?= $external ? ' target="_blank" rel="noreferrer"' : ($ext !== '' ? ' download' : '') ?> class="group flex items-center gap-5 py-5 transition-colors duration-300">
       <?= icon('document', 'h-6 w-6 shrink-0 text-accent', 1.2) ?>
       <span class="flex-1 text-[1.0625rem] leading-snug text-ink transition-colors duration-300 group-hover:text-accent-dark"><?= e($doc['title']) ?></span>
       <?php if ($ext !== ''): ?><span class="shrink-0 text-[0.7rem] font-medium tracking-[0.1em] text-muted uppercase"><?= e($ext) ?></span><?php endif; ?>

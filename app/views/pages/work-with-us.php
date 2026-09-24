@@ -1,5 +1,6 @@
 <?php $p = page('work-with-us'); ?>
 <?= page_hero($p['hero'] ?? []) ?>
+<?= page_blocks($p, 'top') ?>
 
 <section class="section-tight">
   <div class="shell">
@@ -15,5 +16,7 @@
     </div>
   </div>
 </section>
+
+<?= page_blocks($p) ?>
 
 <?= related_links($p['related'] ?? []) ?>

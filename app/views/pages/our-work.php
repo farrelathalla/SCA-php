@@ -9,11 +9,12 @@ if (v($p, 'grantsStrand.title') !== '') {
     $strands[] = v($p, 'grantsStrand', []);
 }
 ?>
-<section class="relative overflow-hidden border-b border-hairline bg-cream-deep">
+<section class="group/hero relative overflow-hidden border-b border-hairline bg-cream-deep">
   <?php if (($h['image'] ?? '') !== ''): ?>
   <div class="absolute inset-y-0 right-0 hidden w-[55%] lg:block">
-    <?= media((string) $h['image'], ['rounded' => false, 'fill' => true]) ?>
+    <?= media((string) $h['image'], ['rounded' => false, 'fill' => true, 'credit' => false]) ?>
     <div class="absolute inset-0 bg-gradient-to-r from-cream-deep via-cream-deep/70 to-transparent"></div>
+    <?= photo_credit((string) $h['image'], 'hero') ?>
   </div>
   <?php endif; ?>
   <div class="shell relative py-20 md:py-28">
@@ -25,6 +26,7 @@ if (v($p, 'grantsStrand.title') !== '') {
     </div>
   </div>
 </section>
+<?= page_blocks($p, 'top') ?>
 
 <section class="section">
   <div class="shell">
@@ -35,5 +37,7 @@ if (v($p, 'grantsStrand.title') !== '') {
     <div <?= reveal('', 160) ?>><?= arrow_link((string) v($p, 'linkHref'), (string) v($p, 'linkLabel'), 'mt-16') ?></div>
   </div>
 </section>
+
+<?= page_blocks($p) ?>
 
 <?php if (!empty($p['showDonationBand'])): ?><?= cta_band() ?><?php endif; ?>

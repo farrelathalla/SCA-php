@@ -1,5 +1,6 @@
 <?php $p = page('grants-and-awards'); $programmes = entries('programme'); ?>
 <?= page_hero($p['hero'] ?? []) ?>
+<?= page_blocks($p, 'top') ?>
 
 <section class="section-tight">
   <div class="shell">
@@ -24,5 +25,7 @@
     </div>
   </div>
 </section>
+
+<?= page_blocks($p) ?>
 
 <?= cta_band(['title' => v($p, 'cta.title'), 'body' => v($p, 'cta.body')]) ?>

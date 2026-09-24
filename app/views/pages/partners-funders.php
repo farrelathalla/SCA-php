@@ -1,5 +1,6 @@
 <?php $p = page('partners-funders'); ?>
 <?= page_hero($p['hero'] ?? []) ?>
+<?= page_blocks($p, 'top') ?>
 
 <?php foreach (array_values($p['groups'] ?? []) as $gi => $group): ?>
 <section class="<?= $gi === 0 ? 'section' : 'section-tight pb-24 md:pb-32' ?>">
@@ -22,3 +23,5 @@
   </div>
 </section>
 <?php endforeach; ?>
+
+<?= page_blocks($p) ?>

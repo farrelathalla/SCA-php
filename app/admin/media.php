@@ -33,8 +33,11 @@ function media_files(): array
             if (!in_array($ext, FILE_TYPES, true)) {
                 continue;
             }
+            $meta = media_meta($urlBase . '/' . $name);
             $files[] = [
                 'url' => $urlBase . '/' . $name,
+                'credit' => (string) ($meta['credit'] ?? ''),
+                'alt' => (string) ($meta['alt'] ?? ''),
                 'name' => $name,
                 'isImage' => in_array($ext, IMAGE_TYPES, true),
                 'size' => filesize($full),
@@ -128,6 +131,99 @@ function shrink_image(string $path, string $mime): void
     imagedestroy($resized);
 }
 
+/** Saves the description (alt text) and photographer credit of one file. */
+function save_media_meta(string $url, string $alt, string $credit): void
+{
+    if (!is_media_path($url)) {
+        return;
+    }
+    $alt = trim($alt);
+    $credit = mb_substr(trim($credit), 0, 255);
+    if ($alt === '' && $credit === '') {
+        db()->prepare('DELETE FROM media_meta WHERE path = ?')->execute([$url]);
+        return;
+    }
+    db()->prepare('REPLACE INTO media_meta (path, alt, credit, updated_at) VALUES (?, ?, ?, ?)')
+        ->execute([$url, $alt, $credit, now()]);
+}
+
+/** A file in the media library: under /images, /uploads or /downloads, and real. */
+function is_media_path(string $url): bool
+{
+    return (bool) preg_match('~^/(images|uploads|downloads)/[A-Za-z0-9/_.-]+$~', $url)
+        && strpos($url, '..') === false && is_file(PUB . $url);
+}
+
+/**
+ * Crops an image to the rectangle chosen in the admin (in the original's own
+ * pixels) and saves the result as a NEW file in /uploads, so the original and
+ * every page already using it stay as they are. Credit and description carry
+ * over to the copy.
+ */
+function crop_image(string $url, int $x, int $y, int $width, int $height): array
+{
+    if (!function_exists('imagecreatetruecolor')) {
+        return ['ok' => false, 'error' => 'Image editing is not available on this server.'];
+    }
+    if (!is_media_path($url)) {
+        return ['ok' => false, 'error' => 'That image could not be found.'];
+    }
+    $path = PUB . $url;
+    $mime = (new finfo(FILEINFO_MIME_TYPE))->file($path);
+    $source = match ($mime) {
+        'image/jpeg' => @imagecreatefromjpeg($path),
+        'image/png' => @imagecreatefrompng($path),
+        'image/webp' => function_exists('imagecreatefromwebp') ? @imagecreatefromwebp($path) : false,
+        default => false,
+    };
+    if (!$source) {
+        return ['ok' => false, 'error' => 'Only JPG, PNG and WebP images can be cropped.'];
+    }
+
+    // Keep the rectangle inside the picture.
+    $w = imagesx($source);
+    $h = imagesy($source);
+    $x = max(0, min($x, $w - 1));
+    $y = max(0, min($y, $h - 1));
+    $width = max(1, min($width, $w - $x));
+    $height = max(1, min($height, $h - $y));
+    if ($width < 20 || $height < 20) {
+        imagedestroy($source);
+        return ['ok' => false, 'error' => 'That crop is too small.'];
+    }
+
+    $cropped = imagecreatetruecolor($width, $height);
+    imagealphablending($cropped, false);
+    imagesavealpha($cropped, true);
+    imagecopy($cropped, $source, 0, 0, $x, $y, $width, $height);
+
+    $dir = '/uploads/' . gmdate('Y/m');
+    if (!is_dir(PUB . $dir) && !mkdir(PUB . $dir, 0755, true)) {
+        return ['ok' => false, 'error' => 'The uploads folder is not writable.'];
+    }
+    // "photo-a1b2c3.jpg" → "photo-cropped-d4e5f6.jpg" (no pile-up of suffixes).
+    $base = preg_replace('/(-cropped)?-[0-9a-f]{6}$/', '', pathinfo($url, PATHINFO_FILENAME));
+    $ext = IMAGE_TYPES[$mime];
+    $name = substr(slugify($base), 0, 50) . '-cropped-' . bin2hex(random_bytes(3)) . '.' . $ext;
+    $saved = match ($mime) {
+        'image/jpeg' => imagejpeg($cropped, PUB . $dir . '/' . $name, 88),
+        'image/png' => imagepng($cropped, PUB . $dir . '/' . $name, 8),
+        'image/webp' => imagewebp($cropped, PUB . $dir . '/' . $name, 85),
+    };
+    imagedestroy($source);
+    imagedestroy($cropped);
+    if (!$saved) {
+        return ['ok' => false, 'error' => 'The cropped image could not be saved.'];
+    }
+    @chmod(PUB . $dir . '/' . $name, 0644);
+
+    $meta = media_meta($url);
+    if ($meta) {
+        save_media_meta($dir . '/' . $name, (string) ($meta['alt'] ?? ''), (string) ($meta['credit'] ?? ''));
+    }
+    return ['ok' => true, 'url' => $dir . '/' . $name];
+}
+
 function delete_upload(string $url): void
 {
     if (!preg_match('~^/uploads/[A-Za-z0-9/_.-]+$~', $url) || strpos($url, '..') !== false) {
@@ -137,4 +233,5 @@ function delete_upload(string $url): void
     if (is_file($path)) {
         unlink($path);
     }
+    db()->prepare('DELETE FROM media_meta WHERE path = ?')->execute([$url]);
 }

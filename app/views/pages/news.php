@@ -10,6 +10,7 @@ $filters = [
 ];
 ?>
 <?= page_hero($p['hero'] ?? []) ?>
+<?= page_blocks($p, 'top') ?>
 
 <?php if (v($p, 'saigaNews.title') !== ''): ?>
 <section class="section-tight pb-0">
@@ -32,3 +33,5 @@ $filters = [
     </div>
   </div>
 </section>
+
+<?= page_blocks($p) ?>
