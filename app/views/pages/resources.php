@@ -1,22 +1,24 @@
-<?php $p = page('resources'); $r = $p['report'] ?? []; $rep = $p['reporting'] ?? []; ?>
+<?php $p = page('resources'); $r = shown($p, 'report') ? ($p['report'] ?? []) : []; $rep = $p['reporting'] ?? []; ?>
 <?= page_hero($p['hero'] ?? []) ?>
 <?= page_blocks($p, 'top') ?>
 
+<?php if (shown($p, 'items')): ?>
 <section class="section">
   <div class="shell">
     <div class="max-w-4xl">
       <?php foreach (array_values($p['items'] ?? []) as $i => $item): ?><?= resource_link($item, $i * 120) ?><?php endforeach; ?>
     </div>
-    <?php if (($p['note'] ?? '') !== ''): ?><p class="mt-12 max-w-2xl text-[0.9375rem] leading-relaxed text-muted"><?= e($p['note']) ?></p><?php endif; ?>
+    <?php if (($p['note'] ?? '') !== ''): ?><p class="mt-12 max-w-2xl text-[0.9375rem] leading-relaxed text-muted"><?= rich($p['note']) ?></p><?php endif; ?>
   </div>
 </section>
+<?php endif; ?>
 
 <?php
   // Reporting: the featured publication box, then a plain archive of reports
   // (newest first — the admin adds new ones at the top). The donate page's
   // "latest annual report" link jumps here with /resources#reporting.
   $reports = document_links($rep['reports'] ?? []);
-  if (($r['title'] ?? '') !== '' || $reports !== ''):
+  if ((($r['title'] ?? '') !== '' || $reports !== '') && shown($p, 'reporting')):
 ?>
 <section id="reporting" class="section-tight scroll-mt-28 pb-24 md:pb-32">
   <div class="shell">
@@ -28,7 +30,7 @@
         <div>
           <p class="eyebrow"><?= e($r['eyebrow'] ?? '') ?></p>
           <h3 class="mt-3 text-2xl leading-snug md:text-[1.75rem]"><?= e($r['title']) ?></h3>
-          <p class="mt-3 text-[1rem] leading-relaxed text-body"><?= e($r['body'] ?? '') ?></p>
+          <p class="mt-3 text-[1rem] leading-relaxed text-body"><?= rich($r['body'] ?? '', false) ?></p>
           <span class="link-arrow mt-5"><?= e($r['linkLabel'] ?? '') ?><?= icon('arrow-right', 'h-4 w-4') ?></span>
         </div>
       </a>
@@ -41,4 +43,4 @@
 
 <?= page_blocks($p) ?>
 
-<?= related_links($p['related'] ?? []) ?>
+<?php if (shown($p, 'related')): ?><?= related_links($p['related'] ?? []) ?><?php endif; ?>

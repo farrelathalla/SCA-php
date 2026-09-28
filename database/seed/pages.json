@@ -315,16 +315,15 @@
       "noResults": "Nothing matches those filters yet. Try widening your selection.",
       "skipToContent": "Skip to content",
       "menu": "Menu",
-      "photoCredit": "Photo:"
+      "photoCredit": "Photo:",
+      "home": "Home"
     },
     "notFound": {
       "eyebrow": "404",
       "title": "This page has moved on",
-      "intro": "Like the herds, some things do not stay in one place. Try the homepage, or head straight to our work.",
+      "intro": "Like the herds, some things do not stay in one place. Try the homepage, or use the menu above to find your way.",
       "primaryLabel": "Back to the homepage",
-      "primaryHref": "/",
-      "secondaryLabel": "See our work",
-      "secondaryHref": "/our-work"
+      "primaryHref": "/"
     },
     "projectTypes": [
       "SCA Project",
@@ -332,6 +331,21 @@
       "Young Conservation Leaders Project",
       "Excellence in Saiga Protection Awardee",
       "Student Research Project"
+    ],
+    "projectThemes": [
+      "Education & Awareness",
+      "International Policy & Cooperation",
+      "Protecting Saigas on the Ground",
+      "Research & Monitoring",
+      "Working with Communities"
+    ],
+    "projectCountries": [
+      "Kazakhstan",
+      "Uzbekistan",
+      "Mongolia",
+      "Russia",
+      "China",
+      "International"
     ]
   },
   "home": {
@@ -1408,9 +1422,8 @@
       "whoTitle": "Who it’s for",
       "supportsTitle": "What it supports",
       "applyTitle": "How to apply",
-      "applyBody": "Applications are made through a short online form. We ask for a clear description of the work, a simple budget and one referee — nothing longer than is genuinely needed.",
       "applyButtonLabel": "Start an application",
-      "applyButtonHref": "/about/contact",
+      "closedNote": "Applications are closed at the moment. Sign up for updates to hear when the next round opens.",
       "questionsEyebrow": "Before you apply",
       "keyDatesEyebrow": "Key dates",
       "recipientsEyebrow": "Previous recipients",

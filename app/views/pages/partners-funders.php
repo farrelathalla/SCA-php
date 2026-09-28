@@ -2,11 +2,11 @@
 <?= page_hero($p['hero'] ?? []) ?>
 <?= page_blocks($p, 'top') ?>
 
-<?php foreach (array_values($p['groups'] ?? []) as $gi => $group): ?>
+<?php foreach (shown($p, 'groups') ? array_values($p['groups'] ?? []) : [] as $gi => $group): ?>
 <section class="<?= $gi === 0 ? 'section' : 'section-tight pb-24 md:pb-32' ?>">
   <div class="shell">
     <?= section_heading('', (string) ($group['title'] ?? '')) ?>
-    <div class="mt-12 grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3 md:grid-cols-4 md:gap-x-12 md:gap-y-14">
+    <div class="mt-12 card-row [--cols:2] [--gap-x:2rem] gap-y-10 sm:[--cols:3] md:[--cols:4] md:gap-y-14 md:[--gap-x:3rem]">
       <?php foreach (array_values($group['partners'] ?? []) as $i => $partner):
           $href = (string) ($partner['href'] ?? '#'); ?>
       <div <?= reveal('', $i * 60) ?>>

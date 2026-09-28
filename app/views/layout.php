@@ -2,7 +2,7 @@
 $siteName = (string) site('site.name', 'Saiga Conservation Alliance');
 $pageTitle = trim((string) ($meta['title'] ?? ''));
 $title = $pageTitle !== '' ? $pageTitle . ' — ' . $siteName : $siteName;
-$description = trim((string) ($meta['description'] ?? '')) ?: (string) site('site.description');
+$description = plain_text($meta['description'] ?? '') ?: plain_text(site('site.description'));
 ?><!DOCTYPE html>
 <html lang="en">
 <head>

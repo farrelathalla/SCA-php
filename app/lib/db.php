@@ -9,7 +9,7 @@
  * overwrites anything an editor has already changed.
  */
 
-const SCHEMA_VERSION = 5;
+const SCHEMA_VERSION = 6;
 
 function db(): PDO
 {
@@ -279,6 +279,152 @@ function migrate_content(int $from): void
             save_page_row('donate', $donate);
         }
     }
+
+    if ($from < 6) {
+        migrate_content_v6();
+    }
+}
+
+/**
+ * v6 — SCA's third round of feedback (2026-09-28).
+ */
+function migrate_content_v6(): void
+{
+    $seed = seed_data('pages.json');
+
+    // Site-wide: "Home" in the mobile menu, one button on the 404 page, and the
+    // theme and country lists projects are now tagged from.
+    if (($global = page_row('global')) !== null) {
+        $global['labels']['home'] = $global['labels']['home'] ?? $seed['global']['labels']['home'];
+        unset($global['notFound']['secondaryLabel'], $global['notFound']['secondaryHref']);
+        if (trim((string) ($global['notFound']['intro'] ?? '')) === 'Like the herds, some things do not stay in one place. Try the homepage, or head straight to our work.') {
+            $global['notFound']['intro'] = $seed['global']['notFound']['intro'];
+        }
+        $global = insert_after($global, 'projectTypes', array_filter([
+            'projectThemes' => isset($global['projectThemes']) ? null : $seed['global']['projectThemes'],
+            'projectCountries' => isset($global['projectCountries']) ? null : $seed['global']['projectCountries'],
+        ]));
+        save_page_row('global', $global);
+    }
+    $themes = (array) (page_row('global')['projectThemes'] ?? $seed['global']['projectThemes']);
+    $countries = (array) (page_row('global')['projectCountries'] ?? $seed['global']['projectCountries']);
+
+    // Grants & awards: the application text and form link belong to each
+    // programme now (each has its own form), and a programme can be closed.
+    $apply = ['body' => '', 'href' => ''];
+    if (($grants = page_row('grants-and-awards')) !== null) {
+        $template = $grants['programmeTemplate'] ?? [];
+        $apply = ['body' => (string) ($template['applyBody'] ?? ''), 'href' => (string) ($template['applyButtonHref'] ?? '')];
+        unset($template['applyBody'], $template['applyButtonHref']);
+        if (!isset($template['closedNote'])) {
+            $template = insert_after($template, 'applyButtonLabel', ['closedNote' => $seed['grants-and-awards']['programmeTemplate']['closedNote']]);
+        }
+        $grants['programmeTemplate'] = $template;
+        save_page_row('grants-and-awards', $grants);
+    }
+
+    $update = db()->prepare('UPDATE entries SET data = ? WHERE id = ?');
+    $save = fn (int $id, array $data) => $update->execute([json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $id]);
+
+    foreach (db()->query("SELECT id, data FROM entries WHERE type = 'programme'")->fetchAll() as $row) {
+        $data = json_decode($row['data'], true) ?: [];
+        // "Previous recipients" now lists the programme's projects from the archive.
+        unset($data['recipients']);
+        $data = insert_after($data, 'whatItSupports', array_diff_key([
+            'applicationsOpen' => true,
+            'applyBody' => $apply['body'],
+            'applyButtonHref' => $apply['href'] ?: '/about/contact',
+        ], $data));
+        $save((int) $row['id'], $data);
+    }
+
+    // Themes: which archive theme each Our Work theme's "Explore all" link filters on.
+    foreach (db()->query("SELECT id, data FROM entries WHERE type = 'theme'")->fetchAll() as $row) {
+        $data = json_decode($row['data'], true) ?: [];
+        if (!isset($data['projectTheme'])) {
+            $match = canonical_option((string) ($data['title'] ?? ''), $themes, THEME_KEYWORDS);
+            $data = insert_after($data, 'title', ['projectTheme' => in_array($match, $themes, true) ? $match : '']);
+            $save((int) $row['id'], $data);
+        }
+    }
+
+    // Projects: themes and countries spelled as in the new lists, so they
+    // match the drop-downs. Values that match nothing are left as they are.
+    foreach (db()->query("SELECT id, data FROM entries WHERE type = 'project'")->fetchAll() as $row) {
+        $data = json_decode($row['data'], true) ?: [];
+        $data['themes'] = array_values(array_unique(array_map(
+            fn ($v) => canonical_option((string) $v, $themes, THEME_KEYWORDS),
+            (array) ($data['themes'] ?? [])
+        )));
+        $data['countries'] = array_values(array_unique(array_map(
+            fn ($v) => canonical_option((string) $v, $countries, ['russia' => 'Russia', 'russian federation' => 'Russia']),
+            (array) ($data['countries'] ?? [])
+        )));
+        $data['years'] = array_values(array_unique(array_map(fn ($v) => trim((string) $v), (array) ($data['years'] ?? []))));
+        $save((int) $row['id'], $data);
+    }
+
+    // Icons uploaded before there was a shared list: offer them in every picker.
+    $used = [];
+    foreach (array_merge(
+        db()->query('SELECT data FROM pages')->fetchAll(PDO::FETCH_COLUMN),
+        db()->query('SELECT data FROM entries')->fetchAll(PDO::FETCH_COLUMN)
+    ) as $json) {
+        preg_match_all('~"(?:icon|\w+Icon)":"(/(?:uploads|images)/[^"]+\.(?:png|webp|gif))"~i', (string) $json, $m);
+        $used = array_merge($used, $m[1]);
+    }
+    if ($used) {
+        $known = json_decode((string) db()->query("SELECT value FROM settings WHERE name = 'custom_icons'")->fetchColumn(), true) ?: [];
+        db()->prepare("REPLACE INTO settings (name, value) VALUES ('custom_icons', ?)")
+            ->execute([json_encode(array_values(array_unique(array_merge($known, $used))), JSON_UNESCAPED_SLASHES)]);
+    }
+}
+
+/** Words that identify each of SCA's five themes, however a theme was spelled. */
+const THEME_KEYWORDS = [
+    'educat' => 'Education & Awareness',
+    'policy' => 'International Policy & Cooperation',
+    'cooperation' => 'International Policy & Cooperation',
+    'protect' => 'Protecting Saigas on the Ground',
+    'research' => 'Research & Monitoring',
+    'monitor' => 'Research & Monitoring',
+    'communit' => 'Working with Communities',
+];
+
+/**
+ * The spelling of $value used in $options: an exact match ignoring case and
+ * spaces, else the first keyword it contains. Unmatched values come back as-is.
+ */
+function canonical_option(string $value, array $options, array $keywords = []): string
+{
+    $value = trim($value);
+    foreach ($options as $option) {
+        if (strcasecmp(trim((string) $option), $value) === 0) {
+            return (string) $option;
+        }
+    }
+    foreach ($keywords as $word => $option) {
+        if (stripos($value, $word) !== false && in_array($option, $options, true)) {
+            return $option;
+        }
+    }
+    return $value;
+}
+
+/** $entries inserted after $after (or at the end), keeping the order of keys. */
+function insert_after(array $data, string $after, array $entries): array
+{
+    if (!$entries) {
+        return $data;
+    }
+    $out = [];
+    foreach ($data as $key => $value) {
+        $out[$key] = $value;
+        if ((string) $key === $after) {
+            $out += $entries;
+        }
+    }
+    return $out + $entries;
 }
 
 function page_row(string $slug): ?array

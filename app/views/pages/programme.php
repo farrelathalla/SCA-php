@@ -3,6 +3,15 @@
 $grants = page('grants-and-awards');
 $t = v($grants, 'programmeTemplate', []);
 $pr = $programme;
+// Each programme has its own application form and can be closed between
+// rounds, which hides the "Start an application" button.
+$open = !array_key_exists('applicationsOpen', $pr) || !empty($pr['applicationsOpen']);
+// Previous recipients are the programme's projects in the archive, newest first.
+$archiveType = trim((string) ($pr['archiveType'] ?? ''));
+$recipients = $archiveType === '' ? [] : array_slice(array_values(array_filter(
+    entries('project'),
+    fn ($project) => ($project['type'] ?? '') === $archiveType
+)), 0, 6);
 $checkList = function (array $items): string {
     $out = '';
     foreach ($items as $item) {
@@ -45,8 +54,12 @@ $checkList = function (array $items): string {
     <div <?= reveal('grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:gap-24') ?>>
       <div>
         <h2 class="text-3xl"><?= e($t['applyTitle'] ?? '') ?></h2>
-        <p class="mt-4 text-[1.0625rem] leading-relaxed text-body"><?= e($t['applyBody'] ?? '') ?></p>
-        <div class="mt-8"><?= button((string) ($t['applyButtonHref'] ?? ''), (string) ($t['applyButtonLabel'] ?? '')) ?></div>
+        <p class="mt-4 text-[1.0625rem] leading-relaxed text-body"><?= rich(($pr['applyBody'] ?? '') ?: ($t['applyBody'] ?? '')) ?></p>
+        <?php if ($open): ?>
+        <div class="mt-8"><?= button((string) (($pr['applyButtonHref'] ?? '') ?: ($t['applyButtonHref'] ?? '/about/contact')), (string) ($t['applyButtonLabel'] ?? '')) ?></div>
+        <?php elseif (trim((string) ($t['closedNote'] ?? '')) !== ''): ?>
+        <p class="mt-8 inline-block rounded-2xl bg-cream/70 px-5 py-4 text-[0.95rem] leading-relaxed text-ink"><?= rich($t['closedNote']) ?></p>
+        <?php endif; ?>
         <?php if (!empty($pr['applicationQuestions'])): ?>
         <div class="mt-12">
           <p class="eyebrow"><?= e($t['questionsEyebrow'] ?? '') ?></p>
@@ -54,7 +67,7 @@ $checkList = function (array $items): string {
             <?php foreach ($pr['applicationQuestions'] as $q): ?>
             <div>
               <dt class="text-[1rem] font-medium text-ink"><?= e($q['question'] ?? '') ?></dt>
-              <dd class="mt-2 text-[0.9375rem] leading-relaxed text-body"><?= e($q['answer'] ?? '') ?></dd>
+              <dd class="mt-2 text-[0.9375rem] leading-relaxed text-body"><?= rich($q['answer'] ?? '') ?></dd>
             </div>
             <?php endforeach; ?>
           </dl>
@@ -76,25 +89,21 @@ $checkList = function (array $items): string {
   </div>
 </section>
 
+<?php if ($recipients): ?>
 <section class="section">
   <div class="shell">
-    <?= section_heading((string) ($t['recipientsEyebrow'] ?? ''), (string) ($t['recipientsTitle'] ?? '')) ?>
-    <div class="mt-14 grid gap-10 sm:grid-cols-3 sm:gap-12">
-      <?php foreach (array_values($pr['recipients'] ?? []) as $i => $r): ?>
-      <div <?= reveal('', $i * 110) ?>>
-        <div class="flex items-start gap-5">
-          <div class="w-20 shrink-0 sm:w-24"><?= media($r['image'] ?? '', ['ratio' => 'portrait']) ?></div>
-          <div>
-            <h3 class="text-[1.0625rem] leading-snug font-sans font-medium text-ink"><?= e($r['project'] ?? '') ?></h3>
-            <p class="mt-2 text-[0.9rem] text-accent-dark"><?= e(implode(' · ', array_filter([$r['year'] ?? '', $r['country'] ?? '']))) ?></p>
-            <p class="mt-1.5 text-[0.85rem] text-muted"><?= e($r['recipient'] ?? '') ?></p>
-          </div>
-        </div>
-      </div>
-      <?php endforeach; ?>
+    <div class="flex flex-wrap items-end justify-between gap-6">
+      <?= section_heading((string) ($t['recipientsEyebrow'] ?? ''), (string) ($t['recipientsTitle'] ?? '')) ?>
+      <div <?= reveal('', 120) ?>><?= arrow_link('/projects?type=' . rawurlencode($archiveType), tpl((string) ($t['exploreMoreLabel'] ?? ''), ['title' => $pr['title'] ?? ''])) ?></div>
     </div>
-    <div <?= reveal('', 160) ?>><?= arrow_link('/projects?type=' . rawurlencode((string) ($pr['archiveType'] ?? '')), tpl((string) ($t['exploreMoreLabel'] ?? ''), ['title' => $pr['title'] ?? '']), 'mt-14') ?></div>
+    <div class="mt-14">
+      <?= card_grid(implode('', array_map(
+          fn ($project, $i) => story_card(project_card($project, implode(', ', $project['countries'] ?? []), [implode(', ', $project['themes'] ?? []), implode(', ', $project['years'] ?? [])]), ($i % 3) * 110),
+          $recipients, array_keys($recipients)
+      ))) ?>
+    </div>
   </div>
 </section>
+<?php endif; ?>
 
 <?= cta_band(['title' => v($grants, 'cta.title'), 'body' => v($grants, 'cta.body')]) ?>

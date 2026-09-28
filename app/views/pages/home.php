@@ -13,6 +13,7 @@ $hero = $p['hero'] ?? [];
 ) ?>
 <?= page_blocks($p, 'top') ?>
 
+<?php if (shown($p, 'mission')): ?>
 <section class="section">
   <div class="shell">
     <?= photo_text(
@@ -22,7 +23,9 @@ $hero = $p['hero'] ?? [];
     ) ?>
   </div>
 </section>
+<?php endif; ?>
 
+<?php if (shown($p, 'species')): ?>
 <section class="section-tight pb-20 md:pb-28">
   <div class="shell">
     <?= photo_text(
@@ -33,9 +36,11 @@ $hero = $p['hero'] ?? [];
     ) ?>
   </div>
 </section>
+<?php endif; ?>
 
-<?= number_band((string) v($p, 'numbers.eyebrow'), v($p, 'numbers.stats', [])) ?>
+<?php if (shown($p, 'numbers')): ?><?= number_band((string) v($p, 'numbers.eyebrow'), v($p, 'numbers.stats', [])) ?><?php endif; ?>
 
+<?php if (shown($p, 'whatWeDo')): ?>
 <section class="section">
   <div class="shell">
     <?= section_heading((string) v($p, 'whatWeDo.eyebrow'), (string) v($p, 'whatWeDo.title'), (string) v($p, 'whatWeDo.intro')) ?>
@@ -43,8 +48,9 @@ $hero = $p['hero'] ?? [];
     <div <?= reveal('', 200) ?>><?= arrow_link((string) v($p, 'whatWeDo.linkHref'), (string) v($p, 'whatWeDo.linkLabel'), 'mt-12') ?></div>
   </div>
 </section>
+<?php endif; ?>
 
-<?php if ($featured): ?>
+<?php if ($featured && shown($p, 'featured')): ?>
 <section class="section-tight bg-cream-deep">
   <div class="shell">
     <div class="flex flex-wrap items-end justify-between gap-6">
@@ -58,6 +64,7 @@ $hero = $p['hero'] ?? [];
 </section>
 <?php endif; ?>
 
+<?php if (shown($p, 'latest')): ?>
 <section class="section">
   <div class="shell">
     <div class="flex flex-wrap items-end justify-between gap-6">
@@ -67,15 +74,17 @@ $hero = $p['hero'] ?? [];
     <div class="mt-14 md:mt-16"><?= story_list($latest) ?></div>
   </div>
 </section>
+<?php endif; ?>
 
 <?php if (!empty($p['showDonationBand'])): ?><?= cta_band() ?><?php endif; ?>
 
+<?php if (shown($p, 'stayConnected')): ?>
 <section class="section-tight">
   <div class="shell">
     <div <?= reveal('flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-16') ?>>
       <div class="max-w-md">
         <h2 class="text-3xl"><?= e(v($p, 'stayConnected.title')) ?></h2>
-        <p class="mt-3 text-[1.0625rem] leading-relaxed text-body"><?= e(v($p, 'stayConnected.body')) ?></p>
+        <p class="mt-3 text-[1.0625rem] leading-relaxed text-body"><?= rich(v($p, 'stayConnected.body')) ?></p>
         <?php if (v($p, 'stayConnected.promptLinkLabel') !== ''): ?>
         <p class="mt-3 text-[0.9rem] text-muted">
           <?= e(v($p, 'stayConnected.promptText')) ?>
@@ -87,5 +96,6 @@ $hero = $p['hero'] ?? [];
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <?= page_blocks($p) ?>

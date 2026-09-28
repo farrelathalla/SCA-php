@@ -195,6 +195,26 @@
   .prose-sca > *:first-child {
     margin-top: 0;
   }
+
+  /* Rows of cards whose short last row (two cards where three fit) sits in
+     the middle rather than hugging the left. Columns and the gap between them
+     are variables so they can change per breakpoint, e.g.
+     "card-row gap-y-10 [--gap-x:2.5rem] sm:[--cols:3]"; rows use gap-y-*. */
+  .card-row {
+    --cols: 1;
+    --gap-x: 2.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    column-gap: var(--gap-x);
+  }
+
+  .card-row > * {
+    flex: 0 0 auto;
+    min-width: 0;
+    /* A hair under the exact share, so sub-pixel rounding never wraps a row early. */
+    width: calc((100% - (var(--cols) - 1) * var(--gap-x)) / var(--cols) - 0.05px);
+  }
 }
 
 /* ------------------------------------------------------------------

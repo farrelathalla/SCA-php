@@ -55,12 +55,20 @@ const ICON_PATHS = [
     'flickr' => '<circle cx="7.25" cy="12" r="3.75" /><circle cx="16.75" cy="12" r="3.75" />',
     'rss' => '<path d="M5 4.5A14.5 14.5 0 0 1 19.5 19" /><path d="M5 10.5a8.5 8.5 0 0 1 8.5 8.5" /><circle cx="6" cy="18" r="1.4" fill="currentColor" stroke="none" />',
     'link' => '<path d="M10 14a4 4 0 0 0 5.7 0l3.2-3.2a4 4 0 0 0-5.7-5.7l-1.2 1.2" /><path d="M14 10a4 4 0 0 0-5.7 0l-3.2 3.2a4 4 0 0 0 5.7 5.7l1.2-1.2" />',
+    // Added for SCA's third round of feedback (not in the design's set).
+    'factsheet' => '<rect x="5" y="4.5" width="14" height="16.5" rx="2" /><path d="M9 4.5V3h6v1.5" /><path d="M8.5 10h7M8.5 13.5h7M8.5 17h4" />',
+    'download' => '<path d="M12 4v11" /><path d="m7 10.5 5 5 5-5" /><path d="M4.5 19.5h15" />',
+    'calendar' => '<rect x="3.5" y="5" width="17" height="15.5" rx="2" /><path d="M3.5 10h17" /><path d="M8 3v4M16 3v4" />',
+    'camera' => '<rect x="2.5" y="6" width="19" height="13.5" rx="2.5" /><circle cx="12" cy="12.75" r="3.5" /><path d="M8 6l1.5-2.5h5L16 6" />',
+    'video' => '<rect x="3" y="6" width="13" height="12" rx="2" /><path d="m16 10.5 5-3v9l-5-3" />',
+    'map' => '<path d="M9 4.5 3.5 6.5v13l5.5-2 6 2 5.5-2v-13l-5.5 2-6-2Z" /><path d="M9 4.5v13M15 6.5v13" />',
+    'info' => '<circle cx="12" cy="12" r="8.5" /><path d="M12 11v5.5" /><circle cx="12" cy="7.8" r="0.9" fill="currentColor" stroke="none" />',
 ];
 
 /** Names offered in the admin icon picker (content icons + social). */
 const CONTENT_ICONS = [
     'grass', 'route', 'shield', 'users', 'book', 'chart', 'mountain', 'leaf', 'award', 'pin', 'globe', 'document',
-    'heart', 'mail', 'phone', 'clock', 'gauge', 'ruler', 'weight', 'horns', 'nose', 'calf', 'paw', 'virus', 'weather',
+    'factsheet', 'download', 'calendar', 'camera', 'video', 'map', 'info', 'heart', 'mail', 'phone', 'clock', 'gauge', 'ruler', 'weight', 'horns', 'nose', 'calf', 'paw', 'virus', 'weather',
     'barrier', 'card', 'link', 'rss', 'instagram', 'facebook', 'linkedin', 'youtube', 'x', 'bluesky', 'threads',
     'tiktok', 'whatsapp', 'telegram', 'vimeo', 'flickr',
 ];
@@ -81,6 +89,22 @@ function icon(string $name, string $class = 'h-4 w-4', float $strokeWidth = 1.4)
     $paths = ICON_PATHS[$name] ?? ICON_PATHS['leaf'];
     return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' . $strokeWidth
         . '" stroke-linecap="round" stroke-linejoin="round" class="' . e($class) . '" aria-hidden="true">' . $paths . '</svg>';
+}
+
+/**
+ * Icons SCA uploaded through an icon picker (kept in the settings table), so
+ * one upload — a factsheet icon, say — can be chosen anywhere afterwards.
+ * Files deleted from the media library drop out of the list.
+ */
+function custom_icons(): array
+{
+    try {
+        $json = db()->query("SELECT value FROM settings WHERE name = 'custom_icons'")->fetchColumn();
+    } catch (PDOException $e) {
+        return [];
+    }
+    $icons = json_decode((string) $json, true) ?: [];
+    return array_values(array_filter($icons, fn ($p) => is_string($p) && is_custom_icon($p) && is_file(PUB . $p)));
 }
 
 function is_custom_icon(string $name): bool

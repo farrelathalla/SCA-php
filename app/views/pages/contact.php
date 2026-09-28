@@ -7,7 +7,7 @@
     <div class="grid gap-16 lg:grid-cols-[1.1fr_1fr] lg:gap-24">
       <div <?= reveal() ?>>
         <h2 class="text-2xl"><?= e(v($p, 'form.title')) ?></h2>
-        <p class="mt-3 mb-8 text-[1rem] leading-relaxed text-body"><?= e(v($p, 'form.intro')) ?></p>
+        <p class="mt-3 mb-8 text-[1rem] leading-relaxed text-body"><?= rich(v($p, 'form.intro')) ?></p>
         <?= contact_form('contact') ?>
       </div>
 
@@ -26,7 +26,7 @@
             <?= icon('pin', 'mt-0.5 h-5 w-5 shrink-0 text-accent') ?>
             <div>
               <p class="text-[0.8rem] tracking-[0.1em] text-muted uppercase"><?= e($o['postLabel'] ?? '') ?></p>
-              <p class="mt-1 text-[1rem] leading-relaxed text-ink"><?= nl2br(e($o['postAddress'] ?? ''), false) ?></p>
+              <p class="mt-1 text-[1rem] leading-relaxed text-ink"><?= rich($o['postAddress'] ?? '') ?></p>
             </div>
           </div>
         </div>

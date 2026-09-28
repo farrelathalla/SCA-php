@@ -148,6 +148,9 @@ if (($parts[0] ?? '') === 'pages' && isset($parts[1], ADMIN_PAGES[$parts[1]])) {
         blocks_key('extraBlocks');
         block_placement(true);
     }
+    // The page's own sections, each with a "Show on the page" switch.
+    $hideable = HIDEABLE_SECTIONS[$slug] ?? [];
+    section_switches($hideable, (array) (page($slug)['hiddenSections'] ?? []));
 
     if (is_post()) {
         require_csrf();
@@ -161,6 +164,10 @@ if (($parts[0] ?? '') === 'pages' && isset($parts[1], ADMIN_PAGES[$parts[1]])) {
         if (!is_array($data)) {
             flash('Nothing was saved — the form data could not be read.', 'error');
             redirect('/admin/pages/' . $slug);
+        }
+        $data['hiddenSections'] = array_values(array_intersect((array) ($data['hiddenSections'] ?? []), $hideable));
+        if (!$data['hiddenSections']) {
+            unset($data['hiddenSections']);
         }
         // Keep internal keys (e.g. _label) that the form does not show.
         foreach (page($slug) as $k => $v) {
@@ -197,6 +204,8 @@ if (isset(COLLECTION_ROUTES[$parts[0] ?? ''])) {
     if ($type === 'custom') {
         blocks_key('sections');
     }
+    // Project themes, countries and years are ticked from fixed lists.
+    tag_fields($type === 'project');
 
     // List
     if (!isset($parts[1])) {

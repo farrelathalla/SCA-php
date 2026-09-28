@@ -170,6 +170,78 @@ function media_meta(?string $src = null): array
     return $all[parse_url($src, PHP_URL_PATH) ?: $src] ?? [];
 }
 
+/**
+ * Whether a section of a fixed page is shown. Every page's admin screen has a
+ * "Show on the page" switch per section; the ones switched off are listed in
+ * the page's hiddenSections.
+ */
+function shown(array $page, string $section): bool
+{
+    return !in_array($section, (array) ($page['hiddenSections'] ?? []), true);
+}
+
+/**
+ * The sections of each fixed page that can be taken off it, in the admin's
+ * words: page slug => [document key => what the switch is called]. The page
+ * templates wrap each of these sections in shown().
+ */
+const HIDEABLE_SECTIONS = [
+    'home' => ['mission', 'species', 'numbers', 'whatWeDo', 'featured', 'latest', 'stayConnected'],
+    'about' => ['mission', 'approach', 'governance', 'explore'],
+    'our-story' => ['milestones', 'related'],
+    'our-people' => ['groups'],
+    'partners-funders' => ['groups'],
+    'what-is-a-saiga' => ['intro', 'factsheet', 'behaviour', 'distribution', 'explore'],
+    'why-saigas-matter' => ['intro', 'blocks', 'summary', 'related'],
+    'population-history-and-threats' => ['intro', 'history', 'graph', 'threats', 'summary', 'related'],
+    'policy-and-protection' => ['intro', 'agreements', 'national', 'callout', 'related'],
+    'our-work' => ['strands', 'grantsStrand'],
+    'grants-and-awards' => ['intro', 'programmes', 'cta'],
+    'resources' => ['items', 'reporting', 'report', 'related'],
+    'news' => ['saigaNews', 'email'],
+    'donate' => ['routes', 'impact', 'confidence', 'notReady'],
+    'donor-tours' => ['intro', 'blocks', 'summary', 'related'],
+    'sign-up' => ['related'],
+    'work-with-us' => ['intro', 'contact', 'related'],
+];
+
+/** Project archive years run from SCA's founding year to next year. */
+const PROJECT_FIRST_YEAR = 2006;
+
+function project_years(): array
+{
+    return array_map('strval', range((int) gmdate('Y') + 1, PROJECT_FIRST_YEAR));
+}
+
+/**
+ * The options a project is tagged from, as set under Header, footer &
+ * site-wide: 'themes', 'countries' or 'types' (years come from project_years()).
+ */
+function project_options(string $facet): array
+{
+    $key = ['themes' => 'projectThemes', 'countries' => 'projectCountries', 'types' => 'projectTypes'][$facet] ?? '';
+    if ($facet === 'years') {
+        return project_years();
+    }
+    return array_values(array_unique(array_filter(array_map(fn ($v) => trim((string) $v), (array) site($key, [])), 'strlen')));
+}
+
+/**
+ * Filter options for the projects archive: the configured options that are in
+ * use, in the configured order, then anything in use that is not configured.
+ */
+function used_options(array $configured, array $used): array
+{
+    $used = array_values(array_unique(array_filter(array_map('strval', $used), 'strlen')));
+    $out = array_values(array_filter($configured, fn ($o) => in_array($o, $used, true)));
+    foreach ($used as $value) {
+        if (!in_array($value, $out, true)) {
+            $out[] = $value;
+        }
+    }
+    return $out;
+}
+
 /** A list with its "all" option first and the rest sorted, as the archive expects. */
 function facet_options(string $all, array $values, bool $descending = false): array
 {

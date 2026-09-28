@@ -140,7 +140,7 @@ function section_heading(string $eyebrow, string $title, string $intro = '', str
   <p class="eyebrow flex items-center gap-3"><?php if (!$centred): ?><span class="h-px w-8 bg-sand-deep"></span><?php endif; ?><?= e($eyebrow) ?></p>
   <?php endif; ?>
   <h2 class="mt-4 text-3xl leading-[1.15] md:text-[2.6rem]"><?= e($title) ?></h2>
-  <?php if ($intro !== ''): ?><p class="mt-5 text-[1.0625rem] leading-relaxed text-body"><?= e($intro) ?></p><?php endif; ?>
+  <?php if ($intro !== ''): ?><p class="mt-5 text-[1.0625rem] leading-relaxed text-body"><?= rich($intro) ?></p><?php endif; ?>
 </div>
 <?php
     return ob_get_clean();
@@ -151,21 +151,22 @@ function section_heading(string $eyebrow, string $title, string $intro = '', str
 
 function fact_list(array $facts, int $columns = 3, string $class = ''): string
 {
+    // A short last row sits in the middle (see .card-row in the stylesheet).
     $grid = [
-        1 => 'grid-cols-1 gap-8',
-        2 => 'grid-cols-1 gap-10 sm:grid-cols-2 sm:gap-12',
-        3 => 'grid-cols-1 gap-10 sm:grid-cols-3 sm:gap-12',
-        4 => 'grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4 sm:gap-12',
+        1 => 'gap-y-8',
+        2 => 'gap-y-10 sm:[--cols:2] sm:gap-y-12 sm:[--gap-x:3rem]',
+        3 => 'gap-y-10 sm:[--cols:3] sm:gap-y-12 sm:[--gap-x:3rem]',
+        4 => 'gap-y-10 sm:[--cols:2] lg:[--cols:4] sm:gap-y-12 sm:[--gap-x:3rem]',
     ][$columns];
 
     ob_start(); ?>
-<div class="grid <?= $grid ?> <?= e($class) ?>">
+<div class="card-row <?= $grid ?> <?= e($class) ?>">
   <?php foreach (array_values($facts) as $i => $fact):
       $href = trim((string) ($fact['href'] ?? ''));
       $inner = icon((string) ($fact['icon'] ?? 'leaf'), 'h-7 w-7 text-accent', 1.2)
           . '<h3 class="mt-4 flex items-center gap-1.5 text-[1.0625rem] font-medium text-ink"><span class="font-sans">' . e($fact['title'] ?? '') . '</span>'
           . ($href !== '' ? icon('chevron-right', 'h-4 w-4 text-accent transition-transform duration-300 group-hover:translate-x-1') : '')
-          . '</h3><p class="mt-2 text-[0.9375rem] leading-relaxed text-body">' . e($fact['body'] ?? '') . '</p>'; ?>
+          . '</h3><p class="mt-2 text-[0.9375rem] leading-relaxed text-body">' . rich($fact['body'] ?? '', $href === '') . '</p>'; ?>
   <div <?= reveal('', $i * 110) ?>>
     <?php if ($href !== ''): ?><a href="<?= e($href) ?>" class="group block"><?= $inner ?></a><?php else: ?><div><?= $inner ?></div><?php endif; ?>
   </div>
@@ -248,7 +249,7 @@ function page_hero(array $hero, string $actions = ''): string
     <div class="max-w-3xl animate-fade-up">
       <?= $eyebrowHtml ?>
       <h1 class="mt-5 text-[2.6rem] leading-[1.08] md:text-6xl"><?= e($title) ?></h1>
-      <?php if ($intro !== ''): ?><p class="mt-6 max-w-xl text-lg leading-relaxed text-body"><?= e($intro) ?></p><?php endif; ?>
+      <?php if ($intro !== ''): ?><p class="mt-6 max-w-xl text-lg leading-relaxed text-body"><?= rich($intro) ?></p><?php endif; ?>
       <?= $actionsHtml ?>
       <?= $jumpHtml ?>
     </div>
@@ -261,7 +262,7 @@ function page_hero(array $hero, string $actions = ''): string
       <div class="animate-fade-up">
         <?= $eyebrowHtml ?>
         <h1 class="mt-5 text-[2.5rem] leading-[1.08] md:text-[3.5rem]"><?= e($title) ?></h1>
-        <?php if ($intro !== ''): ?><p class="mt-6 max-w-xl text-lg leading-relaxed text-body"><?= e($intro) ?></p><?php endif; ?>
+        <?php if ($intro !== ''): ?><p class="mt-6 max-w-xl text-lg leading-relaxed text-body"><?= rich($intro) ?></p><?php endif; ?>
         <?= $actionsHtml ?>
       <?= $jumpHtml ?>
       </div>
@@ -280,7 +281,7 @@ function page_hero(array $hero, string $actions = ''): string
     <div class="max-w-xl animate-fade-up">
       <?= $eyebrowHtml ?>
       <h1 class="mt-5 text-[2.6rem] leading-[1.06] md:text-6xl"><?= e($title) ?></h1>
-      <?php if ($intro !== ''): ?><p class="mt-6 text-lg leading-relaxed text-body"><?= e($intro) ?></p><?php endif; ?>
+      <?php if ($intro !== ''): ?><p class="mt-6 text-lg leading-relaxed text-body"><?= rich($intro) ?></p><?php endif; ?>
       <?= $actionsHtml ?>
       <?= $jumpHtml ?>
     </div>
@@ -298,7 +299,7 @@ function paragraphs(array $paragraphs, string $class = ''): string
     $out = '';
     foreach ($paragraphs as $p) {
         if (trim((string) $p) !== '') {
-            $out .= '<p' . ($class ? ' class="' . $class . '"' : '') . '>' . e($p) . '</p>';
+            $out .= '<p' . ($class ? ' class="' . $class . '"' : '') . '>' . rich($p) . '</p>';
         }
     }
     return $out;
@@ -352,11 +353,11 @@ function cta_band(array $overrides = []): string
       <div class="max-w-xl">
         <?= eyebrow_rule((string) ($c['eyebrow'] ?? ''), 'bg-accent/40') ?>
         <h2 class="mt-4 text-3xl leading-tight md:text-[2.75rem]"><?= e($c['title'] ?? '') ?></h2>
-        <p class="mt-4 text-[1.0625rem] leading-relaxed text-body"><?= e($c['body'] ?? '') ?></p>
+        <p class="mt-4 text-[1.0625rem] leading-relaxed text-body"><?= rich($c['body'] ?? '') ?></p>
       </div>
       <div class="shrink-0 lg:text-right">
         <?= button((string) ($c['ctaHref'] ?? ''), (string) ($c['ctaLabel'] ?? '')) ?>
-        <p class="mt-3.5 text-[0.8rem] text-muted"><?= e($c['note'] ?? '') ?></p>
+        <p class="mt-3.5 text-[0.8rem] text-muted"><?= rich($c['note'] ?? '') ?></p>
       </div>
     </div>
   </div>
@@ -383,7 +384,7 @@ function story_card(array $item, int $delay = 0): string
       </div>
       <?php endif; ?>
       <h3 class="mt-3 text-xl leading-snug transition-colors duration-300 group-hover:text-accent-dark"><?= e($item['title'] ?? '') ?></h3>
-      <p class="mt-2.5 text-[0.9375rem] leading-relaxed text-body"><?= e($item['excerpt'] ?? '') ?></p>
+      <p class="mt-2.5 text-[0.9375rem] leading-relaxed text-body"><?= rich($item['excerpt'] ?? '', false) ?></p>
       <?php if (!empty($item['meta'])): ?><p class="mt-3 text-[0.8rem] text-muted"><?= e(implode('  ·  ', array_filter($item['meta']))) ?></p><?php endif; ?>
       <span class="link-arrow mt-auto pt-5"><?= e(site('labels.readMore', 'Read more')) ?><?= icon('arrow-right', 'h-4 w-4') ?></span>
     </div>
@@ -408,7 +409,7 @@ function story_text_card(array $item, int $delay = 0): string
       <?php if (($item['date'] ?? '') !== ''): ?><span class="text-[0.8rem] text-muted"><?= e($item['date']) ?></span><?php endif; ?>
     </div>
     <h3 class="mt-4 text-[1.4rem] leading-snug transition-colors duration-300 group-hover:text-accent-dark"><?= e($item['title'] ?? '') ?></h3>
-    <p class="mt-3 text-[0.9375rem] leading-relaxed text-body"><?= e($item['excerpt'] ?? '') ?></p>
+    <p class="mt-3 text-[0.9375rem] leading-relaxed text-body"><?= rich($item['excerpt'] ?? '', false) ?></p>
     <span class="link-arrow mt-auto pt-6"><?= e(site('labels.readMore', 'Read more')) ?><?= icon('arrow-right', 'h-4 w-4') ?></span>
   </a>
 </div>
@@ -427,7 +428,7 @@ function story_list(array $items): string
 
 function card_grid(string $cards): string
 {
-    return '<div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-12 lg:gap-y-16">' . $cards . '</div>';
+    return '<div class="card-row gap-y-10 sm:[--cols:2] lg:[--cols:3] lg:gap-y-16 lg:[--gap-x:3rem]">' . $cards . '</div>';
 }
 
 /** Card data for a project entry. */
@@ -450,7 +451,7 @@ function person_card(array $person, int $delay = 0): string
     <?= media($person['image'] ?? '', ['ratio' => 'portrait', 'imageClass' => 'group-hover:scale-[1.03]']) ?>
     <h3 class="mt-5 text-lg"><?= e($person['name'] ?? '') ?></h3>
     <p class="mt-1 text-[0.9rem] text-accent-dark"><?= e($person['role'] ?? '') ?></p>
-    <?php if (($person['note'] ?? '') !== ''): ?><p class="mt-2 text-[0.9rem] leading-relaxed text-muted"><?= e($person['note']) ?></p><?php endif; ?>
+    <?php if (($person['note'] ?? '') !== ''): ?><p class="mt-2 text-[0.9rem] leading-relaxed text-muted"><?= rich($person['note']) ?></p><?php endif; ?>
   </div>
 </div>
 <?php
@@ -465,7 +466,7 @@ function strand_card(array $s, int $delay = 0): string
   <div class="group flex h-full flex-col">
     <a href="<?= e($s['href']) ?>"><?= media($s['image'] ?? '', ['ratio' => 'landscape', 'imageClass' => 'group-hover:scale-[1.04]', 'class' => 'transition-shadow duration-500 group-hover:shadow-[0_20px_44px_rgba(84,63,38,0.12)]']) ?></a>
     <h3 class="mt-6 text-2xl leading-snug"><a href="<?= e($s['href']) ?>" class="transition-colors duration-300 hover:text-accent-dark"><?= e($s['title'] ?? '') ?></a></h3>
-    <p class="mt-3 flex-1 text-[0.9375rem] leading-relaxed text-body"><?= e($s['body'] ?? '') ?></p>
+    <p class="mt-3 flex-1 text-[0.9375rem] leading-relaxed text-body"><?= rich($s['body'] ?? '') ?></p>
     <?php if ($stat && ($stat['value'] ?? '') !== ''): ?>
     <div class="mt-7 flex items-center gap-4">
       <?= icon((string) ($stat['icon'] ?? 'leaf'), 'h-7 w-7 shrink-0 text-accent', 1.2) ?>
@@ -491,7 +492,7 @@ function resource_link(array $r, int $delay = 0): string
     <?= icon((string) ($r['icon'] ?? 'document'), 'mt-1 h-7 w-7 shrink-0 text-accent', 1.2) ?>
     <div class="flex-1">
       <h3 class="text-xl transition-colors duration-300 group-hover:text-accent-dark"><?= e($r['title'] ?? '') ?></h3>
-      <p class="mt-2 max-w-2xl text-[0.9375rem] leading-relaxed text-body"><?= e($r['body'] ?? '') ?></p>
+      <p class="mt-2 max-w-2xl text-[0.9375rem] leading-relaxed text-body"><?= rich($r['body'] ?? '', false) ?></p>
     </div>
     <?= icon('external', 'mt-2 h-5 w-5 shrink-0 text-muted transition-all duration-300 group-hover:-translate-y-0.5 group-hover:text-accent') ?>
   </a>
@@ -710,7 +711,7 @@ function number_band(string $eyebrow, array $stats, string $tone = 'sand'): stri
 <section class="<?= $tone === 'sand' ? 'bg-sand/70' : 'bg-cream-deep' ?>">
   <div class="shell py-14 md:py-20">
     <?php if ($eyebrow !== ''): ?><?= eyebrow_rule($eyebrow) ?><?php endif; ?>
-    <div class="grid gap-5 md:grid-cols-3 md:gap-6 <?= $eyebrow !== '' ? 'mt-8 md:mt-10' : '' ?>">
+    <div class="card-row gap-y-5 [--gap-x:1.25rem] md:[--cols:3] md:gap-y-6 md:[--gap-x:1.5rem] <?= $eyebrow !== '' ? 'mt-8 md:mt-10' : '' ?>">
       <?php foreach (array_values($stats) as $i => $stat): ?>
       <div class="rounded-2xl bg-cream px-8 py-9 md:px-9 md:py-11">
         <p class="flex flex-wrap items-baseline gap-x-3">
@@ -759,7 +760,7 @@ function timeline(array $items, string $order = 'asc', bool $photos = true): str
         <?php endif; ?>
         <p class="relative font-display text-2xl text-accent-dark"><?= e($m['year'] ?? '') ?></p>
         <h2 class="mt-2 text-2xl"><?= e($m['title'] ?? '') ?></h2>
-        <p class="mt-3 text-[1rem] leading-relaxed text-body"><?= e($m['body'] ?? '') ?></p>
+        <p class="mt-3 text-[1rem] leading-relaxed text-body"><?= rich($m['body'] ?? '') ?></p>
         <?php if ($hasFeature): ?>
         <a href="<?= e($m['featureHref'] ?? '#') ?>" class="group mt-7 flex items-center gap-5 rounded-2xl bg-accent-soft/70 p-4 transition-colors duration-300 hover:bg-accent-soft md:p-5 <?= $alignRight ? '' : 'md:flex-row-reverse md:text-right' ?>">
           <div class="w-24 shrink-0 md:w-28"><?= media($m['featureImage'] ?? '', ['ratio' => 'portrait', 'class' => 'shadow-[0_10px_26px_rgba(84,63,38,0.14)]', 'imageClass' => 'group-hover:scale-[1.03]']) ?></div>
@@ -861,7 +862,7 @@ function contact_form(string $source = 'contact'): string
   </form>
   <div class="hidden rounded-2xl bg-accent-soft p-8" role="status" data-contact-done>
     <h3 class="text-xl"><?= e($f['thanksTitle'] ?? '') ?></h3>
-    <p class="mt-2 text-[0.95rem] leading-relaxed text-body"><?= e($f['thanksBody'] ?? '') ?></p>
+    <p class="mt-2 text-[0.95rem] leading-relaxed text-body"><?= rich($f['thanksBody'] ?? '') ?></p>
   </div>
 </div>
 <?php

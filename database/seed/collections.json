@@ -4,6 +4,7 @@
       "slug": "working-with-communities",
       "data": {
         "title": "Working with Communities",
+        "projectTheme": "Working with Communities",
         "strapline": "Conservation that works for the people who share the steppe.",
         "heroImage": "/images/theme-hero.webp",
         "image": "/images/work-communities.webp",
@@ -69,6 +70,7 @@
       "slug": "education-and-awareness",
       "data": {
         "title": "Education & Awareness",
+        "projectTheme": "Education & Awareness",
         "strapline": "A generation growing up knowing what a saiga is.",
         "heroImage": "/images/theme-hero.webp",
         "image": "/images/work-education.webp",
@@ -133,6 +135,7 @@
       "slug": "research-and-monitoring",
       "data": {
         "title": "Research & Monitoring",
+        "projectTheme": "Research & Monitoring",
         "strapline": "The evidence that makes protection possible.",
         "heroImage": "/images/theme-hero.webp",
         "image": "/images/work-research.webp",
@@ -197,6 +200,7 @@
       "slug": "protecting-saigas",
       "data": {
         "title": "Protecting Saigas on the Ground",
+        "projectTheme": "Protecting Saigas on the Ground",
         "strapline": "Rangers, patrols and practical protection where it counts.",
         "heroImage": "/images/theme-hero.webp",
         "image": "/images/work-protection.webp",
@@ -260,7 +264,8 @@
     {
       "slug": "international-policy",
       "data": {
-        "title": "International Policy",
+        "title": "International Policy & Cooperation",
+        "projectTheme": "International Policy & Cooperation",
         "strapline": "Shared commitments, turned into protection on the ground.",
         "heroImage": "/images/theme-hero.webp",
         "image": "/images/policy-protection-hero.webp",
@@ -346,6 +351,9 @@
           "Training courses and conference attendance",
           "Small community outreach initiatives"
         ],
+        "applicationsOpen": true,
+        "applyBody": "Applications are made through a short online form. We ask for a clear description of the work, a simple budget and one referee — nothing longer than is genuinely needed.",
+        "applyButtonHref": "/about/contact",
         "keyDates": [
           {
             "label": "Applications open",
@@ -381,29 +389,6 @@
             "question": "How much detail does the budget need?",
             "answer": "A single page is enough. We want to see the main costs and roughly what each covers, not a line-by-line breakdown."
           }
-        ],
-        "recipients": [
-          {
-            "project": "Calving ground disturbance study",
-            "year": "2025",
-            "country": "Kazakhstan",
-            "recipient": "Recipient name",
-            "image": "/images/person-portrait-3.webp"
-          },
-          {
-            "project": "Community rangers training pilot",
-            "year": "2024",
-            "country": "Mongolia",
-            "recipient": "Recipient name",
-            "image": "/images/person-portrait-4.webp"
-          },
-          {
-            "project": "School outreach across three districts",
-            "year": "2024",
-            "country": "Uzbekistan",
-            "recipient": "Recipient name",
-            "image": "/images/person-portrait-5.webp"
-          }
         ]
       }
     },
@@ -430,6 +415,9 @@
           "Local awareness and education activity",
           "Data analysis and publication costs"
         ],
+        "applicationsOpen": true,
+        "applyBody": "Applications are made through a short online form. We ask for a clear description of the work, a simple budget and one referee — nothing longer than is genuinely needed.",
+        "applyButtonHref": "/about/contact",
         "keyDates": [
           {
             "label": "Round one opens",
@@ -465,29 +453,6 @@
             "question": "What reporting is expected?",
             "answer": "A short written report and a simple statement of spend within three months of the work finishing. Photographs are welcome but not required."
           }
-        ],
-        "recipients": [
-          {
-            "project": "Waterpoint mapping in a dry season",
-            "year": "2024",
-            "country": "Turkmenistan",
-            "recipient": "Recipient name",
-            "image": "/images/person-portrait-3.webp"
-          },
-          {
-            "project": "Camera trap network expansion",
-            "year": "2024",
-            "country": "Russia",
-            "recipient": "Recipient name",
-            "image": "/images/person-portrait-4.webp"
-          },
-          {
-            "project": "Veterinary sampling after a die-off",
-            "year": "2023",
-            "country": "Mongolia",
-            "recipient": "Recipient name",
-            "image": "/images/person-portrait-5.webp"
-          }
         ]
       }
     },
@@ -513,6 +478,9 @@
           "Equipment for the recipient's team",
           "Public recognition across the SCA network"
         ],
+        "applicationsOpen": true,
+        "applyBody": "Applications are made through a short online form. We ask for a clear description of the work, a simple budget and one referee — nothing longer than is genuinely needed.",
+        "applyButtonHref": "/about/contact",
         "keyDates": [
           {
             "label": "Nominations open",
@@ -544,29 +512,6 @@
             "question": "Does the recipient need to travel to receive it?",
             "answer": "No. Where travel is difficult the award is presented locally by a partner organisation, and nothing is conditional on attending."
           }
-        ],
-        "recipients": [
-          {
-            "project": "Winter die-off emergency response",
-            "year": "2025",
-            "country": "Mongolia",
-            "recipient": "Recipient name",
-            "image": "/images/person-portrait-3.webp"
-          },
-          {
-            "project": "Community anti-poaching network",
-            "year": "2024",
-            "country": "Uzbekistan",
-            "recipient": "Recipient name",
-            "image": "/images/person-portrait-4.webp"
-          },
-          {
-            "project": "Fifteen years of patrol leadership",
-            "year": "2023",
-            "country": "Kazakhstan",
-            "recipient": "Recipient name",
-            "image": "/images/person-portrait-5.webp"
-          }
         ]
       }
     }
@@ -585,7 +530,7 @@
         ],
         "themes": [
           "Research & Monitoring",
-          "International Policy"
+          "International Policy & Cooperation"
         ],
         "years": [
           "2023",
@@ -877,7 +822,7 @@
           "Uzbekistan"
         ],
         "themes": [
-          "International Policy",
+          "International Policy & Cooperation",
           "Research & Monitoring"
         ],
         "years": [
@@ -1010,7 +955,7 @@
         "heroImage": "/images/project-hero.webp",
         "type": "Small Grants Project",
         "countries": [
-          "Turkmenistan"
+          "Uzbekistan"
         ],
         "themes": [
           "Research & Monitoring"
@@ -1058,7 +1003,7 @@
           "Uzbekistan"
         ],
         "themes": [
-          "International Policy",
+          "International Policy & Cooperation",
           "Research & Monitoring"
         ],
         "years": [

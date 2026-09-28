@@ -8,7 +8,7 @@ $related = entries_by_slug('project', $theme['relatedProjects'] ?? []);
 
 <section class="section-tight">
   <div class="shell">
-    <div <?= reveal('max-w-3xl') ?>><p class="text-xl leading-[1.7] text-body md:text-[1.375rem]"><?= e($theme['summary'] ?? '') ?></p></div>
+    <div <?= reveal('max-w-3xl') ?>><p class="text-xl leading-[1.7] text-body md:text-[1.375rem]"><?= rich($theme['summary'] ?? '') ?></p></div>
   </div>
 </section>
 
@@ -35,7 +35,7 @@ $related = entries_by_slug('project', $theme['relatedProjects'] ?? []);
   <div class="shell">
     <div class="flex flex-wrap items-end justify-between gap-6">
       <?= section_heading((string) ($t['relatedEyebrow'] ?? ''), (string) ($t['relatedTitle'] ?? '')) ?>
-      <div <?= reveal('', 120) ?>><?= arrow_link('/projects?theme=' . rawurlencode((string) ($theme['title'] ?? '')), tpl((string) ($t['exploreAllLabel'] ?? ''), $vars)) ?></div>
+      <div <?= reveal('', 120) ?>><?= arrow_link('/projects?theme=' . rawurlencode((string) (($theme['projectTheme'] ?? '') ?: ($theme['title'] ?? ''))), tpl((string) ($t['exploreAllLabel'] ?? ''), $vars)) ?></div>
     </div>
     <div class="mt-14">
       <?= card_grid(implode('', array_map(
@@ -53,7 +53,7 @@ $related = entries_by_slug('project', $theme['relatedProjects'] ?? []);
     <div <?= reveal('max-w-3xl') ?>>
       <?= eyebrow_rule((string) ($t['futureEyebrow'] ?? '')) ?>
       <h2 class="mt-4 text-3xl leading-[1.15] md:text-[2.25rem]"><?= e(v($theme, 'futureOpportunities.title')) ?></h2>
-      <p class="mt-6 text-[1.0625rem] leading-[1.8] text-body"><?= e(v($theme, 'futureOpportunities.body')) ?></p>
+      <p class="mt-6 text-[1.0625rem] leading-[1.8] text-body"><?= rich(v($theme, 'futureOpportunities.body')) ?></p>
     </div>
   </div>
 </section>

@@ -108,6 +108,11 @@ $isActive = function (array $item) use ($path): bool {
       </div>
 
       <nav class="flex-1 overflow-y-auto px-6 py-6" aria-label="Mobile">
+        <?php if (!in_array('/', array_map(fn ($item) => rtrim((string) ($item['href'] ?? ''), '/') ?: '/', $nav), true)): ?>
+        <div class="border-b border-hairline/70">
+          <a href="/" class="block py-4 text-[1.05rem] <?= $path === '/' ? 'text-accent-dark' : 'text-ink' ?>"><?= e(site('labels.home') ?: 'Home') ?></a>
+        </div>
+        <?php endif; ?>
         <?php foreach ($nav as $item): $children = array_values($item['children'] ?? []); ?>
         <div class="border-b border-hairline/70 last:border-0" data-mobile-section>
           <div class="flex items-center justify-between">

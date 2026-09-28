@@ -66,11 +66,15 @@ function handle_upload(?array $file, string $kind): array
     }
 
     $mime = (new finfo(FILEINFO_MIME_TYPE))->file($file['tmp_name']);
-    $allowed = $kind === 'image' ? IMAGE_TYPES : FILE_TYPES;
+    $allowed = $kind === 'icon'
+        ? array_diff_key(IMAGE_TYPES, ['image/jpeg' => 1])
+        : ($kind === 'image' ? IMAGE_TYPES : FILE_TYPES);
     if (!isset($allowed[$mime])) {
-        return ['ok' => false, 'error' => $kind === 'image'
-            ? 'Please upload a JPG, PNG, WebP or GIF image.'
-            : 'Please upload an image, PDF or Word document.'];
+        return ['ok' => false, 'error' => $kind === 'icon'
+            ? 'Icons need a transparent background: please upload a PNG or WebP.'
+            : ($kind === 'image'
+                ? 'Please upload a JPG, PNG, WebP or GIF image.'
+                : 'Please upload an image, PDF or Word document.')];
     }
 
     $ext = $allowed[$mime];
@@ -90,8 +94,19 @@ function handle_upload(?array $file, string $kind): array
     if (isset(IMAGE_TYPES[$mime]) && $mime !== 'image/gif') {
         shrink_image($target, $mime);
     }
+    if ($kind === 'icon') {
+        remember_custom_icon($dir . '/' . $name);
+    }
 
     return ['ok' => true, 'url' => $dir . '/' . $name];
+}
+
+/** Icons uploaded with an icon picker's "Upload icon…", offered by every picker. */
+function remember_custom_icon(string $url): void
+{
+    $icons = array_values(array_unique(array_merge(custom_icons(), [$url])));
+    db()->prepare("REPLACE INTO settings (name, value) VALUES ('custom_icons', ?)")
+        ->execute([json_encode($icons, JSON_UNESCAPED_SLASHES)]);
 }
 
 /** Large photographs are scaled down to 2400px wide so pages stay quick. */

@@ -23,7 +23,7 @@ $documents = document_links($pr['documents'] ?? []);
 
 <section class="section-tight">
   <div class="shell-narrow prose-sca">
-    <?php foreach (array_values($pr['body'] ?? []) as $i => $paragraph): ?><p <?= reveal('', $i * 60) ?>><?= e($paragraph) ?></p><?php endforeach; ?>
+    <?php foreach (array_values($pr['body'] ?? []) as $i => $paragraph): ?><p <?= reveal('', $i * 60) ?>><?= rich($paragraph) ?></p><?php endforeach; ?>
   </div>
 </section>
 
@@ -31,7 +31,7 @@ $documents = document_links($pr['documents'] ?? []);
 <section class="section-tight pb-20 md:pb-28">
   <div class="shell">
     <div <?= reveal() ?>><?= eyebrow_rule((string) ($t['outcomesEyebrow'] ?? '')) ?></div>
-    <div class="mt-10 grid gap-10 sm:grid-cols-3 sm:gap-12">
+    <div class="mt-10 card-row gap-y-10 sm:[--cols:3] sm:gap-y-12 sm:[--gap-x:3rem]">
       <?php foreach (array_values($pr['outcomes']) as $i => $outcome): ?>
       <div <?= reveal('', $i * 110) ?>>
         <p class="font-display text-[2.5rem] leading-none text-ink"><?= e($outcome['value'] ?? '') ?></p>
@@ -64,7 +64,7 @@ $documents = document_links($pr['documents'] ?? []);
 <?php if ($gallery): ?>
 <section class="section-tight pb-20 md:pb-28">
   <div class="shell">
-    <div class="grid gap-8 sm:grid-cols-3 md:gap-10">
+    <div class="card-row gap-y-8 [--gap-x:2rem] sm:[--cols:3] md:gap-y-10 md:[--gap-x:2.5rem]">
       <?php foreach ($gallery as $i => $src): ?><div <?= reveal('', $i * 110) ?>><?= media($src, ['ratio' => 'landscape']) ?></div><?php endforeach; ?>
     </div>
   </div>

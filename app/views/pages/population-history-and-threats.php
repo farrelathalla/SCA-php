@@ -12,19 +12,24 @@ $chart = $graphImage === '' ? line_chart(v($p, 'graph.points', []), [
 <?= page_hero($p['hero'] ?? []) ?>
 <?= page_blocks($p, 'top') ?>
 
+<?php if (shown($p, 'intro')): ?>
 <section class="section-tight">
   <div class="shell">
-    <div <?= reveal('max-w-3xl') ?>><p class="text-xl leading-[1.7] text-body md:text-[1.375rem]"><?= e($p['intro'] ?? '') ?></p></div>
+    <div <?= reveal('max-w-3xl') ?>><p class="text-xl leading-[1.7] text-body md:text-[1.375rem]"><?= rich($p['intro'] ?? '') ?></p></div>
   </div>
 </section>
+<?php endif; ?>
 
+<?php if (shown($p, 'history')): ?>
 <section class="section-tight pb-20 md:pb-28">
   <div class="shell">
     <?= section_heading((string) v($p, 'history.eyebrow'), (string) v($p, 'history.title'), (string) v($p, 'history.intro')) ?>
     <div class="mt-16"><?= timeline(v($p, 'history.items', []), 'asc', false) ?></div>
   </div>
 </section>
+<?php endif; ?>
 
+<?php if (shown($p, 'graph')): ?>
 <section class="bg-cream-deep">
   <div class="shell py-16 md:py-24">
     <?= section_heading((string) v($p, 'graph.eyebrow'), (string) v($p, 'graph.title'), (string) v($p, 'graph.intro')) ?>
@@ -53,32 +58,37 @@ $chart = $graphImage === '' ? line_chart(v($p, 'graph.points', []), [
     </div>
   </div>
 </section>
+<?php endif; ?>
 
+<?php if (shown($p, 'threats')): ?>
 <section class="section">
   <div class="shell">
     <?= section_heading((string) v($p, 'threats.eyebrow'), (string) v($p, 'threats.title'), (string) v($p, 'threats.intro')) ?>
-    <div class="mt-14 grid gap-x-14 gap-y-12 md:grid-cols-2 lg:gap-x-20">
+    <div class="mt-14 card-row gap-y-12 [--gap-x:3.5rem] md:[--cols:2] lg:[--gap-x:5rem]">
       <?php foreach (array_values(v($p, 'threats.items', [])) as $i => $threat): ?>
       <div <?= reveal('', ($i % 2) * 110) ?>>
         <?= icon((string) ($threat['icon'] ?? 'leaf'), 'h-8 w-8 text-accent', 1.2) ?>
         <h3 class="mt-5 font-sans text-[1.125rem] font-medium text-ink"><?= e($threat['title'] ?? '') ?></h3>
-        <p class="mt-3 text-[1rem] leading-[1.8] text-body"><?= e($threat['body'] ?? '') ?></p>
+        <p class="mt-3 text-[1rem] leading-[1.8] text-body"><?= rich($threat['body'] ?? '') ?></p>
       </div>
       <?php endforeach; ?>
     </div>
   </div>
 </section>
+<?php endif; ?>
 
+<?php if (shown($p, 'summary')): ?>
 <section class="section-tight pb-20 md:pb-28">
   <div class="shell">
     <div <?= reveal('max-w-3xl') ?>>
       <h2 class="text-3xl leading-[1.15] md:text-[2.25rem]"><?= e(v($p, 'summary.title')) ?></h2>
-      <p class="mt-6 text-[1.0625rem] leading-[1.8] text-body"><?= e(v($p, 'summary.body')) ?></p>
+      <p class="mt-6 text-[1.0625rem] leading-[1.8] text-body"><?= rich(v($p, 'summary.body')) ?></p>
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <?= page_blocks($p) ?>
 
-<?= related_links($p['related'] ?? []) ?>
+<?php if (shown($p, 'related')): ?><?= related_links($p['related'] ?? []) ?><?php endif; ?>
 <?php if (!empty($p['showDonationBand'])): ?><?= cta_band() ?><?php endif; ?>

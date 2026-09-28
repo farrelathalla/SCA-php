@@ -2,12 +2,15 @@
 <?= page_hero($p['hero'] ?? []) ?>
 <?= page_blocks($p, 'top') ?>
 
+<?php if (shown($p, 'intro')): ?>
 <section class="section-tight">
   <div class="shell">
-    <div <?= reveal('max-w-3xl') ?>><p class="text-xl leading-[1.7] text-body md:text-[1.375rem]"><?= e($p['intro'] ?? '') ?></p></div>
+    <div <?= reveal('max-w-3xl') ?>><p class="text-xl leading-[1.7] text-body md:text-[1.375rem]"><?= rich($p['intro'] ?? '') ?></p></div>
   </div>
 </section>
+<?php endif; ?>
 
+<?php if (shown($p, 'agreements')): ?>
 <section class="section-tight pb-20 md:pb-28">
   <div class="shell">
     <?= section_heading((string) v($p, 'agreements.eyebrow'), (string) v($p, 'agreements.title')) ?>
@@ -21,23 +24,28 @@
     </div>
   </div>
 </section>
+<?php endif; ?>
 
+<?php if (shown($p, 'national')): ?>
 <section class="section-tight pb-20 md:pb-28">
   <div class="shell">
     <div <?= reveal('max-w-3xl') ?>>
       <h2 class="text-3xl leading-[1.15] md:text-[2.25rem]"><?= e(v($p, 'national.title')) ?></h2>
       <?php foreach (array_values(v($p, 'national.body', [])) as $i => $paragraph): ?>
-      <p class="<?= $i === 0 ? 'mt-6' : 'mt-4' ?> text-[1.0625rem] leading-[1.8] text-body"><?= e($paragraph) ?></p>
+      <p class="<?= $i === 0 ? 'mt-6' : 'mt-4' ?> text-[1.0625rem] leading-[1.8] text-body"><?= rich($paragraph) ?></p>
       <?php endforeach; ?>
     </div>
   </div>
 </section>
+<?php endif; ?>
 
+<?php if (shown($p, 'callout')): ?>
 <section class="section-tight pb-24 md:pb-32">
-  <div class="shell"><?= callout((string) v($p, 'callout.title'), '<p>' . e(v($p, 'callout.body')) . '</p>') ?></div>
+  <div class="shell"><?= callout((string) v($p, 'callout.title'), '<p>' . rich(v($p, 'callout.body')) . '</p>') ?></div>
 </section>
+<?php endif; ?>
 
 <?= page_blocks($p) ?>
 
-<?= related_links($p['related'] ?? []) ?>
+<?php if (shown($p, 'related')): ?><?= related_links($p['related'] ?? []) ?><?php endif; ?>
 <?php if (!empty($p['showDonationBand'])): ?><?= cta_band() ?><?php endif; ?>

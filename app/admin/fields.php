@@ -70,6 +70,18 @@ const LABELS = [
     'reports' => 'Reports (newest first — “+ Add” puts the new one at the top)',
     'extraBlocks' => 'Extra blocks on this page',
     'placement' => 'Where on the page',
+    'projectThemes' => 'Project themes (filter options, in order — projects are tagged from this list)',
+    'projectCountries' => 'Project countries (filter options, in order — projects are tagged from this list)',
+    'themes' => 'Themes',
+    'countries' => 'Countries',
+    'years' => 'Years',
+    'type' => 'Project type',
+    'archiveType' => 'Project type in the archive (its projects are listed on this programme’s page)',
+    'projectTheme' => 'Theme in the projects archive (for the “Explore all … projects” link)',
+    'applicationsOpen' => 'Applications are open (shows the “Start an application” button)',
+    'applyBody' => 'How to apply',
+    'applyButtonHref' => 'Application form link (where “Start an application” goes)',
+    'closedNote' => 'Shown instead of the button while applications are closed',
 ];
 
 /** Lists whose newest item belongs at the top, so “+ Add” inserts it there. */
@@ -95,6 +107,62 @@ function blocks_key(?string $set = null): ?string
         $key = $set;
     }
     return $key;
+}
+
+/**
+ * Text fields that get the B / I / U / Link toolbar. Their templates print them
+ * with rich(), so anything added here must be printed with rich() too.
+ */
+const RICH_KEYS = [
+    'body', 'intro', 'summary', 'excerpt', 'strapline', 'caption', 'note', 'answer', 'statement', 'lead',
+    'pullQuote', 'postAddress', 'inlineCaption', 'ctaBody', 'applyBody', 'yearsIntro', 'thanksBody',
+    'whatItIs', 'text', 'closedNote',
+];
+
+function is_rich_key(string $key): bool
+{
+    return in_array($key, RICH_KEYS, true) || substr($key, -4) === 'Html';
+}
+
+/**
+ * Project tags picked from the lists under Header, footer & site-wide rather
+ * than typed, so a typo cannot create a new filter option. Switched on by the
+ * admin router for project entries.
+ */
+const TAG_FIELDS = ['themes' => 'themes', 'countries' => 'countries', 'years' => 'years'];
+
+function tag_fields(?bool $set = null): bool
+{
+    static $on = false;
+    if ($set !== null) {
+        $on = $set;
+    }
+    return $on;
+}
+
+/**
+ * The top-level sections of the page being edited that can be switched off,
+ * and the ones that are. Set by the admin router for fixed pages.
+ */
+function section_switches(?array $hideable = null, ?array $hidden = null): array
+{
+    static $state = [[], []];
+    if ($hideable !== null) {
+        $state = [$hideable, $hidden ?? []];
+    }
+    return $state;
+}
+
+/** "Show on the page" switch for a top-level section, if it has one. */
+function section_switch(string $key): string
+{
+    [$hideable, $hidden] = section_switches();
+    if (!in_array($key, $hideable, true)) {
+        return '';
+    }
+    $on = !in_array($key, $hidden, true);
+    return '<label class="ml-auto inline-flex shrink-0 cursor-pointer items-center gap-2 rounded-full border border-hairline bg-cream px-3 py-1 text-[0.8rem] text-ink" title="Untick to take this section off the page. Its content is kept, so you can tick it again later.">'
+        . '<input type="checkbox" data-section-shown="' . e($key) . '" class="h-4 w-4 accent-[#c87a3c]"' . ($on ? ' checked' : '') . '> Show on the page</label>';
 }
 
 /** Leaf values that are picked from a short list rather than typed. */
@@ -140,8 +208,11 @@ function field_kind(string $key, $value): string
     if ($key === 'date') {
         return 'date';
     }
-    if ($key === 'type') {
+    if ($key === 'type' || $key === 'archiveType') {
         return 'type';
+    }
+    if ($key === 'projectTheme') {
+        return 'theme';
     }
     if (preg_match('/(^image$|Image$|^logo|Logo$|^gallery$|^photo)/', $key)
         || (is_string($value) && preg_match('~^/(images|uploads)/.+\.(webp|jpe?g|png|gif|avif)$~i', $value))) {
@@ -214,16 +285,32 @@ function render_value_input(string $key, $value, string $kind): string
         case 'bool':
             return '<label class="inline-flex items-center gap-2 text-[0.9rem] text-ink"><input type="checkbox" data-input class="h-4 w-4 accent-[#c87a3c]"' . ($value ? ' checked' : '') . '> ' . e(field_label($key)) . '</label>';
         case 'textarea':
-            $rows = max(2, min(10, (int) ceil(mb_strlen($val) / 90)));
-            return '<textarea id="' . $id . '" data-input rows="' . $rows . '" class="' . $input . ' leading-relaxed">' . e($val) . '</textarea>';
+            $rows = max(2, min(10, (int) ceil(mb_strlen($val) / 90) + substr_count($val, "\n")));
+            $area = '<textarea id="' . $id . '" data-input rows="' . $rows . '" class="' . $input . ' leading-relaxed">' . e($val) . '</textarea>';
+            if (!is_rich_key($key)) {
+                return $area;
+            }
+            // Select some text, then B / I / U / Link wraps it in the matching
+            // tag (assets/admin/admin.js); Enter starts a new line on the page.
+            $tool = 'rounded-md px-2.5 py-1 text-[0.8rem] text-ink hover:bg-sand/60';
+            return '<div data-rich>'
+                . '<div class="flex flex-wrap items-center gap-0.5 rounded-t-lg border border-b-0 border-hairline bg-cream px-1.5 py-1">'
+                . '<button type="button" data-rich-cmd="strong" title="Bold (Ctrl+B)" class="' . $tool . ' font-bold">B</button>'
+                . '<button type="button" data-rich-cmd="em" title="Italic (Ctrl+I)" class="' . $tool . ' italic">I</button>'
+                . '<button type="button" data-rich-cmd="u" title="Underline (Ctrl+U)" class="' . $tool . ' underline">U</button>'
+                . '<button type="button" data-rich-cmd="a" title="Link (Ctrl+K)" class="' . $tool . ' text-accent-dark">Link</button>'
+                . '<span class="ml-auto hidden px-1 text-[0.72rem] text-muted sm:inline">Select text, then B, I, U or Link. Enter = new line.</span>'
+                . '</div>' . str_replace('rounded-lg', 'rounded-b-lg', $area) . '</div>';
         case 'icon':
             // Built-in line icons, plus any icon SCA upload themselves.
             $out = '<div class="flex flex-wrap items-center gap-3" data-icon-field><span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent-soft text-accent" data-icon-preview>' . icon($val ?: 'leaf', 'h-5 w-5', 1.3) . '</span><select id="' . $id . '" data-input data-icon-select class="' . $input . ' min-w-0 flex-1">';
             foreach (CONTENT_ICONS as $name) {
                 $out .= '<option value="' . e($name) . '"' . ($name === $val ? ' selected' : '') . '>' . e($name) . '</option>';
             }
-            if (is_custom_icon($val)) {
-                $out .= '<option value="' . e($val) . '" selected>Uploaded: ' . e(basename($val)) . '</option>';
+            static $uploaded = null;
+            $uploaded = $uploaded ?? custom_icons();
+            foreach (array_unique(array_merge($uploaded, is_custom_icon($val) ? [$val] : [])) as $path) {
+                $out .= '<option value="' . e($path) . '"' . ($path === $val ? ' selected' : '') . '>Uploaded: ' . e(basename($path)) . '</option>';
             }
             return $out . '</select>'
                 . '<button type="button" data-icon-upload title="A one-colour PNG or WebP on a transparent background, about 96×96 px. It takes the site’s colours automatically." class="shrink-0 rounded-full border border-hairline px-3.5 py-1.5 text-[0.8rem] text-ink hover:border-ink/40">Upload icon…</button></div>';
@@ -241,7 +328,17 @@ function render_value_input(string $key, $value, string $kind): string
         case 'date':
             return '<input id="' . $id . '" type="date" data-input value="' . e($val) . '" class="' . $input . ' max-w-xs">';
         case 'type':
-            return '<input id="' . $id . '" data-input value="' . e($val) . '" list="project-types" class="' . $input . '">';
+        case 'theme':
+            // Picked from the configured list, so the archive filters and the
+            // programme and theme links always match it exactly.
+            $facet = $kind === 'type' ? 'types' : 'themes';
+            $list = project_options($facet);
+            $out = '<select id="' . $id . '" data-input class="' . $input . ' max-w-md"><option value="">— Choose —</option>';
+            foreach (array_unique(array_merge($list, $val !== '' ? [$val] : [])) as $option) {
+                $out .= '<option value="' . e($option) . '"' . ($option === $val ? ' selected' : '') . '>' . e($option)
+                    . (in_array($option, $list, true) ? '' : ' (not in the list)') . '</option>';
+            }
+            return $out . '</select>' . options_hint($facet);
         case 'image':
             return '<div class="flex items-start gap-4" data-image-field>'
                 . '<div class="relative h-20 w-28 shrink-0 overflow-hidden rounded-lg border border-hairline bg-cream-deep">'
@@ -282,6 +379,14 @@ function render_node(?string $key, $value, $shape, int $depth = 0, string $paren
         return render_blocks_field(is_array($value) ? $value : [], $key);
     }
 
+    // Project themes, countries and years: a drop-down of tick boxes.
+    if ($key !== null && tag_fields() && isset(TAG_FIELDS[$key]) && (is_array($value) || $value === null || $value === '')) {
+        $field = render_tag_field($key, array_values(array_map('strval', (array) ($value ?: []))), TAG_FIELDS[$key]);
+        return $depth === 0 ? '<section class="rounded-2xl border border-hairline bg-white p-5 md:p-6">' . $field . '</section>' : $field;
+    }
+
+    $switch = $depth === 0 && $key !== null ? section_switch($key) : '';
+
     // Lists
     if (is_array($value) && array_is_list_compat($value) && (!is_array($shape) || array_is_list_compat($shape))) {
         $itemShape = (is_array($shape) && isset($shape[0]))
@@ -289,9 +394,9 @@ function render_node(?string $key, $value, $shape, int $depth = 0, string $paren
             : (LIST_ITEM_SHAPES[(string) $key] ?? ($value[0] ?? ''));
         $template = render_list_item(blank_of($itemShape), $itemShape, $depth + 1, (string) $key);
 
-        $out = '<div data-node="list"' . $keyAttr . ' class="space-y-2">';
+        $out = '<div data-node="list"' . $keyAttr . ($switch !== '' ? ' data-section class="space-y-2 rounded-2xl border border-hairline bg-white p-5 md:p-6"' : ' class="space-y-2"') . '>';
         if ($key !== null) {
-            $out .= '<div class="text-[0.8rem] font-medium tracking-wide text-body uppercase">' . e(field_label($key)) . '</div>';
+            $out .= '<div class="flex flex-wrap items-center gap-3"><div class="text-[0.8rem] font-medium tracking-wide text-body uppercase">' . e(field_label($key)) . '</div>' . $switch . '</div>';
         }
         $out .= '<template data-item-template>' . $template . '</template><div data-items class="space-y-2">';
         foreach ($value as $item) {
@@ -320,7 +425,7 @@ function render_node(?string $key, $value, $shape, int $depth = 0, string $paren
             return '<div data-node="group" class="space-y-4">' . $fields . '</div>';
         }
         if ($depth === 0) {
-            return '<section data-node="group"' . $keyAttr . ' class="rounded-2xl border border-hairline bg-white p-5 md:p-6"><h2 class="mb-4 font-display text-xl text-ink">' . e(field_label($key)) . '</h2><div class="space-y-4">' . $fields . '</div></section>';
+            return '<section data-node="group"' . $keyAttr . ' data-section class="rounded-2xl border border-hairline bg-white p-5 md:p-6"><div class="mb-4 flex flex-wrap items-center gap-3"><h2 class="font-display text-xl text-ink">' . e(field_label($key)) . '</h2>' . $switch . '</div><div class="space-y-4">' . $fields . '</div></section>';
         }
         return '<fieldset data-node="group"' . $keyAttr . ' class="rounded-xl border border-hairline/80 bg-cream/60 p-4"><legend class="px-1 text-[0.8rem] font-medium tracking-wide text-body uppercase">' . e(field_label($key)) . '</legend><div class="space-y-4">' . $fields . '</div></fieldset>';
     }
@@ -337,9 +442,51 @@ function render_node(?string $key, $value, $shape, int $depth = 0, string $paren
         $wrapper .= '<label class="mb-1.5 block text-[0.85rem] text-body">' . e(field_label($key)) . '</label>';
     }
     if ($depth === 0 && $key !== null) {
-        return '<section class="rounded-2xl border border-hairline bg-white p-5 md:p-6">' . $wrapper . $input . '</div></section>';
+        return '<section data-section class="rounded-2xl border border-hairline bg-white p-5 md:p-6">'
+            . ($switch !== '' ? '<div class="mb-3 flex">' . $switch . '</div>' : '') . $wrapper . $input . '</div></section>';
     }
     return $wrapper . $input . '</div>';
+}
+
+/** Where the lists behind the project drop-downs are edited. */
+function options_hint(string $facet): string
+{
+    if ($facet === 'years') {
+        return '<p class="mt-1.5 text-[0.75rem] text-muted">Every year from ' . PROJECT_FIRST_YEAR . ' to next year. New years appear by themselves.</p>';
+    }
+    return '<p class="mt-1.5 text-[0.75rem] text-muted">Missing an option? Add it under <a href="/admin/pages/global" target="_blank" class="text-accent-dark underline">Header, footer &amp; site-wide → Project '
+        . e($facet) . '</a>, save, then reload this page.</p>';
+}
+
+/**
+ * A multi-select drop-down of tick boxes, stored as a plain list of strings.
+ * The options are the configured list; a value already on the entry that is
+ * no longer in the list stays ticked (and marked) until someone unticks it.
+ */
+function render_tag_field(string $key, array $values, string $facet): string
+{
+    $configured = project_options($facet);
+    $options = $configured;
+    foreach ($values as $value) {
+        if ($value !== '' && !in_array($value, $options, true)) {
+            $options[] = $value;
+        }
+    }
+    $boxes = '';
+    foreach ($options as $option) {
+        $boxes .= '<label class="flex items-center gap-2 rounded-md px-2 py-1.5 text-[0.875rem] text-ink hover:bg-cream">'
+            . '<input type="checkbox" value="' . e($option) . '" class="h-4 w-4 shrink-0 accent-[#c87a3c]"' . (in_array($option, $values, true) ? ' checked' : '') . '> '
+            . e($option) . (in_array($option, $configured, true) ? '' : ' <span class="text-[0.75rem] text-muted">(not in the list)</span>') . '</label>';
+    }
+    $grid = $facet === 'years' ? 'grid grid-cols-3 gap-0.5 sm:grid-cols-5 md:grid-cols-7' : 'grid gap-0.5 sm:grid-cols-2';
+    return '<div data-node="tags" data-key="' . e($key) . '">'
+        . '<div class="mb-1.5 block text-[0.85rem] text-body">' . e(field_label($key)) . '</div>'
+        . '<details class="group/tags rounded-lg border border-hairline bg-white" data-tags>'
+        . '<summary class="flex cursor-pointer list-none items-center justify-between gap-3 px-3 py-2 text-[0.9rem] text-ink">'
+        . '<span class="min-w-0 truncate" data-tags-summary>' . e($values ? implode(', ', $values) : 'None chosen') . '</span>'
+        . '<span class="shrink-0 text-muted transition-transform group-open/tags:rotate-180">▾</span></summary>'
+        . '<div class="max-h-72 overflow-y-auto border-t border-hairline p-2 ' . $grid . '">' . $boxes . '</div></details>'
+        . options_hint($facet) . '</div>';
 }
 
 function render_list_item($item, $shape, int $depth, string $parentKey): string
@@ -409,7 +556,7 @@ function render_document_form(array $data, array $shape): string
     $out = '<div data-node="group" data-root class="space-y-5">';
     foreach (array_unique(array_merge(array_keys($data), array_keys($shape))) as $k) {
         $k = (string) $k;
-        if ($k === '' || $k[0] === '_') {
+        if ($k === '' || $k[0] === '_' || $k === 'hiddenSections') {
             continue;
         }
         $v = array_key_exists($k, $data) ? $data[$k] : blank_of($shape[$k]);

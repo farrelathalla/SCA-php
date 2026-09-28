@@ -26,10 +26,35 @@ function tpl(string $pattern, array $vars): string
 }
 
 /**
- * The few fields that carry inline links (the *Html fields) go through this:
- * only a, strong, em, b, i and br survive, and links keep a safe href only.
+ * Formatted text: the fields the admin gives a B / I / U / Link toolbar. Plain
+ * text is escaped as ever; a new line typed in the admin becomes a line break.
+ * Pass $links = false where the text already sits inside a link (a card), so
+ * links are dropped but bold, italic and underline stay.
  */
-function safe_html(?string $html): string
+function rich($text, bool $links = true): string
+{
+    $text = trim((string) ($text ?? ''));
+    if ($text === '') {
+        return '';
+    }
+    if (strpos($text, '<') === false) {
+        return nl2br(e($text), false);
+    }
+    return safe_html(preg_replace('/\r\n?|\n/', '<br>', $text), $links);
+}
+
+/** Formatted text reduced to plain text, for meta tags and attributes. */
+function plain_text($text): string
+{
+    $text = preg_replace('~<br\s*/?>~i', ' ', (string) ($text ?? ''));
+    return trim(preg_replace('/\s+/u', ' ', html_entity_decode(strip_tags($text), ENT_QUOTES | ENT_HTML5, 'UTF-8')));
+}
+
+/**
+ * Formatted fields (see rich()) and the *Html fields go through this: only a,
+ * strong, em, b, i, u and br survive, and links keep a safe href only.
+ */
+function safe_html(?string $html, bool $links = true): string
 {
     $html = trim((string) $html);
     if ($html === '') {
@@ -41,7 +66,7 @@ function safe_html(?string $html): string
     $doc->loadHTML('<?xml encoding="utf-8"?><div>' . $html . '</div>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
     libxml_clear_errors();
 
-    $allowed = ['a', 'strong', 'em', 'b', 'i', 'br'];
+    $allowed = $links ? ['a', 'strong', 'em', 'b', 'i', 'u', 'br'] : ['strong', 'em', 'b', 'i', 'u', 'br'];
     $clean = function (DOMNode $node) use (&$clean, $allowed, $doc): string {
         $out = '';
         foreach ($node->childNodes as $child) {

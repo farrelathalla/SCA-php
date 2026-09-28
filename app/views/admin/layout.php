@@ -115,10 +115,6 @@ $isActive = fn ($href) => $href === '/admin' ? $path === '/admin' : ($path === $
     </div>
   </div>
 
-  <datalist id="project-types">
-    <?php foreach (site('projectTypes', []) as $t): ?><option value="<?= e($t) ?>"><?php endforeach; ?>
-  </datalist>
-
   <script type="application/json" id="icon-paths"><?= json_encode(ICON_PATHS, JSON_HEX_TAG | JSON_UNESCAPED_SLASHES) ?></script>
   <script type="application/json" id="block-labels"><?= json_encode(array_map(fn ($b) => $b['label'], BLOCK_TYPES), JSON_HEX_TAG | JSON_UNESCAPED_SLASHES) ?></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js" defer></script>

@@ -217,7 +217,7 @@ function block_body(string $type, array $b): string
     switch ($type) {
         case 'intro':
             $text = trim((string) ($b['text'] ?? ''));
-            return $text === '' ? '' : '<div ' . reveal('max-w-3xl') . '><p class="text-xl leading-[1.7] text-body md:text-[1.375rem]">' . e($text) . '</p></div>';
+            return $text === '' ? '' : '<div ' . reveal('max-w-3xl') . '><p class="text-xl leading-[1.7] text-body md:text-[1.375rem]">' . rich($text) . '</p></div>';
 
         case 'heading':
             return trim((string) ($b['title'] ?? '')) === '' ? '' : section_heading(
@@ -285,7 +285,7 @@ function block_body(string $type, array $b): string
             }
             $title = trim((string) ($b['title'] ?? ''));
             $out = $title !== '' ? '<h2 ' . reveal('mb-10 text-3xl') . '>' . e($title) . '</h2>' : '';
-            $out .= '<div class="grid gap-8 sm:grid-cols-3 md:gap-10">';
+            $out .= '<div class="card-row gap-y-8 [--gap-x:2rem] sm:[--cols:3] md:gap-y-10 md:[--gap-x:2.5rem]">';
             foreach ($images as $i => $src) {
                 $out .= '<div ' . reveal('', ($i % 3) * 110) . '>' . media($src, ['ratio' => 'landscape']) . '</div>';
             }
@@ -347,7 +347,7 @@ function block_body(string $type, array $b): string
         case 'newsletter':
             return '<div ' . reveal('flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-16') . '>'
                 . '<div class="max-w-md"><h2 class="text-3xl">' . e($b['title'] ?? '') . '</h2>'
-                . '<p class="mt-3 text-[1.0625rem] leading-relaxed text-body">' . e($b['body'] ?? '') . '</p></div>'
+                . '<p class="mt-3 text-[1.0625rem] leading-relaxed text-body">' . rich($b['body'] ?? '') . '</p></div>'
                 . newsletter_form('lg:w-[28rem]', 'large') . '</div>';
 
         case 'relatedLinks':

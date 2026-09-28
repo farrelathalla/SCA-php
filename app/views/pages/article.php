@@ -9,7 +9,7 @@ $more = array_slice(array_values(array_filter(entries('news'), fn ($item) => $it
 $prose = function (array $paragraphs): string {
     $out = '';
     foreach ($paragraphs as $i => $paragraph) {
-        $out .= '<p ' . reveal('', $i * 60) . '>' . e($paragraph) . '</p>';
+        $out .= '<p ' . reveal('', $i * 60) . '>' . rich($paragraph) . '</p>';
     }
     return $out;
 };
@@ -34,7 +34,7 @@ $prose = function (array $paragraphs): string {
   <div class="shell-narrow my-4">
     <div <?= reveal() ?>>
       <blockquote class="border-l-2 border-accent py-2 pl-8">
-        <p class="font-display text-2xl leading-snug text-ink md:text-[1.75rem]"><?= e($a['pullQuote']) ?></p>
+        <p class="font-display text-2xl leading-snug text-ink md:text-[1.75rem]"><?= rich($a['pullQuote']) ?></p>
       </blockquote>
     </div>
   </div>
@@ -45,7 +45,7 @@ $prose = function (array $paragraphs): string {
     <div class="shell my-14 md:my-20">
       <div <?= reveal('mx-auto max-w-4xl') ?>>
         <?= media((string) $a['inlineImage'], ['ratio' => 'hero']) ?>
-        <?php if (($a['inlineCaption'] ?? '') !== ''): ?><p class="mt-4 text-center text-[0.85rem] text-muted"><?= e($a['inlineCaption']) ?></p><?php endif; ?>
+        <?php if (($a['inlineCaption'] ?? '') !== ''): ?><p class="mt-4 text-center text-[0.85rem] text-muted"><?= rich($a['inlineCaption']) ?></p><?php endif; ?>
       </div>
     </div>
     <?php endif; ?>

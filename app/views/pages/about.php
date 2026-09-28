@@ -2,16 +2,19 @@
 <?= page_hero($p['hero'] ?? []) ?>
 <?= page_blocks($p, 'top') ?>
 
+<?php if (shown($p, 'mission')): ?>
 <section class="section-tight">
   <div class="shell">
     <div <?= reveal('max-w-3xl') ?>>
       <?= eyebrow_rule((string) v($p, 'mission.eyebrow')) ?>
-      <p class="mt-6 text-xl leading-[1.6] text-ink md:text-[1.5rem]"><?= e(v($p, 'mission.statement')) ?></p>
-      <p class="mt-5 text-[1.0625rem] leading-[1.8] text-body"><?= e(v($p, 'mission.body')) ?></p>
+      <p class="mt-6 text-xl leading-[1.6] text-ink md:text-[1.5rem]"><?= rich(v($p, 'mission.statement')) ?></p>
+      <p class="mt-5 text-[1.0625rem] leading-[1.8] text-body"><?= rich(v($p, 'mission.body')) ?></p>
     </div>
   </div>
 </section>
+<?php endif; ?>
 
+<?php if (shown($p, 'approach')): ?>
 <section class="section-tight pb-20 md:pb-28">
   <div class="shell">
     <?= photo_text(
@@ -21,7 +24,9 @@
     ) ?>
   </div>
 </section>
+<?php endif; ?>
 
+<?php if (shown($p, 'governance')): ?>
 <section class="section-tight pb-20 md:pb-28">
   <div class="shell">
     <div <?= reveal('max-w-3xl rounded-3xl bg-sand/60 p-8 md:p-12') ?>>
@@ -30,13 +35,16 @@
     </div>
   </div>
 </section>
+<?php endif; ?>
 
+<?php if (shown($p, 'explore')): ?>
 <section class="section-tight border-t border-hairline pb-24 md:pb-32">
   <div class="shell">
     <?= section_heading((string) v($p, 'explore.eyebrow'), (string) v($p, 'explore.title')) ?>
     <?= fact_list(v($p, 'explore.items', []), 4, 'mt-12') ?>
   </div>
 </section>
+<?php endif; ?>
 
 <?= page_blocks($p) ?>
 

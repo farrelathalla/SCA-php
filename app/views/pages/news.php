@@ -12,7 +12,7 @@ $filters = [
 <?= page_hero($p['hero'] ?? []) ?>
 <?= page_blocks($p, 'top') ?>
 
-<?php if (v($p, 'saigaNews.title') !== ''): ?>
+<?php if (v($p, 'saigaNews.title') !== '' && shown($p, 'saigaNews')): ?>
 <section class="section-tight pb-0">
   <div class="shell"><div class="max-w-4xl"><?= resource_link(v($p, 'saigaNews', [])) ?></div></div>
 </section>
@@ -22,16 +22,18 @@ $filters = [
   <div class="shell"><?= archive_grid($items, $filters, false) ?></div>
 </section>
 
+<?php if (shown($p, 'email')): ?>
 <section class="section-tight border-t border-hairline">
   <div class="shell">
     <div <?= reveal('flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-16') ?>>
       <div class="max-w-md">
         <h2 class="text-3xl"><?= e(v($p, 'email.title')) ?></h2>
-        <p class="mt-3 text-[1.0625rem] leading-relaxed text-body"><?= e(v($p, 'email.body')) ?></p>
+        <p class="mt-3 text-[1.0625rem] leading-relaxed text-body"><?= rich(v($p, 'email.body')) ?></p>
       </div>
       <?= newsletter_form('lg:w-[28rem]', 'large') ?>
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <?= page_blocks($p) ?>

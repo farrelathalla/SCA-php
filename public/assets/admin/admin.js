@@ -37,6 +37,11 @@
     if (type === "list") {
       return childNodes(node).map(read);
     }
+    if (type === "tags") {
+      return Array.prototype.filter.call(node.querySelectorAll("input[type=checkbox]"), function (box) {
+        return box.checked;
+      }).map(function (box) { return box.value; });
+    }
     var input = node.querySelector("[data-input]");
     if (node.getAttribute("data-type") === "bool") return !!(input && input.checked);
     return input ? input.value : "";
@@ -54,8 +59,72 @@
 
     form.addEventListener("submit", function () {
       var root = form.querySelector("[data-root]");
-      form.querySelector("[data-json]").value = JSON.stringify(read(root));
+      var data = read(root);
+      // Sections switched off with "Show on the page" (fixed pages only).
+      var switches = form.querySelectorAll("[data-section-shown]");
+      if (switches.length) {
+        data.hiddenSections = Array.prototype.filter.call(switches, function (box) {
+          return !box.checked;
+        }).map(function (box) { return box.getAttribute("data-section-shown"); });
+      }
+      form.querySelector("[data-json]").value = JSON.stringify(data);
       dirty = false;
+    });
+
+    // A section switched off is dimmed, so it is clear it is not on the page.
+    function showSectionState(box) {
+      var section = box.closest("[data-section]");
+      if (section) section.classList.toggle("opacity-55", !box.checked);
+    }
+    form.querySelectorAll("[data-section-shown]").forEach(showSectionState);
+    form.addEventListener("change", function (event) {
+      if (event.target.hasAttribute("data-section-shown")) showSectionState(event.target);
+      // Project themes / countries / years: the closed drop-down lists what is ticked.
+      var tags = event.target.closest("[data-tags]");
+      if (tags) {
+        var ticked = Array.prototype.filter.call(tags.querySelectorAll("input[type=checkbox]"), function (box) {
+          return box.checked;
+        }).map(function (box) { return box.value; });
+        tags.querySelector("[data-tags-summary]").textContent = ticked.length ? ticked.join(", ") : "None chosen";
+      }
+    });
+
+    // Formatting toolbar: wrap the selected text in <strong>, <em>, <u> or a link.
+    function format(textarea, command) {
+      var start = textarea.selectionStart;
+      var end = textarea.selectionEnd;
+      var value = textarea.value;
+      var selected = value.slice(start, end);
+      var open = "<" + command + ">";
+      var close = "</" + command + ">";
+      if (command === "a") {
+        var href = window.prompt("Link to (a web address such as https://… or a page on this site such as /support/donate):", "https://");
+        if (!href || href === "https://") return;
+        open = '<a href="' + href.trim().replace(/"/g, "%22") + '">';
+        close = "</a>";
+        if (!selected) selected = "link text";
+      } else if (!selected) {
+        selected = "text";
+      }
+      textarea.value = value.slice(0, start) + open + selected + close + value.slice(end);
+      textarea.focus();
+      textarea.setSelectionRange(start + open.length, start + open.length + selected.length);
+      textarea.dispatchEvent(new Event("input", { bubbles: true }));
+    }
+
+    form.addEventListener("click", function (event) {
+      var button = event.target.closest("[data-rich-cmd]");
+      if (!button) return;
+      event.preventDefault();
+      format(button.closest("[data-rich]").querySelector("textarea"), button.getAttribute("data-rich-cmd"));
+    });
+
+    form.addEventListener("keydown", function (event) {
+      if (!(event.ctrlKey || event.metaKey) || event.altKey || event.target.tagName !== "TEXTAREA" || !event.target.closest("[data-rich]")) return;
+      var command = { b: "strong", i: "em", u: "u", k: "a" }[event.key.toLowerCase()];
+      if (!command) return;
+      event.preventDefault();
+      format(event.target, command);
     });
 
     window.addEventListener("beforeunload", function (event) {
@@ -260,13 +329,25 @@
       pickFile("image/png,image/webp,image/gif", function (file) {
         button.textContent = "Uploading…";
         button.disabled = true;
-        upload(file, "image")
+        upload(file, "icon")
           .then(function (url) {
+            // Every icon picker on the page (and on every page from now on)
+            // offers the new icon, so it only needs uploading once.
+            document.querySelectorAll("[data-icon-select]").forEach(function (other) {
+              var option = document.createElement("option");
+              option.value = url;
+              option.textContent = "Uploaded: " + url.split("/").pop();
+              other.appendChild(option);
+            });
+            document.querySelectorAll("template").forEach(function (template) {
+              template.content.querySelectorAll("[data-icon-select]").forEach(function (other) {
+                var option = document.createElement("option");
+                option.value = url;
+                option.textContent = "Uploaded: " + url.split("/").pop();
+                other.appendChild(option);
+              });
+            });
             var select = iconField.querySelector("[data-icon-select]");
-            var option = document.createElement("option");
-            option.value = url;
-            option.textContent = "Uploaded: " + url.split("/").pop();
-            select.appendChild(option);
             select.value = url;
             select.dispatchEvent(new Event("change", { bubbles: true }));
           })
