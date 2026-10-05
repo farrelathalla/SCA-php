@@ -42,7 +42,17 @@
 
     <div class="mt-14 flex flex-col gap-3 border-t border-hairline pt-8 text-[0.8rem] text-muted sm:flex-row sm:items-center sm:justify-between">
       <p>© <?= date('Y') ?> <?= e($f['copyright'] ?? '') ?></p>
-      <a href="<?= e($f['privacyHref'] ?? '#') ?>" class="transition-colors hover:text-accent-dark"><?= e($f['privacyLabel'] ?? '') ?></a>
+      <div class="flex flex-wrap items-center gap-x-6 gap-y-2">
+        <?php if (trim((string) site('site.analyticsId')) !== ''): ?>
+        <!-- Turns Google Analytics off (or back on) for this browser: assets/js/app.js. -->
+        <button type="button" data-analytics-toggle data-id="<?= e(site('site.analyticsId')) ?>"
+          data-label-on="<?= e(site('labels.analyticsOptOut', 'Analytics opt-out')) ?>" data-label-off="<?= e(site('labels.analyticsOptIn', 'Analytics: off (turn back on)')) ?>"
+          data-note-off="<?= e(site('labels.analyticsOptedOut')) ?>" data-note-on="<?= e(site('labels.analyticsOptedIn')) ?>"
+          class="cursor-pointer underline-offset-4 transition-colors hover:text-accent-dark hover:underline"><?= e(site('labels.analyticsOptOut', 'Analytics opt-out')) ?></button>
+        <?php endif; ?>
+        <a href="<?= e($f['privacyHref'] ?? '#') ?>" class="transition-colors hover:text-accent-dark"><?= e($f['privacyLabel'] ?? '') ?></a>
+      </div>
     </div>
+    <p class="mt-3 hidden text-[0.8rem] text-ink sm:text-right" role="status" aria-live="polite" data-analytics-note></p>
   </div>
 </footer>

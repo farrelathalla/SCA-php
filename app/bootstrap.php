@@ -21,6 +21,7 @@ require APP . '/lib/components.php';
 require APP . '/lib/blocks.php';
 
 error_reporting(E_ALL);
+header_remove('X-Powered-By');
 ini_set('display_errors', config('debug') ? '1' : '0');
 ini_set('log_errors', '1');
 date_default_timezone_set('UTC');

@@ -15,7 +15,7 @@ $related = entries_by_slug('project', $theme['relatedProjects'] ?? []);
 <section class="section-tight pb-20 md:pb-28">
   <div class="shell">
     <?= photo_text(
-        ['eyebrow' => v($theme, 'challenge.eyebrow'), 'title' => v($theme, 'challenge.title'), 'image' => $theme['image'] ?? '', 'imageSide' => 'left'],
+        ['eyebrow' => v($theme, 'challenge.eyebrow'), 'title' => v($theme, 'challenge.title'), 'image' => $theme['image'] ?? '', 'imageCaption' => $theme['imageCaption'] ?? '', 'imageSide' => 'left'],
         paragraphs(v($theme, 'challenge.body', []))
     ) ?>
   </div>

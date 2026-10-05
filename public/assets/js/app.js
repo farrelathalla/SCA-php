@@ -358,7 +358,20 @@
    * on the page. The form action is the list's usual
    * …list-manage.com/subscribe/post?u=…&id=… URL, as set in the admin.
    */
-  function subscribeMailchimp(action, email) {
+  /*
+   * Extra fields for Mailchimp, as set in the admin: usually a group from the
+   * embedded form code, e.g. "group[12345][1]" (sent as =1) or "group[12345]=4".
+   */
+  function mailchimpExtra(setting) {
+    return (setting || "").split(/[&\s,]+/).filter(Boolean).map(function (part) {
+      var eq = part.indexOf("=");
+      var name = eq < 0 ? part : part.slice(0, eq);
+      var value = eq < 0 ? "1" : part.slice(eq + 1);
+      return "&" + encodeURIComponent(name) + "=" + encodeURIComponent(value);
+    }).join("");
+  }
+
+  function subscribeMailchimp(action, email, extra) {
     return new Promise(function (resolve, reject) {
       var url = action.replace("/subscribe/post?", "/subscribe/post-json?");
       var params = new URL(url, window.location.href).searchParams;
@@ -381,6 +394,7 @@
       };
       script.src = url
         + "&EMAIL=" + encodeURIComponent(email)
+        + mailchimpExtra(extra)
         + "&b_" + params.get("u") + "_" + params.get("id") + "="
         + "&c=" + callback;
       script.onerror = function () {
@@ -404,7 +418,7 @@
       var request;
       if (mailchimp && !(honeypot && honeypot.value)) {
         var email = form.querySelector("input[type=email]").value;
-        request = subscribeMailchimp(mailchimp, email).then(function () {
+        request = subscribeMailchimp(mailchimp, email, form.getAttribute("data-mailchimp-group")).then(function () {
           // Keep a copy in the admin as well; a failure here does not matter.
           postLocal(form).catch(function () {});
         });
@@ -435,6 +449,49 @@
             window.alert(error.message);
           }
         });
+    });
+  });
+  /*
+   * "Analytics opt-out" in the footer. Remembers the choice for a year in a
+   * cookie (sca_analytics=off), stops Google Analytics on this page straight
+   * away and removes its cookies; the layout does not load it again.
+   */
+  document.querySelectorAll("[data-analytics-toggle]").forEach(function (button) {
+    var id = button.getAttribute("data-id");
+    var note = document.querySelector("[data-analytics-note]");
+    var isOff = function () { return /(?:^|; )sca_analytics=off/.test(document.cookie); };
+    var secure = location.protocol === "https:" ? "; Secure" : "";
+    var show = function () {
+      button.textContent = button.getAttribute(isOff() ? "data-label-off" : "data-label-on");
+      button.setAttribute("aria-pressed", isOff() ? "true" : "false");
+    };
+    show();
+    button.addEventListener("click", function () {
+      if (isOff()) {
+        document.cookie = "sca_analytics=; Max-Age=0; Path=/; SameSite=Lax" + secure;
+        window["ga-disable-" + id] = false;
+      } else {
+        document.cookie = "sca_analytics=off; Max-Age=31536000; Path=/; SameSite=Lax" + secure;
+        window["ga-disable-" + id] = true;
+        if (typeof window.gtag === "function") window.gtag("consent", "update", { analytics_storage: "denied" });
+        // Remove the Google Analytics cookies (_ga, _ga_XXXX, _gid) on every level of the domain.
+        var parts = location.hostname.split(".");
+        document.cookie.split("; ").forEach(function (pair) {
+          var name = pair.split("=")[0];
+          if (!/^_ga|^_gid$|^_gat/.test(name)) return;
+          for (var i = 0; i < parts.length; i++) {
+            var domain = parts.slice(i).join(".");
+            document.cookie = name + "=; Max-Age=0; Path=/; Domain=" + domain;
+            document.cookie = name + "=; Max-Age=0; Path=/; Domain=." + domain;
+          }
+          document.cookie = name + "=; Max-Age=0; Path=/";
+        });
+      }
+      show();
+      if (note) {
+        note.textContent = button.getAttribute(isOff() ? "data-note-off" : "data-note-on");
+        note.classList.remove("hidden");
+      }
     });
   });
 })();

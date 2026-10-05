@@ -12,24 +12,24 @@ $chart = $graphImage === '' ? line_chart(v($p, 'graph.points', []), [
 <?= page_hero($p['hero'] ?? []) ?>
 <?= page_blocks($p, 'top') ?>
 
-<?php if (shown($p, 'intro')): ?>
+<?php section_start('intro'); ?>
 <section class="section-tight">
   <div class="shell">
     <div <?= reveal('max-w-3xl') ?>><p class="text-xl leading-[1.7] text-body md:text-[1.375rem]"><?= rich($p['intro'] ?? '') ?></p></div>
   </div>
 </section>
-<?php endif; ?>
+<?php section_end(); ?>
 
-<?php if (shown($p, 'history')): ?>
+<?php section_start('history'); ?>
 <section class="section-tight pb-20 md:pb-28">
   <div class="shell">
     <?= section_heading((string) v($p, 'history.eyebrow'), (string) v($p, 'history.title'), (string) v($p, 'history.intro')) ?>
     <div class="mt-16"><?= timeline(v($p, 'history.items', []), 'asc', false) ?></div>
   </div>
 </section>
-<?php endif; ?>
+<?php section_end(); ?>
 
-<?php if (shown($p, 'graph')): ?>
+<?php section_start('graph'); ?>
 <section class="bg-cream-deep">
   <div class="shell py-16 md:py-24">
     <?= section_heading((string) v($p, 'graph.eyebrow'), (string) v($p, 'graph.title'), (string) v($p, 'graph.intro')) ?>
@@ -58,9 +58,9 @@ $chart = $graphImage === '' ? line_chart(v($p, 'graph.points', []), [
     </div>
   </div>
 </section>
-<?php endif; ?>
+<?php section_end(); ?>
 
-<?php if (shown($p, 'threats')): ?>
+<?php section_start('threats'); ?>
 <section class="section">
   <div class="shell">
     <?= section_heading((string) v($p, 'threats.eyebrow'), (string) v($p, 'threats.title'), (string) v($p, 'threats.intro')) ?>
@@ -75,9 +75,9 @@ $chart = $graphImage === '' ? line_chart(v($p, 'graph.points', []), [
     </div>
   </div>
 </section>
-<?php endif; ?>
+<?php section_end(); ?>
 
-<?php if (shown($p, 'summary')): ?>
+<?php section_start('summary'); ?>
 <section class="section-tight pb-20 md:pb-28">
   <div class="shell">
     <div <?= reveal('max-w-3xl') ?>>
@@ -86,7 +86,9 @@ $chart = $graphImage === '' ? line_chart(v($p, 'graph.points', []), [
     </div>
   </div>
 </section>
-<?php endif; ?>
+<?php section_end(); ?>
+
+<?= implode('', ordered_sections($p)) ?>
 
 <?= page_blocks($p) ?>
 

@@ -82,6 +82,16 @@ const LABELS = [
     'applyBody' => 'How to apply',
     'applyButtonHref' => 'Application form link (where “Start an application” goes)',
     'closedNote' => 'Shown instead of the button while applications are closed',
+    'imageCaption' => 'Image caption (optional — shown under the photo)',
+    'caption' => 'Caption (optional)',
+    'photos' => 'Photos in the article (each with an optional caption)',
+    'afterParagraph' => 'Show after paragraph number… (leave empty for after the 2nd paragraph; paragraphs are separated by an empty line)',
+    'notifyEmail' => 'Send new contact and Work With Us messages to (email address — separate several with commas)',
+    'mailchimpGroup' => 'Mailchimp group for new sign-ups (from the embedded form code, e.g. group[12345][1] — leave empty for none)',
+    'analyticsOptOut' => 'Footer link: analytics opt-out',
+    'analyticsOptIn' => 'Footer link after opting out (turn analytics back on)',
+    'analyticsOptedOut' => 'Message after opting out',
+    'analyticsOptedIn' => 'Message after opting back in',
 ];
 
 /** Lists whose newest item belongs at the top, so “+ Add” inserts it there. */
@@ -94,6 +104,8 @@ const PREPEND_LISTS = ['reports'];
  */
 const LIST_ITEM_SHAPES = [
     'documents' => ['title' => '', 'href' => ''],
+    'photos' => ['image' => '', 'caption' => '', 'afterParagraph' => ''],
+    'gallery' => ['image' => '', 'caption' => ''],
 ];
 
 /**
@@ -144,11 +156,11 @@ function tag_fields(?bool $set = null): bool
  * The top-level sections of the page being edited that can be switched off,
  * and the ones that are. Set by the admin router for fixed pages.
  */
-function section_switches(?array $hideable = null, ?array $hidden = null): array
+function section_switches(?array $hideable = null, ?array $hidden = null, ?array $orderable = null): array
 {
-    static $state = [[], []];
+    static $state = [[], [], []];
     if ($hideable !== null) {
-        $state = [$hideable, $hidden ?? []];
+        $state = [$hideable, $hidden ?? [], $orderable ?? []];
     }
     return $state;
 }
@@ -156,13 +168,22 @@ function section_switches(?array $hideable = null, ?array $hidden = null): array
 /** "Show on the page" switch for a top-level section, if it has one. */
 function section_switch(string $key): string
 {
-    [$hideable, $hidden] = section_switches();
+    [$hideable, $hidden, $orderable] = section_switches();
     if (!in_array($key, $hideable, true)) {
         return '';
     }
     $on = !in_array($key, $hidden, true);
-    return '<label class="ml-auto inline-flex shrink-0 cursor-pointer items-center gap-2 rounded-full border border-hairline bg-cream px-3 py-1 text-[0.8rem] text-ink" title="Untick to take this section off the page. Its content is kept, so you can tick it again later.">'
-        . '<input type="checkbox" data-section-shown="' . e($key) . '" class="h-4 w-4 accent-[#c87a3c]"' . ($on ? ' checked' : '') . '> Show on the page</label>';
+    $arrows = '';
+    if (in_array($key, $orderable, true)) {
+        // Moves the whole section up or down the page (assets/admin/admin.js).
+        $btn = 'rounded-md border border-hairline bg-cream px-2.5 py-1 text-[0.85rem] text-ink hover:border-ink/40';
+        $arrows = '<span class="inline-flex shrink-0 items-center gap-1" data-section-order="' . e($key) . '">'
+            . '<button type="button" data-section-move="-1" title="Move this section up the page" class="' . $btn . '">↑</button>'
+            . '<button type="button" data-section-move="1" title="Move this section down the page" class="' . $btn . '">↓</button></span>';
+    }
+    return ($arrows !== '' ? '<span class="ml-auto flex items-center gap-2">' . $arrows : '') . '<label class="ml-auto inline-flex shrink-0 cursor-pointer items-center gap-2 rounded-full border border-hairline bg-cream px-3 py-1 text-[0.8rem] text-ink" title="Untick to take this section off the page. Its content is kept, so you can tick it again later.">'
+        . '<input type="checkbox" data-section-shown="' . e($key) . '" class="h-4 w-4 accent-[#c87a3c]"' . ($on ? ' checked' : '') . '> Show on the page</label>'
+        . ($arrows !== '' ? '</span>' : '');
 }
 
 /** Leaf values that are picked from a short list rather than typed. */
@@ -271,6 +292,13 @@ function item_summary($item): string
             $extra = ($k === 'year' && !empty($item['title'])) ? ' — ' . $item['title'] : '';
             return mb_strimwidth($item[$k] . $extra, 0, 80, '…');
         }
+    }
+    // Photos: the caption, else the file name.
+    if (trim(plain_text($item['caption'] ?? '')) !== '') {
+        return mb_strimwidth(plain_text($item['caption']), 0, 80, '…');
+    }
+    if (trim((string) ($item['image'] ?? '')) !== '') {
+        return basename((string) $item['image']);
     }
     return 'Item';
 }
@@ -392,6 +420,11 @@ function render_node(?string $key, $value, $shape, int $depth = 0, string $paren
         $itemShape = (is_array($shape) && isset($shape[0]))
             ? $shape[0]
             : (LIST_ITEM_SHAPES[(string) $key] ?? ($value[0] ?? ''));
+        if ($key === 'gallery') {
+            // Photo galleries are image + caption pairs (older ones were plain paths).
+            $itemShape = LIST_ITEM_SHAPES['gallery'];
+            $value = array_map(fn ($item) => is_array($item) ? $item : ['image' => (string) $item, 'caption' => ''], $value);
+        }
         $template = render_list_item(blank_of($itemShape), $itemShape, $depth + 1, (string) $key);
 
         $out = '<div data-node="list"' . $keyAttr . ($switch !== '' ? ' data-section class="space-y-2 rounded-2xl border border-hairline bg-white p-5 md:p-6"' : ' class="space-y-2"') . '>';
@@ -554,9 +587,21 @@ function render_blocks_field(array $blocks, string $key): string
 function render_document_form(array $data, array $shape): string
 {
     $out = '<div data-node="group" data-root class="space-y-5">';
-    foreach (array_unique(array_merge(array_keys($data), array_keys($shape))) as $k) {
-        $k = (string) $k;
-        if ($k === '' || $k[0] === '_' || $k === 'hiddenSections') {
+    $keys = array_map('strval', array_unique(array_merge(array_keys($data), array_keys($shape))));
+    // Sections SCA put in another order are listed in that order here too.
+    [, , $orderable] = section_switches();
+    if ($orderable) {
+        $present = array_values(array_intersect($keys, $orderable));
+        $sorted = section_order($present, (array) ($data['sectionOrder'] ?? []));
+        $i = 0;
+        foreach ($keys as $n => $k) {
+            if (in_array($k, $present, true)) {
+                $keys[$n] = $sorted[$i++];
+            }
+        }
+    }
+    foreach ($keys as $k) {
+        if ($k === '' || $k[0] === '_' || $k === 'hiddenSections' || $k === 'sectionOrder') {
             continue;
         }
         $v = array_key_exists($k, $data) ? $data[$k] : blank_of($shape[$k]);

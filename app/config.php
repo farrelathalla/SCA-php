@@ -23,9 +23,17 @@ $defaults = [
         'username' => 'admin',
         'password' => '',
     ],
-    // Where contact-form messages are also emailed (optional; they are
-    // always stored and visible under Admin → Messages).
+    // Where contact-form messages are emailed when the admin setting (Header,
+    // footer & site-wide → Contact form → Send new … messages to) is empty.
+    // Messages are always stored under Admin → Messages as well.
     'notify_email' => '',
+    // Outgoing email through Resend (app/lib/mail.php). Without a key the
+    // server's mail() is used.
+    'resend_api_key' => '',
+    'mail_from' => 'Saiga Conservation Alliance website <website@saiga-conservation.org>',
+    // The public address (https://…), used for canonical links and the
+    // sitemap. Empty = the address the visitor used.
+    'site_url' => '',
 ];
 
 $local = __DIR__ . '/config.local.php';

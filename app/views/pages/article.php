@@ -2,16 +2,57 @@
 /** @var array $article */
 $t = v(page('news'), 'articleTemplate', []);
 $a = $article;
-$body = array_values(array_filter($a['body'] ?? [], fn ($p) => trim((string) $p) !== ''));
-$firstHalf = array_slice($body, 0, 2);
-$secondHalf = array_slice($body, 2);
-$more = array_slice(array_values(array_filter(entries('news'), fn ($item) => $item['slug'] !== $a['slug'])), 0, 3);
-$prose = function (array $paragraphs): string {
-    $out = '';
-    foreach ($paragraphs as $i => $paragraph) {
-        $out .= '<p ' . reveal('', $i * 60) . '>' . rich($paragraph) . '</p>';
+// Each text box in the admin may hold several paragraphs, separated by an
+// empty line (that is how long articles are usually pasted in).
+$paragraphs = [];
+foreach ((array) ($a['body'] ?? []) as $box) {
+    foreach (preg_split('/\R[ \t]*\R/', trim((string) $box)) as $paragraph) {
+        if (trim($paragraph) !== '') {
+            $paragraphs[] = trim($paragraph);
+        }
     }
-    return $out;
+}
+$count = count($paragraphs);
+$middle = min(2, $count);
+
+// Photos, each placed after the paragraph number it names (else after the
+// second paragraph). Articles saved before photos had captions carry one
+// inlineImage instead.
+$photos = photo_items($a['photos'] ?? []);
+if (!$photos && trim((string) ($a['inlineImage'] ?? '')) !== '') {
+    $photos = [['image' => trim((string) $a['inlineImage']), 'caption' => (string) ($a['inlineCaption'] ?? '')]];
+}
+$photosAt = [];
+foreach ($photos as $photo) {
+    $after = trim((string) ($photo['afterParagraph'] ?? ''));
+    $at = ctype_digit($after) ? min((int) $after, $count) : $middle;
+    $photosAt[$at][] = $photo;
+}
+$quote = trim((string) ($a['pullQuote'] ?? ''));
+
+$more = array_slice(array_values(array_filter(entries('news'), fn ($item) => $item['slug'] !== $a['slug'])), 0, 3);
+
+/** One run of paragraphs at reading width. */
+$prose = function (array $run): string {
+    $out = '';
+    foreach ($run as $i => $paragraph) {
+        $out .= '<p ' . reveal('', min($i, 4) * 60) . '>' . rich($paragraph) . '</p>';
+    }
+    return $run ? '<div class="shell-narrow prose-sca">' . $out . '</div>' : '';
+};
+
+/** The photos that share a place: one wide, or two or more side by side. */
+$figures = function (array $group): string {
+    if (count($group) === 1) {
+        return '<div class="shell my-12 md:my-16"><div ' . reveal('mx-auto max-w-4xl') . '>'
+            . media($group[0]['image'], ['ratio' => 'natural', 'caption' => $group[0]['caption'], 'captionClass' => 'text-center'])
+            . '</div></div>';
+    }
+    $out = '';
+    foreach ($group as $i => $photo) {
+        $out .= '<div ' . reveal('', ($i % 2) * 110) . '>' . media($photo['image'], ['ratio' => 'natural', 'caption' => $photo['caption']]) . '</div>';
+    }
+    return '<div class="shell my-12 md:my-16"><div class="mx-auto grid max-w-5xl items-start gap-x-8 gap-y-10 sm:grid-cols-2">' . $out . '</div></div>';
 };
 ?>
 <?= page_hero(['eyebrow' => $a['category'] ?? '', 'title' => $a['title'] ?? '', 'intro' => $a['excerpt'] ?? '', 'image' => $a['heroImage'] ?? '', 'variant' => 'overlay']) ?>
@@ -28,29 +69,28 @@ $prose = function (array $paragraphs): string {
 </section>
 
 <article class="section-tight">
-  <div class="shell-narrow prose-sca"><?= $prose($firstHalf) ?></div>
-
-  <?php if (trim((string) ($a['pullQuote'] ?? '')) !== ''): ?>
-  <div class="shell-narrow my-4">
-    <div <?= reveal() ?>>
-      <blockquote class="border-l-2 border-accent py-2 pl-8">
-        <p class="font-display text-2xl leading-snug text-ink md:text-[1.75rem]"><?= rich($a['pullQuote']) ?></p>
-      </blockquote>
-    </div>
-  </div>
-  <?php endif; ?>
-
-  <?php if ($secondHalf): ?>
-    <?php if (trim((string) ($a['inlineImage'] ?? '')) !== ''): ?>
-    <div class="shell my-14 md:my-20">
-      <div <?= reveal('mx-auto max-w-4xl') ?>>
-        <?= media((string) $a['inlineImage'], ['ratio' => 'hero']) ?>
-        <?php if (($a['inlineCaption'] ?? '') !== ''): ?><p class="mt-4 text-center text-[0.85rem] text-muted"><?= rich($a['inlineCaption']) ?></p><?php endif; ?>
-      </div>
-    </div>
-    <?php endif; ?>
-    <div class="shell-narrow prose-sca"><?= $prose($secondHalf) ?></div>
-  <?php endif; ?>
+<?php
+$run = [];
+for ($at = 0; $at <= $count; $at++) {
+    if ($at > 0) {
+        $run[] = $paragraphs[$at - 1];
+    }
+    $quoteHere = $quote !== '' && $at === $middle;
+    if (!$quoteHere && empty($photosAt[$at])) {
+        continue;
+    }
+    echo $prose($run);
+    $run = [];
+    if ($quoteHere) {
+        echo '<div class="shell-narrow my-4"><div ' . reveal() . '><blockquote class="border-l-2 border-accent py-2 pl-8">'
+            . '<p class="font-display text-2xl leading-snug text-ink md:text-[1.75rem]">' . rich($quote) . '</p></blockquote></div></div>';
+    }
+    if (!empty($photosAt[$at])) {
+        echo $figures($photosAt[$at]);
+    }
+}
+echo $prose($run);
+?>
 </article>
 
 <?php if ($more): ?>

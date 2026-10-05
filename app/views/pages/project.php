@@ -3,7 +3,7 @@
 $t = v(page('projects'), 'projectTemplate', []);
 $pr = $project;
 $related = array_slice(array_values(array_filter(entries('project'), fn ($item) => $item['slug'] !== $pr['slug'])), 0, 3);
-$gallery = array_values(array_filter($pr['gallery'] ?? [], fn ($src) => trim((string) $src) !== ''));
+$gallery = photo_items($pr['gallery'] ?? []);
 // Reports and other files are optional: most projects will not have any.
 $documents = document_links($pr['documents'] ?? []);
 ?>
@@ -65,7 +65,7 @@ $documents = document_links($pr['documents'] ?? []);
 <section class="section-tight pb-20 md:pb-28">
   <div class="shell">
     <div class="card-row gap-y-8 [--gap-x:2rem] sm:[--cols:3] md:gap-y-10 md:[--gap-x:2.5rem]">
-      <?php foreach ($gallery as $i => $src): ?><div <?= reveal('', $i * 110) ?>><?= media($src, ['ratio' => 'landscape']) ?></div><?php endforeach; ?>
+      <?php foreach ($gallery as $i => $photo): ?><div <?= reveal('', ($i % 3) * 110) ?>><?= media($photo['image'], ['ratio' => 'landscape', 'caption' => $photo['caption']]) ?></div><?php endforeach; ?>
     </div>
   </div>
 </section>

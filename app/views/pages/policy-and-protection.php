@@ -2,15 +2,15 @@
 <?= page_hero($p['hero'] ?? []) ?>
 <?= page_blocks($p, 'top') ?>
 
-<?php if (shown($p, 'intro')): ?>
+<?php section_start('intro'); ?>
 <section class="section-tight">
   <div class="shell">
     <div <?= reveal('max-w-3xl') ?>><p class="text-xl leading-[1.7] text-body md:text-[1.375rem]"><?= rich($p['intro'] ?? '') ?></p></div>
   </div>
 </section>
-<?php endif; ?>
+<?php section_end(); ?>
 
-<?php if (shown($p, 'agreements')): ?>
+<?php section_start('agreements'); ?>
 <section class="section-tight pb-20 md:pb-28">
   <div class="shell">
     <?= section_heading((string) v($p, 'agreements.eyebrow'), (string) v($p, 'agreements.title')) ?>
@@ -24,9 +24,9 @@
     </div>
   </div>
 </section>
-<?php endif; ?>
+<?php section_end(); ?>
 
-<?php if (shown($p, 'national')): ?>
+<?php section_start('national'); ?>
 <section class="section-tight pb-20 md:pb-28">
   <div class="shell">
     <div <?= reveal('max-w-3xl') ?>>
@@ -37,13 +37,15 @@
     </div>
   </div>
 </section>
-<?php endif; ?>
+<?php section_end(); ?>
 
-<?php if (shown($p, 'callout')): ?>
+<?php section_start('callout'); ?>
 <section class="section-tight pb-24 md:pb-32">
   <div class="shell"><?= callout((string) v($p, 'callout.title'), '<p>' . rich(v($p, 'callout.body')) . '</p>') ?></div>
 </section>
-<?php endif; ?>
+<?php section_end(); ?>
+
+<?= implode('', ordered_sections($p)) ?>
 
 <?= page_blocks($p) ?>
 

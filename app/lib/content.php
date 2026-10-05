@@ -45,6 +45,168 @@ const FIXED_PAGES = [
     '/support/work-with-us' => ['work-with-us', 'work-with-us'],
 ];
 
+/* ------------------------------------------------------- Page web addresses
+   SCA can give a fixed page a new address in the admin (e.g. Partners &
+   Funders → /about/partners-supporters). The new paths and every address a
+   page has had before are kept in the settings table; old addresses answer
+   with a permanent redirect, so links and search results keep working. */
+
+/** A value from the settings table (JSON-decoded when $json). */
+function setting(string $name, $default = null, bool $json = false)
+{
+    static $all = null;
+    if ($name === '') {
+        $all = null; // forget the cache after a save
+        return null;
+    }
+    if ($all === null) {
+        $all = [];
+        try {
+            foreach (db()->query('SELECT name, value FROM settings') as $row) {
+                $all[$row['name']] = $row['value'];
+            }
+        } catch (PDOException $e) {
+            // Not installed yet.
+        }
+    }
+    if (!array_key_exists($name, $all)) {
+        return $default;
+    }
+    if (!$json) {
+        return $all[$name];
+    }
+    $value = json_decode((string) $all[$name], true);
+    return $value ?? $default;
+}
+
+function save_setting(string $name, $value): void
+{
+    db()->prepare('REPLACE INTO settings (name, value) VALUES (?, ?)')
+        ->execute([$name, is_string($value) ? $value : json_encode($value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)]);
+    setting('');
+}
+
+/** The fixed routes with SCA's own addresses applied: path => [view, slug]. */
+function fixed_pages(): array
+{
+    $paths = (array) setting('page_paths', [], true);
+    $out = [];
+    foreach (FIXED_PAGES as $path => $route) {
+        $out[(string) ($paths[$route[1]] ?? $path)] = $route;
+    }
+    return $out;
+}
+
+/** The current address of a fixed page, by its page slug. */
+function page_path(string $slug): string
+{
+    foreach (fixed_pages() as $path => [, $pageSlug]) {
+        if ($pageSlug === $slug) {
+            return (string) $path;
+        }
+    }
+    return '/';
+}
+
+/** The page slug an old address used to belong to, or null. */
+function moved_page(string $path): ?string
+{
+    if (isset(fixed_pages()[$path])) {
+        return null;
+    }
+    $old = (array) setting('page_redirects', [], true);
+    if (isset($old[$path])) {
+        return (string) $old[$path];
+    }
+    return isset(FIXED_PAGES[$path]) ? FIXED_PAGES[$path][1] : null;
+}
+
+/**
+ * Why $path cannot become a fixed page's address (an empty string when it can).
+ * It may not belong to another page, a built page or an entry, nor sit under
+ * a folder the site itself uses.
+ */
+function page_path_problem(string $path, string $slug): string
+{
+    if ($path === '/' || !preg_match('#^/[a-z0-9-]+(?:/[a-z0-9-]+)*$#', $path)) {
+        return 'Use lower-case letters, numbers and hyphens, with / between the parts — for example /about/partners-supporters.';
+    }
+    $owner = fixed_pages()[$path][1] ?? null;
+    if ($owner !== null && $owner !== $slug) {
+        return 'That address already belongs to another page.';
+    }
+    if (in_array(explode('/', $path)[1], ['admin', 'forms', 'assets', 'images', 'uploads', 'downloads', 'logo', 'sitemap.xml', 'robots.txt'], true)) {
+        return 'That address is used by the site itself. Choose another.';
+    }
+    $routes = ['#^/our-work/grants-and-awards/([a-z0-9-]+)$#' => 'programme', '#^/our-work/([a-z0-9-]+)$#' => 'theme', '#^/projects/([a-z0-9-]+)$#' => 'project', '#^/news/([a-z0-9-]+)$#' => 'news'];
+    foreach ($routes as $pattern => $type) {
+        if (preg_match($pattern, $path, $m) && entry($type, $m[1])) {
+            return 'That address already belongs to a ' . COLLECTIONS[$type]['singular'] . '.';
+        }
+    }
+    if (entry('custom', ltrim($path, '/'))) {
+        return 'That address already belongs to a page built in the admin.';
+    }
+    return '';
+}
+
+/**
+ * Gives a fixed page a new address: the old one becomes a redirect, and links
+ * to it in the site's content (menus, footer, related links, text) are
+ * rewritten to the new one.
+ */
+function move_page(string $slug, string $path): void
+{
+    $current = page_path($slug);
+    if ($path === $current) {
+        return;
+    }
+    $paths = (array) setting('page_paths', [], true);
+    $redirects = (array) setting('page_redirects', [], true);
+    $redirects[$current] = $slug;
+    unset($redirects[$path]);
+    $original = array_search($slug, array_map(fn ($route) => $route[1], FIXED_PAGES), true);
+    if ($path === $original) {
+        unset($paths[$slug]);
+    } else {
+        $paths[$slug] = $path;
+    }
+    save_setting('page_paths', (object) $paths);
+    save_setting('page_redirects', (object) $redirects);
+    rewrite_links($current, $path);
+}
+
+/** Replaces links to $old with $new in every page and entry. */
+function rewrite_links(string $old, string $new): void
+{
+    $swap = function ($value) use (&$swap, $old, $new) {
+        if (is_array($value)) {
+            return array_map($swap, $value);
+        }
+        if (!is_string($value) || strpos($value, $old) === false) {
+            return $value;
+        }
+        if ($value === $old || strpos($value, $old . '#') === 0 || strpos($value, $old . '?') === 0) {
+            return $new . substr($value, strlen($old));
+        }
+        // Links inside formatted text: href="/old", href="/old#…".
+        return preg_replace('~(href=["\'])' . preg_quote($old, '~') . '(?=["\'#?])~', '${1}' . $new, $value);
+    };
+    $flags = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;
+    foreach (db()->query('SELECT slug, data FROM pages')->fetchAll() as $row) {
+        $data = json_decode($row['data'], true);
+        if (is_array($data) && ($changed = $swap($data)) !== $data) {
+            db()->prepare('UPDATE pages SET data = ?, updated_at = ? WHERE slug = ?')->execute([json_encode($changed, $flags), now(), $row['slug']]);
+        }
+    }
+    foreach (db()->query('SELECT id, data FROM entries')->fetchAll() as $row) {
+        $data = json_decode($row['data'], true);
+        if (is_array($data) && ($changed = $swap($data)) !== $data) {
+            db()->prepare('UPDATE entries SET data = ? WHERE id = ?')->execute([json_encode($changed, $flags), $row['id']]);
+        }
+    }
+}
+
 /** Path prefixes a built page may not use, because a route already owns them. */
 const RESERVED_PREFIXES = ['admin', 'forms', 'assets', 'images', 'uploads', 'downloads', 'logo', 'our-work', 'projects', 'news'];
 
@@ -204,6 +366,69 @@ const HIDEABLE_SECTIONS = [
     'sign-up' => ['related'],
     'work-with-us' => ['intro', 'contact', 'related'],
 ];
+
+/**
+ * The sections of a fixed page that SCA can put in a different order with the
+ * ↑ ↓ buttons in the admin. These are the page's own sections between the
+ * header and the end of the page; the related links and the donation band
+ * always stay at the foot.
+ */
+function orderable_sections(string $slug): array
+{
+    $fixed = ['related', 'cta', 'saigaNews', 'email', 'grantsStrand', 'report'];
+    $keys = array_values(array_diff(HIDEABLE_SECTIONS[$slug] ?? [], $fixed));
+    return count($keys) > 1 ? $keys : [];
+}
+
+/**
+ * Sections are captured as the template runs (section_start() … section_end())
+ * and printed together, in the order saved in the page's sectionOrder, by
+ * ordered_sections(). Sections switched off in the admin are dropped there.
+ */
+function section_start(string $key): void
+{
+    $GLOBALS['__section_stack'][] = $key;
+    ob_start();
+}
+
+function section_end(): void
+{
+    $key = array_pop($GLOBALS['__section_stack']);
+    $GLOBALS['__sections'][$key] = ob_get_clean();
+}
+
+/** The captured sections, in the page's saved order: key => HTML. */
+function ordered_sections(array $page): array
+{
+    $captured = $GLOBALS['__sections'] ?? [];
+    $GLOBALS['__sections'] = [];
+    $out = [];
+    foreach (section_order(array_keys($captured), (array) ($page['sectionOrder'] ?? [])) as $key) {
+        if (shown($page, $key)) {
+            $out[$key] = $captured[$key];
+        }
+    }
+    return $out;
+}
+
+/**
+ * $keys (in their designed order) rearranged by a saved order. Keys the saved
+ * order does not mention — a section added to the site later — keep their
+ * place after the section they follow in the design.
+ */
+function section_order(array $keys, array $saved): array
+{
+    $order = array_values(array_intersect(array_map('strval', $saved), $keys));
+    $order = array_values(array_unique($order));
+    foreach ($keys as $i => $key) {
+        if (in_array($key, $order, true)) {
+            continue;
+        }
+        $before = $i > 0 ? array_search($keys[$i - 1], $order, true) : false;
+        array_splice($order, $before === false ? ($i === 0 ? 0 : count($order)) : $before + 1, 0, [$key]);
+    }
+    return $order;
+}
 
 /** Project archive years run from SCA's founding year to next year. */
 const PROJECT_FIRST_YEAR = 2006;

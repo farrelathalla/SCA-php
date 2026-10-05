@@ -139,6 +139,21 @@ function request_path(): string
     return $path;
 }
 
+/**
+ * The site's own origin (https://host), for canonical links, sitemaps and
+ * share images: 'site_url' from the config when set, else the request's host.
+ */
+function site_origin(): string
+{
+    $configured = rtrim((string) config('site_url', ''), '/');
+    if ($configured !== '') {
+        return $configured;
+    }
+    $https = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https');
+    $host = preg_replace('/[^a-z0-9.:-]/i', '', (string) ($_SERVER['HTTP_HOST'] ?? 'localhost'));
+    return ($https ? 'https://' : 'http://') . $host;
+}
+
 function is_post(): bool
 {
     return ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST';
@@ -214,6 +229,39 @@ function flash(?string $message = null, string $type = 'success')
     $flash = $_SESSION['flash'] ?? null;
     unset($_SESSION['flash']);
     return $flash;
+}
+
+/* ------------------------------------------------------------------ Forms
+   Public forms carry a signed time stamp (see app/lib/forms.php). */
+
+/** Secret used to sign form time stamps; made once and kept in settings. */
+function form_secret(): string
+{
+    $secret = (string) setting('form_secret', '');
+    if ($secret === '') {
+        $secret = bin2hex(random_bytes(32));
+        save_setting('form_secret', $secret);
+    }
+    return $secret;
+}
+
+/** Hidden field carrying the time the form was made, signed. */
+function form_token_field(): string
+{
+    $time = (string) time();
+    return '<input type="hidden" name="_t" value="' . e($time . '.' . substr(hash_hmac('sha256', $time, form_secret()), 0, 32)) . '">';
+}
+
+/** Seconds since a token was made, or null when it is missing or forged. */
+function form_token_age(string $token): ?int
+{
+    if (!preg_match('/^(\d{9,11})\.([a-f0-9]{32})$/', $token, $m)) {
+        return null;
+    }
+    if (!hash_equals(substr(hash_hmac('sha256', $m[1], form_secret()), 0, 32), $m[2])) {
+        return null;
+    }
+    return time() - (int) $m[1];
 }
 
 /* ------------------------------------------------------------------ Views */

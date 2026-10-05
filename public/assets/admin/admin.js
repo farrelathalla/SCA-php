@@ -67,6 +67,13 @@
           return !box.checked;
         }).map(function (box) { return box.getAttribute("data-section-shown"); });
       }
+      // The order of the page's sections, as arranged with the section ↑ ↓ buttons.
+      var ordered = form.querySelectorAll("[data-section-order]");
+      if (ordered.length) {
+        data.sectionOrder = Array.prototype.map.call(ordered, function (el) {
+          return el.getAttribute("data-section-order");
+        });
+      }
       form.querySelector("[data-json]").value = JSON.stringify(data);
       dirty = false;
     });
@@ -111,6 +118,29 @@
       textarea.setSelectionRange(start + open.length, start + open.length + selected.length);
       textarea.dispatchEvent(new Event("input", { bubbles: true }));
     }
+
+    // Section ↑ ↓: swap the whole section with the previous / next movable one.
+    form.addEventListener("click", function (event) {
+      var button = event.target.closest("[data-section-move]");
+      if (!button) return;
+      event.preventDefault();
+      var root = form.querySelector("[data-root]");
+      var panel = button.closest("[data-section]");
+      if (!root || !panel) return;
+      var panels = Array.prototype.filter.call(root.children, function (el) {
+        return el.querySelector("[data-section-order]");
+      });
+      var i = panels.indexOf(panel);
+      var up = button.getAttribute("data-section-move") === "-1";
+      var other = panels[up ? i - 1 : i + 1];
+      if (i < 0 || !other) return;
+      if (up) root.insertBefore(panel, other);
+      else root.insertBefore(other, panel);
+      panel.scrollIntoView({ block: "nearest", behavior: "smooth" });
+      panel.classList.add("ring-2", "ring-accent/40");
+      setTimeout(function () { panel.classList.remove("ring-2", "ring-accent/40"); }, 900);
+      markDirty();
+    });
 
     form.addEventListener("click", function (event) {
       var button = event.target.closest("[data-rich-cmd]");
@@ -205,13 +235,14 @@
         summary.textContent = first ? name + " — " + first : name;
         return;
       }
-      var keys = ["title", "label", "name", "year", "project", "question", "amount", "value"];
+      var keys = ["title", "label", "name", "year", "project", "question", "amount", "value", "caption"];
       for (var i = 0; i < keys.length; i++) {
         if (typeof data[keys[i]] === "string" && data[keys[i]].trim()) {
-          summary.textContent = data[keys[i]] + (keys[i] === "year" && data.title ? " — " + data.title : "");
+          summary.textContent = data[keys[i]].replace(/<[^>]*>/g, "") + (keys[i] === "year" && data.title ? " — " + data.title : "");
           return;
         }
       }
+      if (typeof data.image === "string" && data.image.trim()) summary.textContent = data.image.split("/").pop();
     });
 
     // One line of help under the block picker, for whichever type is selected.

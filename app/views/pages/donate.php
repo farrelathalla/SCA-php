@@ -2,7 +2,7 @@
 <?= page_hero($h, ($h['buttonLabel'] ?? '') !== '' ? button((string) $h['buttonHref'], (string) $h['buttonLabel'], 'primary', 'px-9 py-4 text-base') : '') ?>
 <?= page_blocks($p, 'top') ?>
 
-<?php if (shown($p, 'routes')): ?>
+<?php section_start('routes'); ?>
 <section id="give" class="section-tight scroll-mt-28 pb-20 md:pb-28">
   <div class="shell">
     <div class="card-row gap-y-6 [--gap-x:1.5rem] md:[--cols:2] md:gap-y-8 md:[--gap-x:2rem]">
@@ -22,9 +22,9 @@
     <?php endif; ?>
   </div>
 </section>
-<?php endif; ?>
+<?php section_end(); ?>
 
-<?php if (shown($p, 'impact')): ?>
+<?php section_start('impact'); ?>
 <section id="impact" class="section-tight scroll-mt-28 bg-cream-deep pb-20 md:pb-28">
   <div class="shell">
     <?= section_heading((string) v($p, 'impact.eyebrow'), (string) v($p, 'impact.title'), (string) v($p, 'impact.intro')) ?>
@@ -42,13 +42,13 @@
     </div>
   </div>
 </section>
-<?php endif; ?>
+<?php section_end(); ?>
 
-<?php if (shown($p, 'confidence')): ?>
+<?php section_start('confidence'); ?>
 <section class="section-tight pb-20 md:pb-28">
   <div class="shell">
     <?= photo_text(
-        ['eyebrow' => $c['eyebrow'] ?? '', 'title' => $c['title'] ?? '', 'image' => $c['image'] ?? '', 'imageSide' => 'right', 'align' => 'start'],
+        ['eyebrow' => $c['eyebrow'] ?? '', 'title' => $c['title'] ?? '', 'image' => $c['image'] ?? '', 'imageCaption' => $c['imageCaption'] ?? '', 'imageSide' => 'right', 'align' => 'start'],
         paragraphs($c['body'] ?? []),
         fact_list($c['facts'] ?? [], 1, 'max-w-lg') . arrow_link((string) ($c['linkHref'] ?? '#'), (string) ($c['linkLabel'] ?? ''), 'mt-8'),
         // A second way back up to the WCN / PayPal cards, for readers who have
@@ -57,9 +57,9 @@
     ) ?>
   </div>
 </section>
-<?php endif; ?>
+<?php section_end(); ?>
 
-<?php if (shown($p, 'notReady')): ?>
+<?php section_start('notReady'); ?>
 <section class="section-tight border-t border-hairline">
   <div class="shell">
     <div <?= reveal('flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-16') ?>>
@@ -71,6 +71,8 @@
     </div>
   </div>
 </section>
-<?php endif; ?>
+<?php section_end(); ?>
+
+<?= implode('', ordered_sections($p)) ?>
 
 <?= page_blocks($p) ?>

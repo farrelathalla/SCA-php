@@ -9,7 +9,7 @@
  * overwrites anything an editor has already changed.
  */
 
-const SCHEMA_VERSION = 6;
+const SCHEMA_VERSION = 7;
 
 function db(): PDO
 {
@@ -111,10 +111,31 @@ function migrate(): void
             attempted_at DATETIME NOT NULL,
             KEY login_attempts_ip (ip, attempted_at)
         ) $opts",
+        // Every public form attempt, for the rate limit (app/lib/forms.php).
+        "CREATE TABLE IF NOT EXISTS form_attempts (
+            id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            ip VARCHAR(64) NOT NULL,
+            kind VARCHAR(32) NOT NULL,
+            attempted_at DATETIME NOT NULL,
+            KEY form_attempts_ip (ip, kind, attempted_at)
+        ) $opts",
     ];
 
     foreach ($statements as $sql) {
         db()->exec($sql);
+    }
+
+    // v7 — whether each contact message was emailed to SCA.
+    add_column_if_missing('submissions', 'notified_at', 'DATETIME NULL');
+    add_column_if_missing('submissions', 'notify_error', 'VARCHAR(255) NULL');
+}
+
+function add_column_if_missing(string $table, string $column, string $definition): void
+{
+    $stmt = db()->prepare('SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ?');
+    $stmt->execute([$table, $column]);
+    if ((int) $stmt->fetchColumn() === 0) {
+        db()->exec("ALTER TABLE `$table` ADD COLUMN `$column` $definition");
     }
 }
 
@@ -282,6 +303,87 @@ function migrate_content(int $from): void
 
     if ($from < 6) {
         migrate_content_v6();
+    }
+
+    if ($from < 7) {
+        migrate_content_v7();
+    }
+}
+
+/**
+ * v7 — SCA's fourth round (2026-10-05): captions, several photos per article,
+ * section order, email notifications, Mailchimp group, analytics opt-out.
+ */
+function migrate_content_v7(): void
+{
+    $seed = seed_data('pages.json');
+    $flags = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;
+
+    // Site-wide: where contact messages are emailed, the Mailchimp group and
+    // the footer's analytics opt-out wording. Only what is missing is added.
+    if (($global = page_row('global')) !== null) {
+        if (trim((string) ($global['contactForm']['notifyEmail'] ?? '')) === '') {
+            $global['contactForm']['notifyEmail'] = $seed['global']['contactForm']['notifyEmail'];
+        }
+        $global['newsletter']['mailchimpGroup'] = $global['newsletter']['mailchimpGroup'] ?? '';
+        foreach (['analyticsOptOut', 'analyticsOptIn', 'analyticsOptedOut', 'analyticsOptedIn'] as $key) {
+            $global['labels'][$key] = $global['labels'][$key] ?? $seed['global']['labels'][$key];
+        }
+        save_page_row('global', $global);
+    }
+
+    // Galleries become image + caption pairs (they were plain image paths).
+    $pairs = function ($value) use (&$pairs) {
+        if (!is_array($value)) {
+            return $value;
+        }
+        foreach ($value as $key => $item) {
+            if ($key === 'gallery' && is_array($item)) {
+                $value[$key] = array_values(array_map(fn ($src) => is_array($src) ? $src : ['image' => (string) $src, 'caption' => ''], $item));
+            } else {
+                $value[$key] = $pairs($item);
+            }
+        }
+        return $value;
+    };
+    foreach (db()->query('SELECT slug, data FROM pages')->fetchAll() as $row) {
+        $data = json_decode($row['data'], true);
+        if (is_array($data) && ($new = $pairs($data)) !== $data) {
+            save_page_row($row['slug'], $new);
+        }
+    }
+    $update = db()->prepare('UPDATE entries SET data = ? WHERE id = ?');
+    foreach (db()->query('SELECT id, type, data FROM entries')->fetchAll() as $row) {
+        $data = json_decode($row['data'], true);
+        if (!is_array($data)) {
+            continue;
+        }
+        $new = $pairs($data);
+        // News: the one "image in the middle of the article" becomes the first
+        // of a list of photos, each with its own caption and place.
+        if ($row['type'] === 'news' && array_key_exists('inlineImage', $new)) {
+            if (trim((string) $new['inlineImage']) !== '' && empty($new['photos'])) {
+                $new['photos'] = [['image' => trim((string) $new['inlineImage']), 'caption' => (string) ($new['inlineCaption'] ?? ''), 'afterParagraph' => '']];
+            }
+            unset($new['inlineImage'], $new['inlineCaption']);
+        }
+        if ($new !== $data) {
+            $update->execute([json_encode($new, $flags), $row['id']]);
+        }
+    }
+
+    // Population History & Threats: the order SCA asked for.
+    if (($pop = page_row('population-history-and-threats')) !== null && empty($pop['sectionOrder'])) {
+        $pop['sectionOrder'] = ['intro', 'graph', 'threats', 'summary', 'history'];
+        save_page_row('population-history-and-threats', $pop);
+    }
+
+    // Partners & Funders was renamed Partners & Supporters: give it the matching address.
+    $partners = page_row('partners-funders') ?? [];
+    $title = (string) ($partners['meta']['title'] ?? '') . ' ' . (string) ($partners['hero']['title'] ?? '');
+    if (stripos($title, 'supporter') !== false && page_path('partners-funders') === '/about/partners-funders'
+        && page_path_problem('/about/partners-supporters', 'partners-funders') === '') {
+        move_page('partners-funders', '/about/partners-supporters');
     }
 }
 

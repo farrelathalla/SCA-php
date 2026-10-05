@@ -15,6 +15,11 @@
       <div>
         <p class="text-ink"><?= e($row['name'] ?: $row['email']) ?> <?php if ($row['name']): ?><a href="mailto:<?= e($row['email']) ?>" class="text-[0.875rem] text-accent-dark hover:underline">&lt;<?= e($row['email']) ?>&gt;</a><?php endif; ?></p>
         <p class="text-[0.8rem] text-muted"><?= e(format_date($row['created_at'])) ?> <?= e(substr($row['created_at'], 11, 5)) ?> UTC · <?= e($row['source']) ?></p>
+        <?php if ($kind === 'contact' && !empty($row['notify_error'])): ?>
+        <p class="mt-1 text-[0.8rem] text-red-700" title="The message is safe here; only the email copy failed.">Email copy not sent — <?= e($row['notify_error']) ?></p>
+        <?php elseif ($kind === 'contact' && !empty($row['notified_at'])): ?>
+        <p class="mt-1 text-[0.8rem] text-muted">✓ Emailed to your inbox</p>
+        <?php endif; ?>
       </div>
       <div class="flex gap-2">
         <?php if ($kind === 'contact' && !$row['is_read']): ?>

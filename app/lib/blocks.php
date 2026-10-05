@@ -36,7 +36,7 @@ const BLOCK_TYPES = [
         'label' => 'Text with photo',
         'hint' => 'A photograph beside text, with optional link and button.',
         'fields' => [
-            'eyebrow' => '', 'title' => '', 'image' => '', 'imageSide' => 'left', 'body' => [''],
+            'eyebrow' => '', 'title' => '', 'image' => '', 'imageCaption' => '', 'imageSide' => 'left', 'body' => [''],
             'linkLabel' => '', 'linkHref' => '', 'buttonLabel' => '', 'buttonHref' => '',
         ],
     ],
@@ -58,13 +58,13 @@ const BLOCK_TYPES = [
         'hint' => 'Years down a centre line, as on “Our story”.',
         'fields' => [
             'eyebrow' => '', 'title' => '', 'intro' => '', 'showPhotos' => true, 'newestFirst' => false,
-            'items' => [['year' => '', 'title' => '', 'body' => '', 'image' => '']],
+            'items' => [['year' => '', 'title' => '', 'body' => '', 'image' => '', 'imageCaption' => '']],
         ],
     ],
     'gallery' => [
         'label' => 'Photo gallery',
         'hint' => 'Photographs in a row of three.',
-        'fields' => ['title' => '', 'gallery' => ['']],
+        'fields' => ['title' => '', 'gallery' => [['image' => '', 'caption' => '']]],
     ],
     'callout' => [
         'label' => 'Highlighted box',
@@ -249,6 +249,7 @@ function block_body(string $type, array $b): string
                 'eyebrow' => $b['eyebrow'] ?? '',
                 'title' => $b['title'] ?? '',
                 'image' => $b['image'] ?? '',
+                'imageCaption' => $b['imageCaption'] ?? '',
                 'imageSide' => $b['imageSide'] ?? 'left',
                 'align' => 'start',
             ], paragraphs($b['body'] ?? []), $footer);
@@ -279,15 +280,15 @@ function block_body(string $type, array $b): string
             return $heading . timeline($items, empty($b['newestFirst']) ? 'asc' : 'desc', !empty($b['showPhotos'])) . '</div>';
 
         case 'gallery':
-            $images = array_values(array_filter($b['gallery'] ?? [], fn ($src) => trim((string) $src) !== ''));
+            $images = photo_items($b['gallery'] ?? []);
             if (!$images) {
                 return '';
             }
             $title = trim((string) ($b['title'] ?? ''));
             $out = $title !== '' ? '<h2 ' . reveal('mb-10 text-3xl') . '>' . e($title) . '</h2>' : '';
             $out .= '<div class="card-row gap-y-8 [--gap-x:2rem] sm:[--cols:3] md:gap-y-10 md:[--gap-x:2.5rem]">';
-            foreach ($images as $i => $src) {
-                $out .= '<div ' . reveal('', ($i % 3) * 110) . '>' . media($src, ['ratio' => 'landscape']) . '</div>';
+            foreach ($images as $i => $photo) {
+                $out .= '<div ' . reveal('', ($i % 3) * 110) . '>' . media($photo['image'], ['ratio' => 'landscape', 'caption' => $photo['caption']]) . '</div>';
             }
             return $out . '</div>';
 

@@ -2,7 +2,7 @@
 <?= page_hero($p['hero'] ?? []) ?>
 <?= page_blocks($p, 'top') ?>
 
-<?php if (shown($p, 'items')): ?>
+<?php section_start('items'); ?>
 <section class="section">
   <div class="shell">
     <div class="max-w-4xl">
@@ -11,14 +11,15 @@
     <?php if (($p['note'] ?? '') !== ''): ?><p class="mt-12 max-w-2xl text-[0.9375rem] leading-relaxed text-muted"><?= rich($p['note']) ?></p><?php endif; ?>
   </div>
 </section>
-<?php endif; ?>
+<?php section_end(); ?>
 
 <?php
+  section_start('reporting');
   // Reporting: the featured publication box, then a plain archive of reports
   // (newest first — the admin adds new ones at the top). The donate page's
   // "latest annual report" link jumps here with /resources#reporting.
   $reports = document_links($rep['reports'] ?? []);
-  if ((($r['title'] ?? '') !== '' || $reports !== '') && shown($p, 'reporting')):
+  if (($r['title'] ?? '') !== '' || $reports !== ''):
 ?>
 <section id="reporting" class="section-tight scroll-mt-28 pb-24 md:pb-32">
   <div class="shell">
@@ -39,7 +40,9 @@
     <?php if ($reports !== ''): ?><div class="<?= ($r['title'] ?? '') !== '' ? 'mt-12' : '' ?>"><?= $reports ?></div><?php endif; ?>
   </div>
 </section>
-<?php endif; ?>
+<?php endif; section_end(); ?>
+
+<?= implode('', ordered_sections($p)) ?>
 
 <?= page_blocks($p) ?>
 

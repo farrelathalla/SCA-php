@@ -2,15 +2,15 @@
 <?= page_hero($p['hero'] ?? []) ?>
 <?= page_blocks($p, 'top') ?>
 
-<?php if (shown($p, 'intro')): ?>
+<?php section_start('intro'); ?>
 <section class="section-tight">
   <div class="shell">
     <div <?= reveal('max-w-3xl') ?>><p class="text-xl leading-[1.7] text-body md:text-[1.375rem]"><?= rich($p['intro'] ?? '') ?></p></div>
   </div>
 </section>
-<?php endif; ?>
+<?php section_end(); ?>
 
-<?php if (shown($p, 'contact')): ?>
+<?php section_start('contact'); ?>
 <section class="section-tight bg-cream-deep pb-24 md:pb-32">
   <div class="shell">
     <div class="grid gap-14 lg:grid-cols-[1fr_1.05fr] lg:gap-24">
@@ -19,7 +19,9 @@
     </div>
   </div>
 </section>
-<?php endif; ?>
+<?php section_end(); ?>
+
+<?= implode('', ordered_sections($p)) ?>
 
 <?= page_blocks($p) ?>
 

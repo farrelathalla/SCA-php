@@ -29,11 +29,53 @@ if ($path === '/forms/contact' || $path === '/forms/newsletter') {
     exit;
 }
 
+/* ------------------------------------------------------ Search engines */
+
+if ($path === '/robots.txt') {
+    header('Content-Type: text/plain; charset=utf-8');
+    // A staging copy stays out of search engines altogether.
+    echo config('noindex')
+        ? "User-agent: *\nDisallow: /\n"
+        : "User-agent: *\nDisallow: /admin/\nDisallow: /forms/\n\nSitemap: " . site_origin() . "/sitemap.xml\n";
+    exit;
+}
+
+if ($path === '/sitemap.xml') {
+    header('Content-Type: application/xml; charset=utf-8');
+    $urls = [];
+    $updated = db()->query('SELECT slug, updated_at FROM pages')->fetchAll(PDO::FETCH_KEY_PAIR);
+    foreach (fixed_pages() as $pagePath => [, $pageSlug]) {
+        $urls[$pagePath] = $updated[$pageSlug] ?? null;
+    }
+    $stmt = db()->query("SELECT type, slug, updated_at FROM entries WHERE published = 1 AND type IN ('news', 'project', 'theme', 'programme', 'custom')");
+    foreach ($stmt as $row) {
+        $urls[COLLECTIONS[$row['type']]['base'] . $row['slug']] = $row['updated_at'];
+    }
+    echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n" . '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
+    foreach ($urls as $loc => $lastmod) {
+        echo '  <url><loc>' . e(site_origin() . $loc) . '</loc>' . ($lastmod ? '<lastmod>' . e(substr((string) $lastmod, 0, 10)) . '</lastmod>' : '') . "</url>\n";
+    }
+    echo "</urlset>\n";
+    exit;
+}
+
 /* ------------------------------------------------------------ Fixed pages */
 
-if (isset(FIXED_PAGES[$path])) {
-    [$viewName, $slug] = FIXED_PAGES[$path];
-    render('pages/' . $viewName, [], v(page($slug), 'meta', []));
+$fixed = fixed_pages();
+if (isset($fixed[$path])) {
+    [$viewName, $slug] = $fixed[$path];
+    $meta = (array) v(page($slug), 'meta', []);
+    $meta['image'] = (string) v(page($slug), 'hero.image');
+    render('pages/' . $viewName, [], $meta);
+}
+
+// A page SCA gave a new address in the admin: its old addresses redirect.
+if (($moved = moved_page($path)) !== null) {
+    $query = (string) parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_QUERY);
+    // Permanent for search engines, but not remembered by browsers, so a page
+    // can later be given its old address back without a redirect loop.
+    header('Cache-Control: no-cache');
+    redirect(page_path($moved) . ($query !== '' ? '?' . $query : ''), 301);
 }
 
 /* ---------------------------------------------------------- Entry pages */
@@ -54,6 +96,8 @@ foreach ($routes as $pattern => [$type, $viewName, $descriptionField]) {
         render('pages/' . $viewName, [$viewName => $item], [
             'title' => $item['title'] ?? '',
             'description' => $item[$descriptionField] ?? '',
+            'image' => (string) (($item['heroImage'] ?? '') ?: ($item['image'] ?? '')),
+            'type' => $type === 'news' ? 'article' : 'website',
         ]);
     }
 }

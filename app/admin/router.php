@@ -27,7 +27,7 @@ const ADMIN_PAGES = [
     'about' => ['Who We Are', '/about', 'About Us'],
     'our-story' => ['Our Story', '/about/our-story', 'About Us'],
     'our-people' => ['Our People', '/about/our-people', 'About Us'],
-    'partners-funders' => ['Partners & Funders', '/about/partners-funders', 'About Us'],
+    'partners-funders' => ['Partners & Supporters', '/about/partners-funders', 'About Us'],
     'contact' => ['Contact Us', '/about/contact', 'About Us'],
     'what-is-a-saiga' => ['What is a Saiga?', '/saigas/what-is-a-saiga', 'About Saigas'],
     'why-saigas-matter' => ['Why Saigas Matter', '/saigas/why-saigas-matter', 'About Saigas'],
@@ -148,9 +148,13 @@ if (($parts[0] ?? '') === 'pages' && isset($parts[1], ADMIN_PAGES[$parts[1]])) {
         blocks_key('extraBlocks');
         block_placement(true);
     }
-    // The page's own sections, each with a "Show on the page" switch.
+    // The page's own sections, each with a "Show on the page" switch, and
+    // ↑ ↓ buttons where the page lets its sections be put in another order.
     $hideable = HIDEABLE_SECTIONS[$slug] ?? [];
-    section_switches($hideable, (array) (page($slug)['hiddenSections'] ?? []));
+    $orderable = orderable_sections($slug);
+    section_switches($hideable, (array) (page($slug)['hiddenSections'] ?? []), $orderable);
+    // Every fixed page but the home page can be given a new web address.
+    $movable = $slug !== 'global' && $slug !== 'home';
 
     if (is_post()) {
         require_csrf();
@@ -169,6 +173,10 @@ if (($parts[0] ?? '') === 'pages' && isset($parts[1], ADMIN_PAGES[$parts[1]])) {
         if (!$data['hiddenSections']) {
             unset($data['hiddenSections']);
         }
+        $data['sectionOrder'] = section_order($orderable, (array) ($data['sectionOrder'] ?? []));
+        if (!$orderable || $data['sectionOrder'] === $orderable) {
+            unset($data['sectionOrder']);
+        }
         // Keep internal keys (e.g. _label) that the form does not show.
         foreach (page($slug) as $k => $v) {
             if (is_string($k) && $k !== '' && $k[0] === '_') {
@@ -177,6 +185,21 @@ if (($parts[0] ?? '') === 'pages' && isset($parts[1], ADMIN_PAGES[$parts[1]])) {
         }
         db()->prepare('REPLACE INTO pages (slug, data, updated_at) VALUES (?, ?, ?)')
             ->execute([$slug, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), now()]);
+
+        // A new web address for the page, if one was typed.
+        $typed = trim((string) ($_POST['page_path'] ?? ''));
+        $newPath = $typed === '' ? page_path($slug) : '/' . slugify_path($typed);
+        if ($movable && $newPath !== page_path($slug)) {
+            $problem = page_path_problem($newPath, $slug);
+            if ($problem !== '') {
+                flash('The page was saved, but its web address was not changed: ' . $problem, 'error');
+                redirect('/admin/pages/' . $slug);
+            }
+            $old = page_path($slug);
+            move_page($slug, $newPath);
+            flash('Saved. The page now lives at ' . $newPath . ' — the old address ' . $old . ' redirects there, and links to it in menus and text were updated.');
+            redirect('/admin/pages/' . $slug);
+        }
         flash('Saved. The live page is updated.');
         redirect('/admin/pages/' . $slug);
     }
@@ -185,7 +208,9 @@ if (($parts[0] ?? '') === 'pages' && isset($parts[1], ADMIN_PAGES[$parts[1]])) {
     $stmt->execute([$slug]);
     admin_view('page-edit', [
         'slug' => $slug,
-        'info' => ADMIN_PAGES[$slug],
+        'info' => [ADMIN_PAGES[$slug][0], $slug === 'global' ? '/' : page_path($slug)],
+        'movable' => $movable,
+        'originalPath' => (string) array_search($slug, array_map(fn ($route) => $route[1], FIXED_PAGES), true),
         'data' => page($slug),
         'shape' => $shape,
         'updatedAt' => $stmt->fetchColumn(),
@@ -241,7 +266,7 @@ if (isset(COLLECTION_ROUTES[$parts[0] ?? ''])) {
         $reserved = $type === 'theme' && $slug === 'grants-and-awards';
         if ($type === 'custom') {
             // A built page may not take a path one of the site's own routes owns.
-            $reserved = isset(FIXED_PAGES['/' . $slug])
+            $reserved = isset(fixed_pages()['/' . $slug]) || moved_page('/' . $slug) !== null
                 || in_array(explode('/', $slug)[0], RESERVED_PREFIXES, true);
         }
         $clash = db()->prepare('SELECT COUNT(*) FROM entries WHERE type = ? AND slug = ? AND id <> ?');

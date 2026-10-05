@@ -2,7 +2,7 @@
 <?= page_hero($p['hero'] ?? []) ?>
 <?= page_blocks($p, 'top') ?>
 
-<?php if (shown($p, 'intro')): ?>
+<?php section_start('intro'); ?>
 <section class="section-tight">
   <div class="shell">
     <div <?= reveal('max-w-3xl') ?>>
@@ -11,30 +11,30 @@
     </div>
   </div>
 </section>
-<?php endif; ?>
+<?php section_end(); ?>
 
-<?php if (shown($p, 'factsheet')): ?>
+<?php section_start('factsheet'); ?>
 <section class="section-tight pb-20 md:pb-28">
   <div class="shell">
     <?= section_heading((string) v($p, 'factsheet.eyebrow'), (string) v($p, 'factsheet.title'), (string) v($p, 'factsheet.intro')) ?>
     <?= fact_grid(v($p, 'factsheet.facts', []), 'mt-12 md:mt-14') ?>
   </div>
 </section>
-<?php endif; ?>
+<?php section_end(); ?>
 
-<?php if (shown($p, 'behaviour')): ?>
+<?php section_start('behaviour'); ?>
 <section class="section-tight pb-20 md:pb-28">
   <div class="shell">
     <?= photo_text(
-        ['eyebrow' => v($p, 'behaviour.eyebrow'), 'title' => v($p, 'behaviour.title'), 'image' => v($p, 'behaviour.image'), 'imageSide' => 'left'],
+        ['eyebrow' => v($p, 'behaviour.eyebrow'), 'title' => v($p, 'behaviour.title'), 'image' => v($p, 'behaviour.image'), 'imageCaption' => v($p, 'behaviour.imageCaption'), 'imageSide' => 'left'],
         paragraphs(v($p, 'behaviour.body', [])),
         arrow_link((string) v($p, 'behaviour.linkHref'), (string) v($p, 'behaviour.linkLabel'))
     ) ?>
   </div>
 </section>
-<?php endif; ?>
+<?php section_end(); ?>
 
-<?php if (shown($p, 'distribution')): ?>
+<?php section_start('distribution'); ?>
 <section class="section-tight pb-20 md:pb-28">
   <div class="shell">
     <?= section_heading((string) v($p, 'distribution.eyebrow'), (string) v($p, 'distribution.title')) ?>
@@ -47,16 +47,18 @@
     </div>
   </div>
 </section>
-<?php endif; ?>
+<?php section_end(); ?>
 
-<?php if (shown($p, 'explore')): ?>
+<?php section_start('explore'); ?>
 <section class="section-tight border-t border-hairline">
   <div class="shell">
     <?= section_heading((string) v($p, 'explore.eyebrow'), (string) v($p, 'explore.title')) ?>
     <?= fact_list(v($p, 'explore.items', []), 3, 'mt-12') ?>
   </div>
 </section>
-<?php endif; ?>
+<?php section_end(); ?>
+
+<?= implode('', ordered_sections($p)) ?>
 
 <?= page_blocks($p) ?>
 

@@ -37,7 +37,9 @@ function media(?string $src, array $o = []): string
     $n++;
     $src = trim((string) $src);
     $fill = $o['fill'] ?? false;
-    $box = $fill ? 'absolute inset-0 h-full w-full' : 'relative ' . RATIO_CLASS[$o['ratio'] ?? 'landscape'];
+    // 'natural' keeps the photo's own shape (article photos), so nothing is cropped.
+    $natural = ($o['ratio'] ?? '') === 'natural' && $src !== '';
+    $box = $fill ? 'absolute inset-0 h-full w-full' : 'relative ' . ($natural ? '' : RATIO_CLASS[$o['ratio'] ?? 'landscape'] ?? RATIO_CLASS['landscape']);
     $radius = ($o['rounded'] ?? true) ? 'rounded-2xl' : '';
     $label = $src !== '' ? basename(parse_url($src, PHP_URL_PATH) ?: $src) : 'image';
     $alt = $o['alt'] ?? ($src !== '' ? image_alt($src) : '');
@@ -63,12 +65,41 @@ function media(?string $src, array $o = []): string
     </div>
   </div>
   <?php if ($src !== ''): ?>
-  <img src="<?= e($src) ?>" alt="<?= e($alt) ?>" loading="<?= !empty($o['priority']) ? 'eager' : 'lazy' ?>" decoding="async" onerror="this.remove()" class="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] <?= e($o['imageClass'] ?? '') ?>">
+  <img src="<?= e($src) ?>" alt="<?= e($alt) ?>" loading="<?= !empty($o['priority']) ? 'eager' : 'lazy' ?>" decoding="async" onerror="this.remove()" class="<?= $natural ? 'relative block h-auto w-full' : 'absolute inset-0 h-full w-full object-cover' ?> transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] <?= e($o['imageClass'] ?? '') ?>">
   <?php endif; ?>
   <?= $credit ?>
 </div>
 <?php
-    return ob_get_clean();
+    return with_caption(ob_get_clean(), (string) ($o['caption'] ?? ''), (string) ($o['captionClass'] ?? ''));
+}
+
+/**
+ * A photo with its caption underneath, when it has one. Captions are typed
+ * next to each image in the admin and may carry bold, italic and links.
+ */
+function with_caption(string $html, string $caption, string $class = ''): string
+{
+    if (trim($caption) === '') {
+        return $html;
+    }
+    return '<figure>' . $html . '<figcaption class="mt-3 text-[0.85rem] leading-relaxed text-muted ' . e($class) . '">' . rich($caption) . '</figcaption></figure>';
+}
+
+/**
+ * Photo lists (galleries, article photos) as [image, caption] pairs. Older
+ * content stored a gallery as plain image paths; both forms are read.
+ */
+function photo_items($list): array
+{
+    $out = [];
+    foreach ((array) $list as $item) {
+        $item = is_array($item) ? $item : ['image' => (string) $item];
+        $src = trim((string) ($item['image'] ?? ''));
+        if ($src !== '') {
+            $out[] = ['image' => $src, 'caption' => (string) ($item['caption'] ?? '')] + $item;
+        }
+    }
+    return $out;
 }
 
 /**
@@ -312,7 +343,7 @@ function photo_text(array $o, string $body, string $footer = '', string $imageFo
     ob_start(); ?>
 <div class="grid gap-12 lg:grid-cols-2 lg:gap-20 <?= $align ?>">
   <div <?= reveal('group ' . ($right ? 'lg:order-2' : '')) ?>>
-    <?= media($o['image'] ?? '', ['class' => 'shadow-[0_24px_60px_rgba(84,63,38,0.09)]', 'imageClass' => 'group-hover:scale-[1.03]']) ?>
+    <?= media($o['image'] ?? '', ['class' => 'shadow-[0_24px_60px_rgba(84,63,38,0.09)]', 'imageClass' => 'group-hover:scale-[1.03]', 'caption' => (string) ($o['imageCaption'] ?? '')]) ?>
     <?php if ($imageFooter !== ''): ?><div class="mt-8"><?= $imageFooter ?></div><?php endif; ?>
   </div>
   <div <?= reveal($right ? 'lg:order-1' : '', 120) ?>>
@@ -771,7 +802,7 @@ function timeline(array $items, string $order = 'asc', bool $photos = true): str
         </a>
         <?php endif; ?>
         <?php if ($photos && trim((string) ($m['image'] ?? '')) !== ''): ?>
-        <?= media($m['image'], ['ratio' => 'landscape', 'class' => 'mt-7 shadow-[0_18px_44px_rgba(84,63,38,0.09)]']) ?>
+        <div class="mt-7"><?= media($m['image'], ['ratio' => 'landscape', 'class' => 'shadow-[0_18px_44px_rgba(84,63,38,0.09)]', 'caption' => (string) ($m['imageCaption'] ?? '')]) ?></div>
         <?php endif; ?>
       </div>
     </li>
@@ -821,12 +852,15 @@ function newsletter_form(string $class = '', string $variant = 'default', ?strin
     $id = 'newsletter-' . $variant . '-' . bin2hex(random_bytes(3));
     // Subscriptions go to SCA's Mailchimp list (the same list the old site used).
     $mailchimp = trim((string) site('newsletter.mailchimpAction'));
+    // New subscribers can be put straight into a Mailchimp group.
+    $group = trim((string) site('newsletter.mailchimpGroup'));
     ob_start(); ?>
-<form action="/forms/newsletter" method="post" class="w-full <?= e($class) ?>" data-ajax-form<?= $mailchimp !== '' ? ' data-mailchimp="' . e($mailchimp) . '"' : '' ?> data-done-class="rounded-full border border-accent/30 bg-accent-soft px-6 <?= $large ? 'py-4' : 'py-3.5' ?> text-center text-[0.925rem] text-ink <?= e($class) ?>" data-done-text="<?= e(site('newsletter.thanks')) ?>">
+<form action="/forms/newsletter" method="post" class="w-full <?= e($class) ?>" data-ajax-form<?= $mailchimp !== '' ? ' data-mailchimp="' . e($mailchimp) . '"' . ($group !== '' ? ' data-mailchimp-group="' . e($group) . '"' : '') : '' ?> data-done-class="rounded-full border border-accent/30 bg-accent-soft px-6 <?= $large ? 'py-4' : 'py-3.5' ?> text-center text-[0.925rem] text-ink <?= e($class) ?>" data-done-text="<?= e(site('newsletter.thanks')) ?>">
   <div class="flex w-full flex-col gap-2.5 rounded-2xl sm:flex-row sm:items-center sm:gap-0 sm:rounded-full sm:border sm:border-hairline sm:bg-cream sm:p-1.5 sm:transition-colors sm:duration-300 sm:focus-within:border-accent/50">
     <label for="<?= $id ?>" class="sr-only">Email address</label>
     <input id="<?= $id ?>" type="email" name="email" required placeholder="<?= e(site('newsletter.placeholder')) ?>" class="w-full rounded-full border border-hairline bg-cream px-5 text-[0.95rem] text-ink placeholder:text-muted/80 focus:outline-none sm:border-0 sm:bg-transparent sm:px-5 <?= $pad ?>">
     <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true">
+    <?= form_token_field() ?>
     <button type="submit" class="shrink-0 rounded-full bg-accent px-7 font-medium text-cream transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-accent-dark <?= $pad ?> text-[0.925rem]"><?= e(site('newsletter.buttonLabel')) ?></button>
   </div>
   <p class="mt-3 hidden text-xs text-accent-dark" role="alert" data-form-error></p>
@@ -845,6 +879,7 @@ function contact_form(string $source = 'contact'): string
   <form action="/forms/contact" method="post" class="space-y-5" data-ajax-form data-contact>
     <input type="hidden" name="source" value="<?= e($source) ?>">
     <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true">
+    <?= form_token_field() ?>
     <div>
       <label for="contact-name-<?= e($source) ?>" class="mb-2 block text-[0.875rem] text-body"><?= e($f['nameLabel'] ?? '') ?></label>
       <input id="contact-name-<?= e($source) ?>" name="name" required class="<?= $field ?>" placeholder="<?= e($f['namePlaceholder'] ?? '') ?>">

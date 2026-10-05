@@ -2,7 +2,7 @@
 <?= page_hero($p['hero'] ?? []) ?>
 <?= page_blocks($p, 'top') ?>
 
-<?php if (shown($p, 'mission')): ?>
+<?php section_start('mission'); ?>
 <section class="section-tight">
   <div class="shell">
     <div <?= reveal('max-w-3xl') ?>>
@@ -12,21 +12,21 @@
     </div>
   </div>
 </section>
-<?php endif; ?>
+<?php section_end(); ?>
 
-<?php if (shown($p, 'approach')): ?>
+<?php section_start('approach'); ?>
 <section class="section-tight pb-20 md:pb-28">
   <div class="shell">
     <?= photo_text(
-        ['eyebrow' => v($p, 'approach.eyebrow'), 'title' => v($p, 'approach.title'), 'image' => v($p, 'approach.image'), 'imageSide' => 'right', 'align' => 'start'],
+        ['eyebrow' => v($p, 'approach.eyebrow'), 'title' => v($p, 'approach.title'), 'image' => v($p, 'approach.image'), 'imageCaption' => v($p, 'approach.imageCaption'), 'imageSide' => 'right', 'align' => 'start'],
         paragraphs(v($p, 'approach.body', [])),
         arrow_link((string) v($p, 'approach.linkHref'), (string) v($p, 'approach.linkLabel'))
     ) ?>
   </div>
 </section>
-<?php endif; ?>
+<?php section_end(); ?>
 
-<?php if (shown($p, 'governance')): ?>
+<?php section_start('governance'); ?>
 <section class="section-tight pb-20 md:pb-28">
   <div class="shell">
     <div <?= reveal('max-w-3xl rounded-3xl bg-sand/60 p-8 md:p-12') ?>>
@@ -35,16 +35,18 @@
     </div>
   </div>
 </section>
-<?php endif; ?>
+<?php section_end(); ?>
 
-<?php if (shown($p, 'explore')): ?>
+<?php section_start('explore'); ?>
 <section class="section-tight border-t border-hairline pb-24 md:pb-32">
   <div class="shell">
     <?= section_heading((string) v($p, 'explore.eyebrow'), (string) v($p, 'explore.title')) ?>
     <?= fact_list(v($p, 'explore.items', []), 4, 'mt-12') ?>
   </div>
 </section>
-<?php endif; ?>
+<?php section_end(); ?>
+
+<?= implode('', ordered_sections($p)) ?>
 
 <?= page_blocks($p) ?>
 

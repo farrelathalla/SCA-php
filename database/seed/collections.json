@@ -8,6 +8,7 @@
         "strapline": "Conservation that works for the people who share the steppe.",
         "heroImage": "/images/theme-hero.webp",
         "image": "/images/work-communities.webp",
+        "imageCaption": "",
         "summary": "Stronger conservation happens when people thrive. We partner with communities across the saiga's range to support sustainable livelihoods and shared stewardship of the steppe.",
         "overviewStat": {
           "value": "25+",
@@ -74,6 +75,7 @@
         "strapline": "A generation growing up knowing what a saiga is.",
         "heroImage": "/images/theme-hero.webp",
         "image": "/images/work-education.webp",
+        "imageCaption": "",
         "summary": "We inspire the next generation through education, outreach and storytelling, building understanding and support for saigas and the landscapes they depend on.",
         "overviewStat": {
           "value": "100,000+",
@@ -139,6 +141,7 @@
         "strapline": "The evidence that makes protection possible.",
         "heroImage": "/images/theme-hero.webp",
         "image": "/images/work-research.webp",
+        "imageCaption": "",
         "summary": "We generate the knowledge needed for effective conservation, from population surveys to satellite tracking, working with partners across the range.",
         "overviewStat": {
           "value": "12",
@@ -204,6 +207,7 @@
         "strapline": "Rangers, patrols and practical protection where it counts.",
         "heroImage": "/images/theme-hero.webp",
         "image": "/images/work-protection.webp",
+        "imageCaption": "",
         "summary": "We support rangers, strengthen protection and tackle illegal hunting, helping to keep saigas safe across their range.",
         "overviewStat": {
           "value": "330+",
@@ -269,6 +273,7 @@
         "strapline": "Shared commitments, turned into protection on the ground.",
         "heroImage": "/images/theme-hero.webp",
         "image": "/images/policy-protection-hero.webp",
+        "imageCaption": "",
         "summary": "We bring field evidence into the agreements, advice and coordinated action that shape saiga conservation — so that what is agreed internationally is workable in the landscapes it applies to.",
         "overviewStat": {
           "value": "4",
@@ -584,9 +589,18 @@
         ],
         "documents": [],
         "gallery": [
-          "/images/project-gallery-a.webp",
-          "/images/project-gallery-b.webp",
-          "/images/project-gallery-c.webp"
+          {
+            "image": "/images/project-gallery-a.webp",
+            "caption": ""
+          },
+          {
+            "image": "/images/project-gallery-b.webp",
+            "caption": ""
+          },
+          {
+            "image": "/images/project-gallery-c.webp",
+            "caption": ""
+          }
         ]
       }
     },
@@ -653,9 +667,18 @@
         ],
         "documents": [],
         "gallery": [
-          "/images/project-gallery-a.webp",
-          "/images/project-gallery-b.webp",
-          "/images/project-gallery-c.webp"
+          {
+            "image": "/images/project-gallery-a.webp",
+            "caption": ""
+          },
+          {
+            "image": "/images/project-gallery-b.webp",
+            "caption": ""
+          },
+          {
+            "image": "/images/project-gallery-c.webp",
+            "caption": ""
+          }
         ]
       }
     },
@@ -697,9 +720,18 @@
         "timeline": [],
         "documents": [],
         "gallery": [
-          "/images/project-gallery-a.webp",
-          "/images/project-gallery-b.webp",
-          "/images/project-gallery-c.webp"
+          {
+            "image": "/images/project-gallery-a.webp",
+            "caption": ""
+          },
+          {
+            "image": "/images/project-gallery-b.webp",
+            "caption": ""
+          },
+          {
+            "image": "/images/project-gallery-c.webp",
+            "caption": ""
+          }
         ]
       }
     },
@@ -758,9 +790,18 @@
         ],
         "documents": [],
         "gallery": [
-          "/images/project-gallery-a.webp",
-          "/images/project-gallery-b.webp",
-          "/images/project-gallery-c.webp"
+          {
+            "image": "/images/project-gallery-a.webp",
+            "caption": ""
+          },
+          {
+            "image": "/images/project-gallery-b.webp",
+            "caption": ""
+          },
+          {
+            "image": "/images/project-gallery-c.webp",
+            "caption": ""
+          }
         ]
       }
     },
@@ -803,9 +844,18 @@
         "timeline": [],
         "documents": [],
         "gallery": [
-          "/images/project-gallery-a.webp",
-          "/images/project-gallery-b.webp",
-          "/images/project-gallery-c.webp"
+          {
+            "image": "/images/project-gallery-a.webp",
+            "caption": ""
+          },
+          {
+            "image": "/images/project-gallery-b.webp",
+            "caption": ""
+          },
+          {
+            "image": "/images/project-gallery-c.webp",
+            "caption": ""
+          }
         ]
       }
     },
@@ -851,9 +901,18 @@
         "timeline": [],
         "documents": [],
         "gallery": [
-          "/images/project-gallery-a.webp",
-          "/images/project-gallery-b.webp",
-          "/images/project-gallery-c.webp"
+          {
+            "image": "/images/project-gallery-a.webp",
+            "caption": ""
+          },
+          {
+            "image": "/images/project-gallery-b.webp",
+            "caption": ""
+          },
+          {
+            "image": "/images/project-gallery-c.webp",
+            "caption": ""
+          }
         ]
       }
     },
@@ -896,9 +955,18 @@
         "timeline": [],
         "documents": [],
         "gallery": [
-          "/images/project-gallery-a.webp",
-          "/images/project-gallery-b.webp",
-          "/images/project-gallery-c.webp"
+          {
+            "image": "/images/project-gallery-a.webp",
+            "caption": ""
+          },
+          {
+            "image": "/images/project-gallery-b.webp",
+            "caption": ""
+          },
+          {
+            "image": "/images/project-gallery-c.webp",
+            "caption": ""
+          }
         ]
       }
     },
@@ -941,9 +1009,18 @@
         "timeline": [],
         "documents": [],
         "gallery": [
-          "/images/project-gallery-a.webp",
-          "/images/project-gallery-b.webp",
-          "/images/project-gallery-c.webp"
+          {
+            "image": "/images/project-gallery-a.webp",
+            "caption": ""
+          },
+          {
+            "image": "/images/project-gallery-b.webp",
+            "caption": ""
+          },
+          {
+            "image": "/images/project-gallery-c.webp",
+            "caption": ""
+          }
         ]
       }
     },
@@ -985,9 +1062,18 @@
         "timeline": [],
         "documents": [],
         "gallery": [
-          "/images/project-gallery-a.webp",
-          "/images/project-gallery-b.webp",
-          "/images/project-gallery-c.webp"
+          {
+            "image": "/images/project-gallery-a.webp",
+            "caption": ""
+          },
+          {
+            "image": "/images/project-gallery-b.webp",
+            "caption": ""
+          },
+          {
+            "image": "/images/project-gallery-c.webp",
+            "caption": ""
+          }
         ]
       }
     },
@@ -1031,9 +1117,18 @@
         "timeline": [],
         "documents": [],
         "gallery": [
-          "/images/project-gallery-a.webp",
-          "/images/project-gallery-b.webp",
-          "/images/project-gallery-c.webp"
+          {
+            "image": "/images/project-gallery-a.webp",
+            "caption": ""
+          },
+          {
+            "image": "/images/project-gallery-b.webp",
+            "caption": ""
+          },
+          {
+            "image": "/images/project-gallery-c.webp",
+            "caption": ""
+          }
         ]
       }
     }
@@ -1055,8 +1150,13 @@
           "The census feeds directly into the range-wide population estimate used by governments and the IUCN, which makes consistency between years as important as the count itself."
         ],
         "pullQuote": "Counting a migratory species across landscapes this large is never straightforward — consistency between years matters as much as the count itself.",
-        "inlineImage": "/images/article-inline.webp",
-        "inlineCaption": "Field observations are recorded by hand before being reconciled with survey data."
+        "photos": [
+          {
+            "image": "/images/article-inline.webp",
+            "caption": "Field observations are recorded by hand before being reconciled with survey data.",
+            "afterParagraph": ""
+          }
+        ]
       }
     },
     {
@@ -1074,8 +1174,13 @@
           "Equipment support forms part of the agreement, with radios and field kit issued to teams that have been operating without reliable communications."
         ],
         "pullQuote": "",
-        "inlineImage": "/images/article-inline.webp",
-        "inlineCaption": "Field observations are recorded by hand before being reconciled with survey data."
+        "photos": [
+          {
+            "image": "/images/article-inline.webp",
+            "caption": "Field observations are recorded by hand before being reconciled with survey data.",
+            "afterParagraph": ""
+          }
+        ]
       }
     },
     {
@@ -1093,8 +1198,13 @@
           "Several alumni of previous cohorts now lead field teams of their own, which was always the point of the programme."
         ],
         "pullQuote": "",
-        "inlineImage": "/images/article-inline.webp",
-        "inlineCaption": "Field observations are recorded by hand before being reconciled with survey data."
+        "photos": [
+          {
+            "image": "/images/article-inline.webp",
+            "caption": "Field observations are recorded by hand before being reconciled with survey data.",
+            "afterParagraph": ""
+          }
+        ]
       }
     },
     {
@@ -1111,8 +1221,13 @@
           "The approach is deliberately low-technology: native seed, careful timing, and grazing agreements with the herders who use the land."
         ],
         "pullQuote": "",
-        "inlineImage": "/images/article-inline.webp",
-        "inlineCaption": "Field observations are recorded by hand before being reconciled with survey data."
+        "photos": [
+          {
+            "image": "/images/article-inline.webp",
+            "caption": "Field observations are recorded by hand before being reconciled with survey data.",
+            "afterParagraph": ""
+          }
+        ]
       }
     },
     {
@@ -1129,8 +1244,13 @@
           "Each school receives classroom materials and a field day, with teachers trained to run the sessions themselves in following years."
         ],
         "pullQuote": "",
-        "inlineImage": "/images/article-inline.webp",
-        "inlineCaption": "Field observations are recorded by hand before being reconciled with survey data."
+        "photos": [
+          {
+            "image": "/images/article-inline.webp",
+            "caption": "Field observations are recorded by hand before being reconciled with survey data.",
+            "afterParagraph": ""
+          }
+        ]
       }
     },
     {
@@ -1147,8 +1267,13 @@
           "Reliable communications change what is possible during a die-off or a poaching incident, when the difference between a two-hour and a two-day response is decisive."
         ],
         "pullQuote": "",
-        "inlineImage": "/images/article-inline.webp",
-        "inlineCaption": "Field observations are recorded by hand before being reconciled with survey data."
+        "photos": [
+          {
+            "image": "/images/article-inline.webp",
+            "caption": "Field observations are recorded by hand before being reconciled with survey data.",
+            "afterParagraph": ""
+          }
+        ]
       }
     },
     {
@@ -1165,8 +1290,13 @@
           "The combined dataset gives a far more complete picture of where herds move in years when rainfall shifts the migration east or west."
         ],
         "pullQuote": "",
-        "inlineImage": "/images/article-inline.webp",
-        "inlineCaption": "Field observations are recorded by hand before being reconciled with survey data."
+        "photos": [
+          {
+            "image": "/images/article-inline.webp",
+            "caption": "Field observations are recorded by hand before being reconciled with survey data.",
+            "afterParagraph": ""
+          }
+        ]
       }
     },
     {
@@ -1183,8 +1313,13 @@
           "This review looks honestly at where the last response worked and where it did not, including the delays caused by permitting and by simple distance."
         ],
         "pullQuote": "",
-        "inlineImage": "/images/article-inline.webp",
-        "inlineCaption": "Field observations are recorded by hand before being reconciled with survey data."
+        "photos": [
+          {
+            "image": "/images/article-inline.webp",
+            "caption": "Field observations are recorded by hand before being reconciled with survey data.",
+            "afterParagraph": ""
+          }
+        ]
       }
     }
   ]

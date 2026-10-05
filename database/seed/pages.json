@@ -288,6 +288,7 @@
     },
     "newsletter": {
       "mailchimpAction": "https://saiga-conservation.us21.list-manage.com/subscribe/post?u=a0ec084be4a832b4b53e2aae9&id=c865613a38&f_id=00bab3e1f0",
+      "mailchimpGroup": "",
       "placeholder": "Your email address",
       "buttonLabel": "Subscribe",
       "thanks": "Thank you — please check your inbox to confirm.",
@@ -302,7 +303,8 @@
       "messagePlaceholder": "How can we help?",
       "buttonLabel": "Send message",
       "thanksTitle": "Thank you",
-      "thanksBody": "We have your message and will come back to you as soon as we can."
+      "thanksBody": "We have your message and will come back to you as soon as we can.",
+      "notifyEmail": "saigaalliance@googlemail.com"
     },
     "labels": {
       "readMore": "Read more",
@@ -316,7 +318,11 @@
       "skipToContent": "Skip to content",
       "menu": "Menu",
       "photoCredit": "Photo:",
-      "home": "Home"
+      "home": "Home",
+      "analyticsOptOut": "Analytics opt-out",
+      "analyticsOptIn": "Analytics: off (turn back on)",
+      "analyticsOptedOut": "Google Analytics is now switched off for this browser. We will not collect any statistics about your visits.",
+      "analyticsOptedIn": "Google Analytics is switched back on for this browser. Thank you for helping us improve the site."
     },
     "notFound": {
       "eyebrow": "404",
@@ -371,6 +377,7 @@
       "eyebrow": "Our mission",
       "title": "A future where saiga move freely.",
       "image": "/images/home-mission-fieldwork.webp",
+      "imageCaption": "",
       "body": [
         "We work with local partners to protect saiga habitat, strengthen protection on the ground, and support community-led conservation across the species’ range.",
         "Our field teams monitor herds, restore migration corridors and share the research that guides action — so that decisions about the steppe are made with evidence, and with the people who live there."
@@ -382,6 +389,7 @@
       "eyebrow": "The species",
       "title": "What is a saiga?",
       "image": "/images/home-saiga-portrait.webp",
+      "imageCaption": "",
       "body": [
         "Known for its distinctive nose and ancient lineage, the saiga is one of the steppe’s most extraordinary survivors — yet habitat loss, disease and illegal hunting continue to threaten its future."
       ],
@@ -521,6 +529,7 @@
       "eyebrow": "Our approach",
       "title": "Conservation built with the people of the steppe.",
       "image": "/images/about-team.webp",
+      "imageCaption": "",
       "body": [
         "The Saiga Conservation Alliance brings together field scientists, protected area staff, community organisations and supporters across the saiga’s range. We are small by design: most of what we do is delivered through long-standing local partnerships rather than by parachuting teams into landscapes they do not know.",
         "That means our work looks different in each country we operate in — but the intent is the same everywhere. Keep herds safe, keep the grasslands intact, and keep the people who live alongside saigas at the centre of the decisions that affect them.",
@@ -587,6 +596,7 @@
         "title": "A coalition forms",
         "body": "A small group of biologists and local partners begins coordinated saiga monitoring across key steppe habitats.",
         "image": "/images/story-2006.webp",
+        "imageCaption": "",
         "celebrate": false,
         "featureLabel": "",
         "featureHref": "",
@@ -597,6 +607,7 @@
         "title": "Communities at the centre",
         "body": "Community outreach expands, linking conservation goals with local stewardship and seasonal field education.",
         "image": "/images/story-2010.webp",
+        "imageCaption": "",
         "celebrate": false,
         "featureLabel": "",
         "featureHref": "",
@@ -607,6 +618,7 @@
         "title": "Responding to crisis",
         "body": "After a catastrophic die-off, emergency response teams scale up research, veterinary support and cross-border collaboration.",
         "image": "/images/story-2015.webp",
+        "imageCaption": "",
         "celebrate": false,
         "featureLabel": "",
         "featureHref": "",
@@ -617,6 +629,7 @@
         "title": "Protection strengthens",
         "body": "New ranger training, habitat mapping and migration tracking strengthen protection along vital movement corridors.",
         "image": "/images/story-2020.webp",
+        "imageCaption": "",
         "celebrate": false,
         "featureLabel": "",
         "featureHref": "",
@@ -627,6 +640,7 @@
         "title": "A broader alliance",
         "body": "SCA launches a wider alliance model, combining science, policy and field partnerships to support long-term recovery.",
         "image": "",
+        "imageCaption": "",
         "celebrate": false,
         "featureLabel": "",
         "featureHref": "",
@@ -637,6 +651,7 @@
         "title": "Twenty years of SCA",
         "body": "Two decades of work across the saiga range — the partnerships, the setbacks and the recovery — set out in one place.",
         "image": "",
+        "imageCaption": "",
         "celebrate": true,
         "featureLabel": "Celebrate 20 years with us — read our anniversary report",
         "featureHref": "/downloads/sca-20th-anniversary-report.pdf",
@@ -1006,6 +1021,7 @@
       "eyebrow": "Appearance & behaviour",
       "title": "Built for the steppe",
       "image": "/images/saiga-behaviour.webp",
+      "imageCaption": "",
       "body": [
         "Saigas are shaped almost entirely by the demands of open grassland. The distinctive nose warms cold air in winter and filters dust thrown up by moving herds in summer, and their long legs are built for covering distance rather than for cover.",
         "They form large herds and undertake long seasonal migrations in search of food and water. Calving is highly synchronised — most calves in a population are born within a week — which is both a remarkable survival strategy and a moment of extreme vulnerability."
@@ -1071,6 +1087,7 @@
         "eyebrow": "Ecological significance",
         "title": "A keystone of the grassland",
         "image": "/images/work-protection.webp",
+        "imageCaption": "",
         "imageSide": "left",
         "body": [
           "Grazing by large herds prevents any single plant community from dominating, maintaining the mosaic of grasses and herbs that a healthy steppe depends on. Where saigas disappear, that mosaic simplifies — and with it goes much of the wider biodiversity the grassland supports.",
@@ -1082,6 +1099,7 @@
         "eyebrow": "Cultural significance",
         "title": "Older than any border on the map",
         "image": "/images/work-communities.webp",
+        "imageCaption": "",
         "imageSide": "right",
         "body": [
           "Saigas appear in the folklore, songs and decorative traditions of communities across the range, and in petroglyphs that predate every state now responsible for protecting them. They are part of how the steppe is described by the people who live in it.",
@@ -1650,6 +1668,7 @@
       "eyebrow": "Transparency",
       "title": "Donate with confidence",
       "image": "/images/donate-confidence.webp",
+      "imageCaption": "",
       "body": [
         "We think you should know what happens to a donation before you make one. SCA is a registered charity, and our accounts are published each year alongside a plain account of what the money achieved."
       ],
@@ -1701,6 +1720,7 @@
         "eyebrow": "What to expect",
         "title": "Time in the field, not on a coach",
         "image": "/images/work-communities.webp",
+        "imageCaption": "",
         "imageSide": "left",
         "body": [
           "Tours are built around whatever the season allows: a calving-ground survey in spring, a ranger patrol in the summer pastures, an afternoon in a village school that has run a saiga club for years. Nothing is staged for visitors.",
@@ -1712,6 +1732,7 @@
         "eyebrow": "How it works",
         "title": "Small groups, planned well ahead",
         "image": "/images/about-team.webp",
+        "imageCaption": "",
         "imageSide": "right",
         "body": [
           "Each tour takes a small group and is arranged with our partners in the range state months in advance, so that a visit adds to the work rather than interrupting it.",
@@ -1754,6 +1775,7 @@
     "intro": "A few emails a year, written by the people doing the work: field reports, research findings and the occasional piece of good news from the steppe.",
     "note": "We never show newsletter pop-ups on this site, and we do not share your address with anyone else.",
     "image": "/images/newsletter-steppe.webp",
+    "imageCaption": "",
     "related": {
       "title": "Other ways to help",
       "links": [

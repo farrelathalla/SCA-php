@@ -13,34 +13,34 @@ $hero = $p['hero'] ?? [];
 ) ?>
 <?= page_blocks($p, 'top') ?>
 
-<?php if (shown($p, 'mission')): ?>
+<?php section_start('mission'); ?>
 <section class="section">
   <div class="shell">
     <?= photo_text(
-        ['eyebrow' => v($p, 'mission.eyebrow'), 'title' => v($p, 'mission.title'), 'image' => v($p, 'mission.image'), 'imageSide' => 'left'],
+        ['eyebrow' => v($p, 'mission.eyebrow'), 'title' => v($p, 'mission.title'), 'image' => v($p, 'mission.image'), 'imageCaption' => v($p, 'mission.imageCaption'), 'imageSide' => 'left'],
         paragraphs(v($p, 'mission.body', [])),
         arrow_link((string) v($p, 'mission.linkHref'), (string) v($p, 'mission.linkLabel'))
     ) ?>
   </div>
 </section>
-<?php endif; ?>
+<?php section_end(); ?>
 
-<?php if (shown($p, 'species')): ?>
+<?php section_start('species'); ?>
 <section class="section-tight pb-20 md:pb-28">
   <div class="shell">
     <?= photo_text(
-        ['eyebrow' => v($p, 'species.eyebrow'), 'title' => v($p, 'species.title'), 'image' => v($p, 'species.image'), 'imageSide' => 'right', 'align' => 'start'],
+        ['eyebrow' => v($p, 'species.eyebrow'), 'title' => v($p, 'species.title'), 'image' => v($p, 'species.image'), 'imageCaption' => v($p, 'species.imageCaption'), 'imageSide' => 'right', 'align' => 'start'],
         paragraphs(v($p, 'species.body', [])),
         fact_list(v($p, 'species.facts', []), 1, 'max-w-lg')
             . arrow_link((string) v($p, 'species.linkHref'), (string) v($p, 'species.linkLabel'), 'mt-8')
     ) ?>
   </div>
 </section>
-<?php endif; ?>
+<?php section_end(); ?>
 
-<?php if (shown($p, 'numbers')): ?><?= number_band((string) v($p, 'numbers.eyebrow'), v($p, 'numbers.stats', [])) ?><?php endif; ?>
+<?php section_start('numbers'); ?><?= number_band((string) v($p, 'numbers.eyebrow'), v($p, 'numbers.stats', [])) ?><?php section_end(); ?>
 
-<?php if (shown($p, 'whatWeDo')): ?>
+<?php section_start('whatWeDo'); ?>
 <section class="section">
   <div class="shell">
     <?= section_heading((string) v($p, 'whatWeDo.eyebrow'), (string) v($p, 'whatWeDo.title'), (string) v($p, 'whatWeDo.intro')) ?>
@@ -48,9 +48,9 @@ $hero = $p['hero'] ?? [];
     <div <?= reveal('', 200) ?>><?= arrow_link((string) v($p, 'whatWeDo.linkHref'), (string) v($p, 'whatWeDo.linkLabel'), 'mt-12') ?></div>
   </div>
 </section>
-<?php endif; ?>
+<?php section_end(); ?>
 
-<?php if ($featured && shown($p, 'featured')): ?>
+<?php section_start('featured'); if ($featured): ?>
 <section class="section-tight bg-cream-deep">
   <div class="shell">
     <div class="flex flex-wrap items-end justify-between gap-6">
@@ -62,9 +62,9 @@ $hero = $p['hero'] ?? [];
     </div>
   </div>
 </section>
-<?php endif; ?>
+<?php endif; section_end(); ?>
 
-<?php if (shown($p, 'latest')): ?>
+<?php section_start('latest'); ?>
 <section class="section">
   <div class="shell">
     <div class="flex flex-wrap items-end justify-between gap-6">
@@ -74,11 +74,9 @@ $hero = $p['hero'] ?? [];
     <div class="mt-14 md:mt-16"><?= story_list($latest) ?></div>
   </div>
 </section>
-<?php endif; ?>
+<?php section_end(); ?>
 
-<?php if (!empty($p['showDonationBand'])): ?><?= cta_band() ?><?php endif; ?>
-
-<?php if (shown($p, 'stayConnected')): ?>
+<?php section_start('stayConnected'); ?>
 <section class="section-tight">
   <div class="shell">
     <div <?= reveal('flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-16') ?>>
@@ -96,6 +94,19 @@ $hero = $p['hero'] ?? [];
     </div>
   </div>
 </section>
-<?php endif; ?>
+<?php section_end(); ?>
+
+<?php
+// The donation band sits just above "Stay connected", wherever that section is.
+$band = !empty($p['showDonationBand']) ? cta_band() : '';
+foreach (ordered_sections($p) as $key => $html) {
+    if ($key === 'stayConnected') {
+        echo $band;
+        $band = '';
+    }
+    echo $html;
+}
+echo $band;
+?>
 
 <?= page_blocks($p) ?>

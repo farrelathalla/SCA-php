@@ -2,27 +2,29 @@
 <?= page_hero($p['hero'] ?? []) ?>
 <?= page_blocks($p, 'top') ?>
 
-<?php if (shown($p, 'intro')): ?>
+<?php section_start('intro'); ?>
 <section class="section-tight">
   <div class="shell">
     <div <?= reveal('max-w-3xl') ?>><p class="text-xl leading-[1.7] text-body md:text-[1.375rem]"><?= rich($p['intro'] ?? '') ?></p></div>
   </div>
 </section>
-<?php endif; ?>
+<?php section_end(); ?>
 
+<?php section_start('blocks'); ?>
 <?php foreach (shown($p, 'blocks') ? array_values($p['blocks'] ?? []) : [] as $i => $block): ?>
 <section class="section-tight pb-20 md:pb-28">
   <div class="shell">
     <?= photo_text(
-        ['eyebrow' => $block['eyebrow'] ?? '', 'title' => $block['title'] ?? '', 'image' => $block['image'] ?? '',
+        ['eyebrow' => $block['eyebrow'] ?? '', 'title' => $block['title'] ?? '', 'image' => $block['image'] ?? '', 'imageCaption' => $block['imageCaption'] ?? '',
          'imageSide' => ($block['imageSide'] ?? '') ?: ($i % 2 === 0 ? 'left' : 'right')],
         paragraphs($block['body'] ?? [])
     ) ?>
   </div>
 </section>
 <?php endforeach; ?>
+<?php section_end(); ?>
 
-<?php if (shown($p, 'summary')): ?>
+<?php section_start('summary'); ?>
 <section class="section-tight pb-20 md:pb-28">
   <div class="shell">
     <div <?= reveal('max-w-3xl') ?>>
@@ -31,7 +33,9 @@
     </div>
   </div>
 </section>
-<?php endif; ?>
+<?php section_end(); ?>
+
+<?= implode('', ordered_sections($p)) ?>
 
 <?= page_blocks($p) ?>
 
