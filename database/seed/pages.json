@@ -304,7 +304,10 @@
       "buttonLabel": "Send message",
       "thanksTitle": "Thank you",
       "thanksBody": "We have your message and will come back to you as soon as we can.",
-      "notifyEmail": "saigaalliance@googlemail.com"
+      "notifyEmail": "saigaalliance@googlemail.com",
+      "notifySubjectContact": "New message from {name} (Contact Us)",
+      "notifySubjectWorkWithUs": "New message from {name} (Work with Us)",
+      "notifyNote": ""
     },
     "labels": {
       "readMore": "Read more",

@@ -9,7 +9,7 @@
  * overwrites anything an editor has already changed.
  */
 
-const SCHEMA_VERSION = 8;
+const SCHEMA_VERSION = 9;
 
 function db(): PDO
 {
@@ -315,6 +315,15 @@ function migrate_content(int $from): void
             if (strpos($key, 'search') === 0) {
                 $global['labels'][$key] = $global['labels'][$key] ?? $value;
             }
+        }
+        save_page_row('global', $global);
+    }
+
+    // v9 — editable subject lines (and an optional note) for the emails the
+    // contact and Work With Us forms send.
+    if ($from < 9 && ($global = page_row('global')) !== null) {
+        foreach (['notifySubjectContact', 'notifySubjectWorkWithUs', 'notifyNote'] as $key) {
+            $global['contactForm'][$key] = $global['contactForm'][$key] ?? seed_data('pages.json')['global']['contactForm'][$key];
         }
         save_page_row('global', $global);
     }

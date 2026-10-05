@@ -288,7 +288,7 @@ function block_body(string $type, array $b): string
             $out = $title !== '' ? '<h2 ' . reveal('mb-10 text-3xl') . '>' . e($title) . '</h2>' : '';
             $out .= '<div class="card-row gap-y-8 [--gap-x:2rem] sm:[--cols:3] md:gap-y-10 md:[--gap-x:2.5rem]">';
             foreach ($images as $i => $photo) {
-                $out .= '<div ' . reveal('', ($i % 3) * 110) . '>' . media($photo['image'], ['ratio' => 'landscape', 'caption' => $photo['caption']]) . '</div>';
+                $out .= '<div ' . reveal('', ($i % 3) * 110) . '>' . media($photo['image'], ['ratio' => 'landscape', 'sizes' => '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw', 'caption' => $photo['caption']]) . '</div>';
             }
             return $out . '</div>';
 

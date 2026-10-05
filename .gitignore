@@ -6,3 +6,4 @@ public/uploads/*
 .DS_Store
 Thumbs.db
 .ftp-deploy-sync-state.json
+public/img/w*/

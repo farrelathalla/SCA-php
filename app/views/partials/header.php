@@ -34,12 +34,12 @@ $isActive = function (array $item) use ($path): bool {
 ?>
 <header class="sticky top-0 z-50" data-header>
   <div class="border-b border-hairline bg-cream/95 backdrop-blur-sm transition-[padding,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] py-4" data-scrolled-on="py-2 shadow-[0_1px_20px_rgba(84,63,38,0.06)]" data-scrolled-off="py-4">
-    <div class="shell flex items-center justify-between gap-6">
+    <div class="shell flex items-center justify-between gap-3 sm:gap-6">
       <!-- Landing state: the mark above the wordmark. Once the page scrolls the
            same two parts line up horizontally, vertically centred on each other. -->
-      <a href="/" class="group flex shrink-0 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] flex-col items-center gap-2" data-scrolled-on="flex-row items-center gap-3" data-scrolled-off="flex-col items-center gap-2" aria-label="<?= e(site('site.name')) ?> — home">
-        <img src="<?= e(local_url((string) site('site.logoMark'))) ?>" alt="" aria-hidden="true" width="360" height="180" class="w-auto transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] h-12 sm:h-14 md:h-16" data-scrolled-on="h-8 sm:h-8 md:h-9" data-scrolled-off="h-12 sm:h-14 md:h-16">
-        <span class="text-center leading-tight text-muted uppercase transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:text-accent-dark text-[0.5rem] tracking-[0.14em] sm:text-[0.7rem] sm:tracking-[0.2em]" data-scrolled-on="text-[0.5rem] tracking-[0.14em] sm:text-[0.6rem] sm:tracking-[0.16em]" data-scrolled-off="text-[0.5rem] tracking-[0.14em] sm:text-[0.7rem] sm:tracking-[0.2em]"><?= e(site('site.name')) ?></span>
+      <a href="/" class="group flex min-w-0 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] flex-col items-center gap-2" data-scrolled-on="flex-row items-center gap-3" data-scrolled-off="flex-col items-center gap-2" aria-label="<?= e(site('site.name')) ?> — home">
+        <img src="<?= e(local_url((string) site('site.logoMark'))) ?>" alt="" aria-hidden="true" width="360" height="180" class="w-auto shrink-0 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] h-12 sm:h-14 md:h-16" data-scrolled-on="h-7 sm:h-8 md:h-9" data-scrolled-off="h-12 sm:h-14 md:h-16">
+        <span class="text-center leading-tight text-muted uppercase transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:text-accent-dark text-[0.5rem] tracking-[0.14em] max-w-[8rem] sm:max-w-none sm:text-[0.7rem] sm:tracking-[0.2em]" data-scrolled-on="text-[0.5rem] tracking-[0.14em] max-w-[5.5rem] sm:max-w-none sm:text-[0.6rem] sm:tracking-[0.16em]" data-scrolled-off="text-[0.5rem] tracking-[0.14em] max-w-[8rem] sm:max-w-none sm:text-[0.7rem] sm:tracking-[0.2em]"><?= e(site('site.name')) ?></span>
       </a>
 
       <nav class="hidden items-center gap-0.5 xl:flex" aria-label="Main">
@@ -85,11 +85,11 @@ $isActive = function (array $item) use ($path): bool {
         <?php endforeach; ?>
       </nav>
 
-      <div class="flex shrink-0 items-center gap-2">
+      <div class="flex shrink-0 items-center gap-0.5 sm:gap-2">
         <a href="/search" aria-label="<?= e($searchLabel) ?>" aria-haspopup="dialog" class="flex h-9 w-9 items-center justify-center rounded-full text-body transition-colors duration-300 hover:bg-buff hover:text-accent-dark" data-search-open>
           <?= icon('search', 'h-4.5 w-4.5') ?>
         </a>
-        <a href="<?= e(site('header.donateHref')) ?>" class="rounded-full bg-accent font-medium text-cream shadow-[0_6px_18px_rgba(200,122,60,0.22)] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:bg-accent-dark hover:shadow-[0_10px_24px_rgba(200,122,60,0.28)] px-6 py-2.5 text-[0.9rem]" data-scrolled-on="px-5 py-2 text-[0.85rem]" data-scrolled-off="px-6 py-2.5 text-[0.9rem]"><?= e(site('header.donateLabel')) ?></a>
+        <a href="<?= e(site('header.donateHref')) ?>" class="rounded-full bg-accent font-medium text-cream shadow-[0_6px_18px_rgba(200,122,60,0.22)] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:bg-accent-dark hover:shadow-[0_10px_24px_rgba(200,122,60,0.28)] whitespace-nowrap px-4 py-2 text-[0.85rem] sm:px-6 sm:py-2.5 sm:text-[0.9rem]" data-scrolled-on="px-4 py-2 text-[0.85rem] sm:px-5 sm:py-2 sm:text-[0.85rem]" data-scrolled-off="px-4 py-2 text-[0.85rem] sm:px-6 sm:py-2.5 sm:text-[0.9rem]"><?= e(site('header.donateLabel')) ?></a>
         <button type="button" aria-label="Open menu" class="flex h-9 w-9 items-center justify-center rounded-full text-ink transition-colors hover:bg-buff xl:hidden" data-menu-open>
           <?= icon('menu', 'h-5 w-5') ?>
         </button>

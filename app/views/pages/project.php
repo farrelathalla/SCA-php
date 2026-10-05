@@ -65,7 +65,7 @@ $documents = document_links($pr['documents'] ?? []);
 <section class="section-tight pb-20 md:pb-28">
   <div class="shell">
     <div class="card-row gap-y-8 [--gap-x:2rem] sm:[--cols:3] md:gap-y-10 md:[--gap-x:2.5rem]">
-      <?php foreach ($gallery as $i => $photo): ?><div <?= reveal('', ($i % 3) * 110) ?>><?= media($photo['image'], ['ratio' => 'landscape', 'caption' => $photo['caption']]) ?></div><?php endforeach; ?>
+      <?php foreach ($gallery as $i => $photo): ?><div <?= reveal('', ($i % 3) * 110) ?>><?= media($photo['image'], ['ratio' => 'landscape', 'sizes' => '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw', 'caption' => $photo['caption']]) ?></div><?php endforeach; ?>
     </div>
   </div>
 </section>

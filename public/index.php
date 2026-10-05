@@ -21,6 +21,12 @@ if ($path === '/admin' || strpos($path, '/admin/') === 0) {
     exit;
 }
 
+/* ---------------------------------------------- Smaller copies of photos */
+
+if (preg_match('~^/img/w(\d+)/((?:uploads|images)/.+)\.(webp|jpg)$~', $path, $m)) {
+    serve_image_variant((int) $m[1], $m[2], $m[3]);
+}
+
 /* ------------------------------------------------------------------ Forms */
 
 if ($path === '/forms/contact' || $path === '/forms/newsletter') {

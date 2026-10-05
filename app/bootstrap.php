@@ -17,6 +17,7 @@ require APP . '/lib/helpers.php';
 require APP . '/lib/db.php';
 require APP . '/lib/content.php';
 require APP . '/lib/icons.php';
+require APP . '/lib/images.php';
 require APP . '/lib/components.php';
 require APP . '/lib/blocks.php';
 require APP . '/lib/search.php';

@@ -46,6 +46,9 @@ function media(?string $src, array $o = []): string
     // Photographer credit, shown on hover. Photos under an overlay (full-bleed
     // heroes) pass 'credit' => false and draw photo_credit() on top instead.
     $credit = ($o['credit'] ?? true) && $src !== '' ? photo_credit($src) : '';
+    // Smaller copies for phones; 'sizes' says how wide the photo is drawn.
+    $srcset = $src !== '' ? image_srcset($src) : '';
+    $size = $natural ? image_size((string) parse_url($src, PHP_URL_PATH)) : null;
 
     ob_start(); ?>
 <div class="overflow-hidden bg-cream-deep <?= e($box) ?> <?= $radius ?> <?= $credit !== '' ? 'group/media' : '' ?> <?= e($o['class'] ?? '') ?>">
@@ -65,7 +68,7 @@ function media(?string $src, array $o = []): string
     </div>
   </div>
   <?php if ($src !== ''): ?>
-  <img src="<?= e($src) ?>" alt="<?= e($alt) ?>" loading="<?= !empty($o['priority']) ? 'eager' : 'lazy' ?>" decoding="async" onerror="this.remove()" class="<?= $natural ? 'relative block h-auto w-full' : 'absolute inset-0 h-full w-full object-cover' ?> transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] <?= e($o['imageClass'] ?? '') ?>">
+  <img src="<?= e($src) ?>"<?php if ($srcset !== ''): ?> srcset="<?= e($srcset) ?>" sizes="<?= e($o['sizes'] ?? '100vw') ?>"<?php endif; ?><?php if ($natural && $size): ?> width="<?= $size[0] ?>" height="<?= $size[1] ?>"<?php endif; ?> alt="<?= e($alt) ?>" loading="<?= !empty($o['priority']) ? 'eager' : 'lazy' ?>"<?= !empty($o['priority']) ? ' fetchpriority="high"' : '' ?> decoding="async" onerror="this.remove()" class="<?= $natural ? 'relative block h-auto w-full' : 'absolute inset-0 h-full w-full object-cover' ?> transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] <?= e($o['imageClass'] ?? '') ?>">
   <?php endif; ?>
   <?= $credit ?>
 </div>
@@ -298,7 +301,7 @@ function page_hero(array $hero, string $actions = ''): string
       <?= $jumpHtml ?>
       </div>
       <div class="animate-fade-up" style="animation-delay: 160ms">
-        <?= media($image, ['ratio' => 'landscape', 'priority' => true, 'class' => 'shadow-[0_24px_60px_rgba(84,63,38,0.10)]']) ?>
+        <?= media($image, ['ratio' => 'landscape', 'sizes' => '(min-width: 1024px) 50vw, 100vw', 'priority' => true, 'class' => 'shadow-[0_24px_60px_rgba(84,63,38,0.10)]']) ?>
       </div>
     </div>
   </div>
@@ -343,7 +346,7 @@ function photo_text(array $o, string $body, string $footer = '', string $imageFo
     ob_start(); ?>
 <div class="grid gap-12 lg:grid-cols-2 lg:gap-20 <?= $align ?>">
   <div <?= reveal('group ' . ($right ? 'lg:order-2' : '')) ?>>
-    <?= media($o['image'] ?? '', ['class' => 'shadow-[0_24px_60px_rgba(84,63,38,0.09)]', 'imageClass' => 'group-hover:scale-[1.03]', 'caption' => (string) ($o['imageCaption'] ?? '')]) ?>
+    <?= media($o['image'] ?? '', ['sizes' => '(min-width: 1024px) 50vw, 100vw', 'class' => 'shadow-[0_24px_60px_rgba(84,63,38,0.09)]', 'imageClass' => 'group-hover:scale-[1.03]', 'caption' => (string) ($o['imageCaption'] ?? '')]) ?>
     <?php if ($imageFooter !== ''): ?><div class="mt-8"><?= $imageFooter ?></div><?php endif; ?>
   </div>
   <div <?= reveal($right ? 'lg:order-1' : '', 120) ?>>
@@ -406,7 +409,7 @@ function story_card(array $item, int $delay = 0): string
     ob_start(); ?>
 <div <?= reveal('h-full', $delay) ?>>
   <a href="<?= e($item['href']) ?>" class="group flex h-full flex-col">
-    <?= media($item['image'] ?? '', ['ratio' => 'landscape', 'imageClass' => 'group-hover:scale-[1.04]', 'class' => 'transition-shadow duration-500 group-hover:shadow-[0_20px_44px_rgba(84,63,38,0.12)]']) ?>
+    <?= media($item['image'] ?? '', ['ratio' => 'landscape', 'sizes' => '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw', 'imageClass' => 'group-hover:scale-[1.04]', 'class' => 'transition-shadow duration-500 group-hover:shadow-[0_20px_44px_rgba(84,63,38,0.12)]']) ?>
     <div class="mt-5 flex flex-1 flex-col">
       <?php if ($category !== '' || $date !== ''): ?>
       <div class="flex flex-wrap items-center gap-3">
@@ -479,7 +482,7 @@ function person_card(array $person, int $delay = 0): string
     ob_start(); ?>
 <div <?= reveal('', $delay) ?>>
   <div class="group">
-    <?= media($person['image'] ?? '', ['ratio' => 'portrait', 'imageClass' => 'group-hover:scale-[1.03]']) ?>
+    <?= media($person['image'] ?? '', ['ratio' => 'portrait', 'sizes' => '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw', 'imageClass' => 'group-hover:scale-[1.03]']) ?>
     <h3 class="mt-5 text-lg"><?= e($person['name'] ?? '') ?></h3>
     <p class="mt-1 text-[0.9rem] text-accent-dark"><?= e($person['role'] ?? '') ?></p>
     <?php if (($person['note'] ?? '') !== ''): ?><p class="mt-2 text-[0.9rem] leading-relaxed text-muted"><?= rich($person['note']) ?></p><?php endif; ?>
@@ -495,7 +498,7 @@ function strand_card(array $s, int $delay = 0): string
     ob_start(); ?>
 <div <?= reveal('', $delay) ?>>
   <div class="group flex h-full flex-col">
-    <a href="<?= e($s['href']) ?>"><?= media($s['image'] ?? '', ['ratio' => 'landscape', 'imageClass' => 'group-hover:scale-[1.04]', 'class' => 'transition-shadow duration-500 group-hover:shadow-[0_20px_44px_rgba(84,63,38,0.12)]']) ?></a>
+    <a href="<?= e($s['href']) ?>"><?= media($s['image'] ?? '', ['ratio' => 'landscape', 'sizes' => '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw', 'imageClass' => 'group-hover:scale-[1.04]', 'class' => 'transition-shadow duration-500 group-hover:shadow-[0_20px_44px_rgba(84,63,38,0.12)]']) ?></a>
     <h3 class="mt-6 text-2xl leading-snug"><a href="<?= e($s['href']) ?>" class="transition-colors duration-300 hover:text-accent-dark"><?= e($s['title'] ?? '') ?></a></h3>
     <p class="mt-3 flex-1 text-[0.9375rem] leading-relaxed text-body"><?= rich($s['body'] ?? '') ?></p>
     <?php if ($stat && ($stat['value'] ?? '') !== ''): ?>
@@ -715,13 +718,14 @@ function line_chart(array $points, array $o = []): string
     <span class="mt-1.5 block text-[0.7rem] tracking-[0.12em] text-muted uppercase" data-chart-year></span>
   </div>
 
-  <table class="sr-only">
+  <!-- sr-only on a wrapper: a table never shrinks below its content width. -->
+  <div class="sr-only"><table>
     <caption><?= e($o['title'] ?? '') ?></caption>
     <thead><tr><th><?= e($xLabel ?: 'Year') ?></th><th><?= e($yLabel ?: 'Value') ?></th></tr></thead>
     <tbody>
       <?php foreach ($data as $d): ?><tr><td><?= e((string) (int) $d['x']) ?></td><td><?= e(number_format($d['y'], 0, '.', ',')) ?></td></tr><?php endforeach; ?>
     </tbody>
-  </table>
+  </table></div>
 </div>
 <?php
     return ob_get_clean();
@@ -794,7 +798,7 @@ function timeline(array $items, string $order = 'asc', bool $photos = true): str
         <p class="mt-3 text-[1rem] leading-relaxed text-body"><?= rich($m['body'] ?? '') ?></p>
         <?php if ($hasFeature): ?>
         <a href="<?= e($m['featureHref'] ?? '#') ?>" class="group mt-7 flex items-center gap-5 rounded-2xl bg-accent-soft/70 p-4 transition-colors duration-300 hover:bg-accent-soft md:p-5 <?= $alignRight ? '' : 'md:flex-row-reverse md:text-right' ?>">
-          <div class="w-24 shrink-0 md:w-28"><?= media($m['featureImage'] ?? '', ['ratio' => 'portrait', 'class' => 'shadow-[0_10px_26px_rgba(84,63,38,0.14)]', 'imageClass' => 'group-hover:scale-[1.03]']) ?></div>
+          <div class="w-24 shrink-0 md:w-28"><?= media($m['featureImage'] ?? '', ['ratio' => 'portrait', 'sizes' => '112px', 'class' => 'shadow-[0_10px_26px_rgba(84,63,38,0.14)]', 'imageClass' => 'group-hover:scale-[1.03]']) ?></div>
           <span class="flex-1">
             <span class="block text-[1rem] leading-snug text-ink"><?= e($m['featureLabel']) ?></span>
             <span class="link-arrow mt-2.5"><?= e(site('labels.readReport', 'Read the report')) ?><?= icon('arrow-right', 'h-4 w-4') ?></span>
@@ -802,7 +806,7 @@ function timeline(array $items, string $order = 'asc', bool $photos = true): str
         </a>
         <?php endif; ?>
         <?php if ($photos && trim((string) ($m['image'] ?? '')) !== ''): ?>
-        <div class="mt-7"><?= media($m['image'], ['ratio' => 'landscape', 'class' => 'shadow-[0_18px_44px_rgba(84,63,38,0.09)]', 'caption' => (string) ($m['imageCaption'] ?? '')]) ?></div>
+        <div class="mt-7"><?= media($m['image'], ['ratio' => 'landscape', 'sizes' => '(min-width: 1024px) 50vw, 100vw', 'class' => 'shadow-[0_18px_44px_rgba(84,63,38,0.09)]', 'caption' => (string) ($m['imageCaption'] ?? '')]) ?></div>
         <?php endif; ?>
       </div>
     </li>
@@ -915,9 +919,9 @@ function archive_grid(array $items, array $filters, bool $photos = true): string
 <div data-archive data-page-size="6">
   <div <?= reveal('flex flex-wrap items-center gap-3') ?>>
     <?php foreach ($filters as $filter): ?>
-    <div class="relative">
+    <div class="relative max-w-full min-w-0">
       <label for="filter-<?= e($filter['id']) ?>" class="sr-only"><?= e($filter['label']) ?></label>
-      <select id="filter-<?= e($filter['id']) ?>" data-filter="<?= e($filter['id']) ?>" class="cursor-pointer appearance-none rounded-full border border-hairline bg-cream py-2.5 pr-11 pl-5 text-[0.9rem] text-ink transition-colors duration-300 hover:border-accent/50 focus:border-accent focus:outline-none">
+      <select id="filter-<?= e($filter['id']) ?>" data-filter="<?= e($filter['id']) ?>" class="max-w-full cursor-pointer appearance-none truncate rounded-full border border-hairline bg-cream py-2.5 pr-11 pl-5 text-[0.9rem] text-ink transition-colors duration-300 hover:border-accent/50 focus:border-accent focus:outline-none">
         <?php foreach ($filter['options'] as $i => $option): ?><option value="<?= $i === 0 ? '' : e($option) ?>"><?= e($option) ?></option><?php endforeach; ?>
       </select>
       <?= icon('chevron-down', 'pointer-events-none absolute top-1/2 right-4 h-4 w-4 -translate-y-1/2 text-muted') ?>

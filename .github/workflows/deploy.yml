@@ -51,6 +51,7 @@ jobs:
             README.md
             app/config.local.php
             public/uploads/20*/**
+            public/img/w*/**
 
       - name: Smoke test
         run: |

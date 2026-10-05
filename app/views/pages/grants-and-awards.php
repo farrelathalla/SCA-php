@@ -18,7 +18,7 @@
       <?php foreach ($programmes as $i => $programme): ?>
       <div <?= reveal('', $i * 120) ?>>
         <div class="group flex h-full flex-col">
-          <a href="<?= e($programme['url']) ?>"><?= media($programme['image'] ?? '', ['ratio' => 'landscape', 'imageClass' => 'group-hover:scale-[1.04]', 'class' => 'transition-shadow duration-500 group-hover:shadow-[0_20px_44px_rgba(84,63,38,0.12)]']) ?></a>
+          <a href="<?= e($programme['url']) ?>"><?= media($programme['image'] ?? '', ['ratio' => 'landscape', 'sizes' => '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw', 'imageClass' => 'group-hover:scale-[1.04]', 'class' => 'transition-shadow duration-500 group-hover:shadow-[0_20px_44px_rgba(84,63,38,0.12)]']) ?></a>
           <h3 class="mt-6 text-2xl leading-snug"><a href="<?= e($programme['url']) ?>" class="transition-colors duration-300 hover:text-accent-dark"><?= e($programme['title'] ?? '') ?></a></h3>
           <p class="mt-3 flex-1 text-[0.9375rem] leading-relaxed text-body"><?= rich($programme['summary'] ?? '') ?></p>
           <div class="mt-7"><?= button($programme['url'], (string) v($p, 'programmes.buttonLabel'), 'outline', 'px-6 py-3 text-[0.875rem]') ?></div>

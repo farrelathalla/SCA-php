@@ -45,12 +45,12 @@ $prose = function (array $run): string {
 $figures = function (array $group): string {
     if (count($group) === 1) {
         return '<div class="shell my-12 md:my-16"><div ' . reveal('mx-auto max-w-4xl') . '>'
-            . media($group[0]['image'], ['ratio' => 'natural', 'caption' => $group[0]['caption'], 'captionClass' => 'text-center'])
+            . media($group[0]['image'], ['ratio' => 'natural', 'sizes' => '(min-width: 960px) 896px, 100vw', 'caption' => $group[0]['caption'], 'captionClass' => 'text-center'])
             . '</div></div>';
     }
     $out = '';
     foreach ($group as $i => $photo) {
-        $out .= '<div ' . reveal('', ($i % 2) * 110) . '>' . media($photo['image'], ['ratio' => 'natural', 'caption' => $photo['caption']]) . '</div>';
+        $out .= '<div ' . reveal('', ($i % 2) * 110) . '>' . media($photo['image'], ['ratio' => 'natural', 'sizes' => '(min-width: 640px) 50vw, 100vw', 'caption' => $photo['caption']]) . '</div>';
     }
     return '<div class="shell my-12 md:my-16"><div class="mx-auto grid max-w-5xl items-start gap-x-8 gap-y-10 sm:grid-cols-2">' . $out . '</div></div>';
 };

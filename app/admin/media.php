@@ -248,5 +248,13 @@ function delete_upload(string $url): void
     if (is_file($path)) {
         unlink($path);
     }
+    // Its smaller copies (app/lib/images.php) go with it.
+    foreach (IMAGE_WIDTHS as $w) {
+        foreach (['webp', 'jpg'] as $ext) {
+            if (is_file($copy = PUB . '/img/w' . $w . $url . '.' . $ext)) {
+                unlink($copy);
+            }
+        }
+    }
     db()->prepare('DELETE FROM media_meta WHERE path = ?')->execute([$url]);
 }

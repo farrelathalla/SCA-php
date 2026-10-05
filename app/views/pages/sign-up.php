@@ -9,7 +9,7 @@
         <div class="mt-10 max-w-xl"><?= newsletter_form('', 'large') ?></div>
         <?php if (($p['note'] ?? '') !== ''): ?><p class="mt-8 max-w-md text-[0.9rem] leading-relaxed text-muted"><?= rich($p['note']) ?></p><?php endif; ?>
       </div>
-      <div <?= reveal('', 140) ?>><?= media((string) ($p['image'] ?? ''), ['ratio' => 'landscape', 'class' => 'shadow-[0_24px_60px_rgba(84,63,38,0.10)]', 'caption' => (string) ($p['imageCaption'] ?? '')]) ?></div>
+      <div <?= reveal('', 140) ?>><?= media((string) ($p['image'] ?? ''), ['ratio' => 'landscape', 'sizes' => '(min-width: 1024px) 50vw, 100vw', 'class' => 'shadow-[0_24px_60px_rgba(84,63,38,0.10)]', 'caption' => (string) ($p['imageCaption'] ?? '')]) ?></div>
     </div>
   </div>
 </section>

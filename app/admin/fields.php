@@ -16,7 +16,7 @@ const LONG_TEXT_KEYS = [
     'body', 'intro', 'summary', 'excerpt', 'strapline', 'caption', 'note', 'answer', 'description',
     'statement', 'lead', 'tagline', 'pullQuote', 'postAddress', 'inlineCaption', 'ctaBody', 'applyBody',
     'yearsIntro', 'thanks', 'thanksBody', 'noResults', 'defaultNote', 'signupNote', 'whatItIs',
-    'placeholderText', 'monthlyHtml', 'bodyHtml', 'captionHtml', 'hint', 'text',
+    'placeholderText', 'monthlyHtml', 'bodyHtml', 'captionHtml', 'hint', 'text', 'notifyNote',
 ];
 
 const LABELS = [
@@ -87,6 +87,9 @@ const LABELS = [
     'photos' => 'Photos in the article (each with an optional caption)',
     'afterParagraph' => 'Show after paragraph number… (leave empty for after the 2nd paragraph; paragraphs are separated by an empty line)',
     'notifyEmail' => 'Send new contact and Work With Us messages to (email address — separate several with commas)',
+    'notifySubjectContact' => 'Email subject for Contact Us messages ({name} = the sender’s name)',
+    'notifySubjectWorkWithUs' => 'Email subject for Work With Us messages ({name} = the sender’s name)',
+    'notifyNote' => 'Note at the bottom of those emails (optional — leave empty for none)',
     'mailchimpGroup' => 'Mailchimp group for new sign-ups (from the embedded form code, e.g. group[12345][1] — leave empty for none)',
     'analyticsOptOut' => 'Footer link: analytics opt-out',
     'analyticsOptIn' => 'Footer link after opting out (turn analytics back on)',

@@ -70,8 +70,12 @@ function notify_recipients(): array
 function send_contact_notification(string $name, string $email, string $message, string $source): string
 {
     $form = $source === 'work-with-us' ? 'Work With Us' : ($source === 'contact' ? 'Contact Us' : $source);
-    $subject = 'New message from the website (' . $form . ')' . ($name !== '' ? ' — ' . $name : '');
-    $text = "Name: $name\nEmail: $email\nForm: $form\n\n$message\n\n—\nReply to this email to answer $name directly. All messages are also kept under Admin → Messages.";
+    // Subject and closing note are set in Admin → Header, footer & site-wide → Contact form.
+    $template = trim((string) site($source === 'work-with-us' ? 'contactForm.notifySubjectWorkWithUs' : 'contactForm.notifySubjectContact'))
+        ?: 'New message from {name} (' . $form . ')';
+    $subject = str_replace('{name}', $name !== '' ? $name : $email, $template);
+    $note = trim((string) site('contactForm.notifyNote'));
+    $text = "Name: $name\nEmail: $email\nForm: $form\n\n$message" . ($note !== '' ? "\n\n—\n$note" : '');
     $html = '<div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.6;color:#2e231a;max-width:640px">'
         . '<p style="margin:0 0 16px;color:#8a7458;font-size:13px;text-transform:uppercase;letter-spacing:.08em">New message · ' . e($form) . ' form</p>'
         . '<table style="border-collapse:collapse;margin-bottom:20px">'
@@ -79,7 +83,7 @@ function send_contact_notification(string $name, string $email, string $message,
         . '<tr><td style="padding:4px 16px 4px 0;color:#8a7458">Email</td><td style="padding:4px 0"><a href="mailto:' . e($email) . '" style="color:#a3602b">' . e($email) . '</a></td></tr>'
         . '</table>'
         . '<div style="white-space:pre-wrap;border-left:3px solid #c87a3c;padding:4px 0 4px 16px">' . e($message) . '</div>'
-        . '<p style="margin:24px 0 0;color:#8a7458;font-size:13px">Reply to this email to answer ' . e($name ?: 'the sender') . ' directly. All messages are also kept under Admin → Messages on the website.</p>'
+        . ($note !== '' ? '<p style="margin:24px 0 0;color:#8a7458;font-size:13px;white-space:pre-wrap">' . e($note) . '</p>' : '')
         . '</div>';
     return send_email(notify_recipients(), $subject, $text, $html, $email);
 }
