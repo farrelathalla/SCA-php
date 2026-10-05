@@ -41,6 +41,9 @@
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
+    /* Nothing parked off-screen (menu, tooltips) may widen the page: on
+       Android Chrome that makes the browser zoom out. */
+    overflow-x: clip;
   }
 
   body {

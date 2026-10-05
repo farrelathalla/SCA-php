@@ -15,7 +15,7 @@
           <img src="<?= e($partner['logo']) ?>" alt="<?= e($partner['name'] ?? '') ?>" class="max-h-16 w-auto object-contain opacity-80 transition-opacity duration-300 group-hover:opacity-100">
           <?php if (trim((string) ($partner['name'] ?? '')) !== ''): ?>
           <!-- The organisation's name, shown on hover or keyboard focus. -->
-          <span aria-hidden="true" class="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 w-max max-w-[16rem] -translate-x-1/2 translate-y-1 rounded-lg bg-ink px-3 py-2 text-[0.8rem] leading-snug text-cream opacity-0 shadow-[0_10px_24px_rgba(46,35,26,0.18)] transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100"><?= e($partner['name']) ?><span class="absolute top-full left-1/2 -translate-x-1/2 border-x-[6px] border-t-[6px] border-x-transparent border-t-ink"></span></span>
+          <span aria-hidden="true" class="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 hidden w-max md:block max-w-[16rem] -translate-x-1/2 translate-y-1 rounded-lg bg-ink px-3 py-2 text-[0.8rem] leading-snug text-cream opacity-0 shadow-[0_10px_24px_rgba(46,35,26,0.18)] transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100"><?= e($partner['name']) ?><span class="absolute top-full left-1/2 -translate-x-1/2 border-x-[6px] border-t-[6px] border-x-transparent border-t-ink"></span></span>
           <?php endif; ?>
           <?php else: ?>
           <span class="text-[0.8rem] leading-snug tracking-[0.08em] text-muted uppercase transition-colors duration-300 group-hover:text-accent-dark"><?= e($partner['name'] ?? '') ?></span>
