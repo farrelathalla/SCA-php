@@ -4,6 +4,14 @@ DirectoryIndex index.php
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
+  # Domain switch. The three rules below only apply while this site is the
+  # public one on saiga-conservation.org, which is signalled by the file
+  # go-live.flag in the folder above public/ (outside the web root, never
+  # deployed). Without it (the site is only reachable on staging.) they are
+  # skipped. Created and removed by ~/domain-switch/switch.sh on the server.
+  RewriteCond %{DOCUMENT_ROOT}/../go-live.flag !-f
+  RewriteRule ^ - [S=3]
+
   # The old WordPress site lives on at archive.saiga-conservation.org: its
   # files and admin go there, so old links and images in it keep working.
   RewriteRule ^(wp-content|wp-includes|wp-admin)(/.*)?$ https://archive.saiga-conservation.org/$1$2 [L,R=301]
