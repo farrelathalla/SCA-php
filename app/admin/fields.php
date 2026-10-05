@@ -235,7 +235,7 @@ function field_kind(string $key, $value): string
     if ($key === 'projectTheme') {
         return 'theme';
     }
-    if (preg_match('/(^image$|Image$|^logo|Logo$|^gallery$|^photo)/', $key)
+    if (preg_match('/(^image$|Image$|^logo|Logo$|^gallery$|^photo$)/', $key)
         || (is_string($value) && preg_match('~^/(images|uploads)/.+\.(webp|jpe?g|png|gif|avif)$~i', $value))) {
         return 'image';
     }
