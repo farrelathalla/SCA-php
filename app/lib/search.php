@@ -113,7 +113,7 @@ function search_documents(): array
  * Pages and entries containing every word of $query, best first. Each result
  * has url, title, type (its label), meta and snippet (plain text).
  */
-function search_site(string $query, int $limit = 50): array
+function search_site(string $query, int $limit = 500): array
 {
     $terms = search_terms($query);
     if (!$terms) {
