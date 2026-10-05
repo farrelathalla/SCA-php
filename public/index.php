@@ -36,7 +36,7 @@ if ($path === '/robots.txt') {
     // A staging copy stays out of search engines altogether.
     echo config('noindex')
         ? "User-agent: *\nDisallow: /\n"
-        : "User-agent: *\nDisallow: /admin/\nDisallow: /forms/\nDisallow: /search\n\nSitemap:" . site_origin() . "/sitemap.xml\n";
+        : "User-agent: *\nDisallow: /admin/\nDisallow: /forms/\nDisallow: /search\n\nSitemap: " . site_origin() . "/sitemap.xml\n";
     exit;
 }
 
