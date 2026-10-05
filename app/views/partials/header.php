@@ -6,6 +6,7 @@
  */
 $path = request_path();
 $nav = site('header.nav', []);
+$searchLabel = site('labels.search') ?: 'Search';
 $programmes = entries('programme');
 
 $childrenOf = function (array $child) use ($programmes): array {
@@ -85,9 +86,9 @@ $isActive = function (array $item) use ($path): bool {
       </nav>
 
       <div class="flex shrink-0 items-center gap-2">
-        <button type="button" aria-label="Search" class="hidden h-9 w-9 items-center justify-center rounded-full text-body transition-colors duration-300 hover:bg-buff hover:text-accent-dark sm:flex">
+        <a href="/search" aria-label="<?= e($searchLabel) ?>" aria-haspopup="dialog" class="flex h-9 w-9 items-center justify-center rounded-full text-body transition-colors duration-300 hover:bg-buff hover:text-accent-dark" data-search-open>
           <?= icon('search', 'h-4.5 w-4.5') ?>
-        </button>
+        </a>
         <a href="<?= e(site('header.donateHref')) ?>" class="rounded-full bg-accent font-medium text-cream shadow-[0_6px_18px_rgba(200,122,60,0.22)] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:bg-accent-dark hover:shadow-[0_10px_24px_rgba(200,122,60,0.28)] px-6 py-2.5 text-[0.9rem]" data-scrolled-on="px-5 py-2 text-[0.85rem]" data-scrolled-off="px-6 py-2.5 text-[0.9rem]"><?= e(site('header.donateLabel')) ?></a>
         <button type="button" aria-label="Open menu" class="flex h-9 w-9 items-center justify-center rounded-full text-ink transition-colors hover:bg-buff xl:hidden" data-menu-open>
           <?= icon('menu', 'h-5 w-5') ?>
@@ -149,6 +150,29 @@ $isActive = function (array $item) use ($path): bool {
 
       <div class="border-t border-hairline px-6 py-5">
         <a href="<?= e(site('header.donateHref')) ?>" class="block rounded-full bg-accent px-6 py-3 text-center font-medium text-cream transition-colors hover:bg-accent-dark"><?= e(site('header.donateLabel')) ?></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search: drops down from the top. Results arrive as you type (from
+       /search.json); Enter opens the full results page at /search. -->
+  <div class="fixed inset-0 z-[55] invisible transition-[visibility] duration-300" role="dialog" aria-modal="true" aria-label="<?= e($searchLabel) ?>" aria-hidden="true" data-search data-open-on="visible" data-open-off="invisible"
+       data-no-results="<?= e(site('labels.searchNoResults') ?: 'Nothing found for “{query}”.') ?>" data-prompt="<?= e(site('labels.searchPrompt') ?: 'Type a word or phrase to search the site.') ?>">
+    <div class="absolute inset-0 bg-ink/25 transition-opacity duration-300 opacity-0" data-search-backdrop data-open-on="opacity-100" data-open-off="opacity-0"></div>
+    <div class="relative border-b border-hairline bg-cream shadow-[0_18px_44px_rgba(84,63,38,0.10)] transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] -translate-y-3 opacity-0" data-search-panel data-open-on="translate-y-0 opacity-100" data-open-off="-translate-y-3 opacity-0">
+      <div class="shell py-5 md:py-7">
+        <form action="/search" method="get" role="search" class="flex items-center gap-3 border-b-2 border-ink/80 pb-3 focus-within:border-accent">
+          <?= icon('search', 'h-5 w-5 shrink-0 text-muted md:h-6 md:w-6') ?>
+          <input type="search" name="q" placeholder="<?= e(site('labels.searchPlaceholder') ?: 'Search the site') ?>" aria-label="<?= e($searchLabel) ?>" autocomplete="off" maxlength="120" class="min-w-0 flex-1 bg-transparent font-display text-[1.4rem] leading-tight text-ink placeholder:text-muted/70 focus:outline-none md:text-[1.9rem]" data-search-input>
+          <button type="button" aria-label="Close search" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-ink transition-colors hover:bg-buff" data-search-close>
+            <?= icon('close', 'h-5 w-5') ?>
+          </button>
+        </form>
+        <div class="max-h-[calc(100vh-11rem)] overflow-y-auto overscroll-contain" aria-live="polite">
+          <p class="pt-5 text-[0.95rem] leading-relaxed text-muted" data-search-status><?= e(site('labels.searchPrompt') ?: 'Type a word or phrase to search the site.') ?></p>
+          <div data-search-results></div>
+          <a href="/search" class="link-arrow mt-2 hidden pt-4 pb-1" data-search-all><span><?= e(site('labels.searchSeeAll') ?: 'See all results') ?> (<span data-search-total>0</span>)</span><?= icon('arrow-right', 'h-4 w-4') ?></a>
+        </div>
       </div>
     </div>
   </div>

@@ -92,6 +92,18 @@ const LABELS = [
     'analyticsOptIn' => 'Footer link after opting out (turn analytics back on)',
     'analyticsOptedOut' => 'Message after opting out',
     'analyticsOptedIn' => 'Message after opting back in',
+    'search' => 'Search: button and page heading',
+    'searchPlaceholder' => 'Search: text inside the empty search box',
+    'searchTitle' => 'Search: browser tab title ({query} = what was searched)',
+    'searchPrompt' => 'Search: hint before anything is typed',
+    'searchFound' => 'Search: results count ({count}, {results}, {query})',
+    'searchNoResults' => 'Search: nothing found ({query} = what was searched)',
+    'searchSeeAll' => 'Search: link from the search box to the full results',
+    'searchTypePage' => 'Search result kind: page',
+    'searchTypeNews' => 'Search result kind: news article',
+    'searchTypeProject' => 'Search result kind: project',
+    'searchTypeTheme' => 'Search result kind: Our Work theme',
+    'searchTypeProgramme' => 'Search result kind: grant programme',
 ];
 
 /** Lists whose newest item belongs at the top, so “+ Add” inserts it there. */

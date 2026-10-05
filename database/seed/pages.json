@@ -322,7 +322,19 @@
       "analyticsOptOut": "Analytics opt-out",
       "analyticsOptIn": "Analytics: off (turn back on)",
       "analyticsOptedOut": "Google Analytics is now switched off for this browser. We will not collect any statistics about your visits.",
-      "analyticsOptedIn": "Google Analytics is switched back on for this browser. Thank you for helping us improve the site."
+      "analyticsOptedIn": "Google Analytics is switched back on for this browser. Thank you for helping us improve the site.",
+      "search": "Search",
+      "searchPlaceholder": "Search saigas, projects, news…",
+      "searchTitle": "Search: {query}",
+      "searchPrompt": "Type a word or phrase to search every page, project and news story on the site.",
+      "searchFound": "{count} {results} for “{query}”",
+      "searchNoResults": "Nothing found for “{query}”. Try a different word, or check the spelling.",
+      "searchSeeAll": "See all results",
+      "searchTypePage": "Page",
+      "searchTypeNews": "News",
+      "searchTypeProject": "Project",
+      "searchTypeTheme": "Our Work",
+      "searchTypeProgramme": "Grants & Awards"
     },
     "notFound": {
       "eyebrow": "404",

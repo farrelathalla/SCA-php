@@ -24,7 +24,7 @@ $analytics = trim((string) site('site.analyticsId'));
   <meta property="og:image" content="<?= e($shareImage) ?>">
   <meta property="og:locale" content="en_GB">
   <meta name="twitter:card" content="summary_large_image">
-  <?php if (config('noindex')): ?><meta name="robots" content="noindex, nofollow"><?php endif; ?>
+  <?php if (config('noindex')): ?><meta name="robots" content="noindex, nofollow"><?php elseif (!empty($meta['noindex'])): ?><meta name="robots" content="noindex"><?php endif; ?>
   <link rel="icon" href="<?= asset('favicon.ico') ?>" sizes="any">
   <link rel="icon" href="<?= asset('logo/icon-256.png') ?>" type="image/png" sizes="256x256">
   <link rel="apple-touch-icon" href="<?= asset('logo/apple-icon.png') ?>" sizes="180x180">

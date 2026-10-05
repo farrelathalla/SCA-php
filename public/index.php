@@ -36,7 +36,7 @@ if ($path === '/robots.txt') {
     // A staging copy stays out of search engines altogether.
     echo config('noindex')
         ? "User-agent: *\nDisallow: /\n"
-        : "User-agent: *\nDisallow: /admin/\nDisallow: /forms/\n\nSitemap: " . site_origin() . "/sitemap.xml\n";
+        : "User-agent: *\nDisallow: /admin/\nDisallow: /forms/\nDisallow: /search\n\nSitemap:" . site_origin() . "/sitemap.xml\n";
     exit;
 }
 
@@ -57,6 +57,33 @@ if ($path === '/sitemap.xml') {
     }
     echo "</urlset>\n";
     exit;
+}
+
+/* ----------------------------------------------------------------- Search
+   /search is the results page; /search.json feeds the header's search box. */
+
+if ($path === '/search' || $path === '/search.json') {
+    $query = mb_substr(trim((string) ($_GET['q'] ?? '')), 0, 120);
+    $results = $query === '' ? [] : search_site($query);
+    if ($path === '/search.json') {
+        header('Cache-Control: no-store');
+        $terms = search_terms($query);
+        json_response([
+            'query' => $query,
+            'total' => count($results),
+            'results' => array_map(fn ($r) => [
+                'url' => $r['url'],
+                'title' => $r['title'],
+                'type' => $r['type'],
+                'meta' => $r['meta'],
+                'snippet' => search_mark($r['snippet'], $terms),
+            ], array_slice($results, 0, 6)),
+        ]);
+    }
+    render('pages/search', ['query' => $query, 'results' => $results], [
+        'title' => $query === '' ? (site('labels.search') ?: 'Search') : tpl(site('labels.searchTitle') ?: 'Search: {query}', ['query' => $query]),
+        'noindex' => true,
+    ]);
 }
 
 /* ------------------------------------------------------------ Fixed pages */

@@ -135,7 +135,7 @@ function page_path_problem(string $path, string $slug): string
     if ($owner !== null && $owner !== $slug) {
         return 'That address already belongs to another page.';
     }
-    if (in_array(explode('/', $path)[1], ['admin', 'forms', 'assets', 'images', 'uploads', 'downloads', 'logo', 'sitemap.xml', 'robots.txt'], true)) {
+    if (in_array(explode('/', $path)[1], ['admin', 'forms', 'assets', 'images', 'uploads', 'downloads', 'logo', 'search', 'search.json', 'sitemap.xml', 'robots.txt'], true)) {
         return 'That address is used by the site itself. Choose another.';
     }
     $routes = ['#^/our-work/grants-and-awards/([a-z0-9-]+)$#' => 'programme', '#^/our-work/([a-z0-9-]+)$#' => 'theme', '#^/projects/([a-z0-9-]+)$#' => 'project', '#^/news/([a-z0-9-]+)$#' => 'news'];
@@ -208,7 +208,7 @@ function rewrite_links(string $old, string $new): void
 }
 
 /** Path prefixes a built page may not use, because a route already owns them. */
-const RESERVED_PREFIXES = ['admin', 'forms', 'assets', 'images', 'uploads', 'downloads', 'logo', 'our-work', 'projects', 'news'];
+const RESERVED_PREFIXES = ['admin', 'forms', 'assets', 'images', 'uploads', 'downloads', 'logo', 'search', 'our-work', 'projects', 'news'];
 
 function page(string $slug): array
 {

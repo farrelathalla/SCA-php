@@ -19,6 +19,7 @@ require APP . '/lib/content.php';
 require APP . '/lib/icons.php';
 require APP . '/lib/components.php';
 require APP . '/lib/blocks.php';
+require APP . '/lib/search.php';
 
 error_reporting(E_ALL);
 header_remove('X-Powered-By');

@@ -167,6 +167,120 @@
     });
   }
 
+  /* -------------------------------------------------------------- Search
+     The header's search button opens a panel that asks /search.json as you
+     type. Without JavaScript the button is a plain link to /search. */
+
+  var search = document.querySelector("[data-search]");
+  if (search) {
+    var searchInput = search.querySelector("[data-search-input]");
+    var searchList = search.querySelector("[data-search-results]");
+    var searchStatus = search.querySelector("[data-search-status]");
+    var searchAll = search.querySelector("[data-search-all]");
+    var searchTimer = null;
+    var searchRequest = null;
+    var searchOpener = null;
+    var searchOpen = false;
+
+    var escapeHtml = function (text) {
+      return String(text).replace(/[&<>"']/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+      });
+    };
+
+    var setStatus = function (text) {
+      searchStatus.textContent = text;
+      searchStatus.classList.toggle("hidden", !text);
+    };
+
+    var showResults = function (data) {
+      var query = data.query;
+      searchList.innerHTML = data.results.map(function (r) {
+        return '<a href="' + escapeHtml(r.url) + '" class="group block border-t border-hairline py-4 first:mt-4 focus:outline-none focus-visible:bg-buff/60">' +
+          '<span class="flex flex-wrap items-center gap-3">' +
+            '<span class="inline-flex items-center rounded-full bg-accent-soft px-3 py-1 text-[0.7rem] font-medium tracking-[0.08em] text-accent-dark uppercase">' + escapeHtml(r.type) + "</span>" +
+            (r.meta ? '<span class="text-[0.8rem] text-muted">' + escapeHtml(r.meta) + "</span>" : "") +
+          "</span>" +
+          '<span class="mt-2 block font-display text-[1.2rem] leading-snug text-ink transition-colors duration-300 group-hover:text-accent-dark group-focus-visible:text-accent-dark">' + escapeHtml(r.title) + "</span>" +
+          (r.snippet ? '<span class="mt-1.5 block text-[0.9rem] leading-relaxed text-body">' + r.snippet + "</span>" : "") +
+        "</a>";
+      }).join("");
+      setStatus(data.results.length ? "" : search.getAttribute("data-no-results").replace("{query}", query));
+      searchAll.classList.toggle("hidden", !data.results.length);
+      searchAll.setAttribute("href", "/search?q=" + encodeURIComponent(query));
+      searchAll.querySelector("[data-search-total]").textContent = data.total;
+    };
+
+    var runSearch = function () {
+      var query = searchInput.value.trim();
+      if (searchRequest) searchRequest.abort();
+      if (query.length < 2) {
+        searchList.innerHTML = "";
+        searchAll.classList.add("hidden");
+        setStatus(search.getAttribute("data-prompt"));
+        return;
+      }
+      searchRequest = "AbortController" in window ? new AbortController() : null;
+      fetch("/search.json?q=" + encodeURIComponent(query), {
+        headers: { Accept: "application/json" },
+        signal: searchRequest ? searchRequest.signal : undefined,
+      })
+        .then(function (response) { return response.json(); })
+        .then(function (data) { if (searchInput.value.trim() === data.query) showResults(data); })
+        .catch(function () {});
+    };
+
+    var setSearch = function (open) {
+      searchOpen = open;
+      swap(search, "open", open);
+      swap(search.querySelector("[data-search-backdrop]"), "open", open);
+      swap(search.querySelector("[data-search-panel]"), "open", open);
+      search.setAttribute("aria-hidden", open ? "false" : "true");
+      document.body.style.overflow = open ? "hidden" : "";
+      if (open) {
+        setTimeout(function () { searchInput.focus(); searchInput.select(); }, 30);
+      } else if (searchOpener) {
+        searchOpener.focus();
+      }
+    };
+
+    document.querySelectorAll("[data-search-open]").forEach(function (button) {
+      button.addEventListener("click", function (event) {
+        event.preventDefault();
+        searchOpener = button;
+        setSearch(true);
+      });
+    });
+    search.querySelector("[data-search-close]").addEventListener("click", function () { setSearch(false); });
+    search.querySelector("[data-search-backdrop]").addEventListener("click", function () { setSearch(false); });
+
+    searchInput.addEventListener("input", function () {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(runSearch, 180);
+    });
+
+    // Arrow keys move between the input and the results.
+    search.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        setSearch(false);
+        return;
+      }
+      if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
+      var links = [searchInput].concat(Array.prototype.slice.call(searchList.querySelectorAll("a")));
+      if (!searchAll.classList.contains("hidden")) links.push(searchAll);
+      var index = links.indexOf(document.activeElement);
+      if (index === -1) return;
+      event.preventDefault();
+      var next = links[Math.max(0, Math.min(links.length - 1, index + (event.key === "ArrowDown" ? 1 : -1)))];
+      next.focus();
+    });
+
+    // Keep keyboard focus inside the open panel.
+    document.addEventListener("focusin", function (event) {
+      if (searchOpen && !search.contains(event.target)) searchInput.focus();
+    });
+  }
+
   /* ------------------------------------------------------------ Count up
      Only the number animates; unit and label are static. The final string
      reserves the width, so nothing reflows while it counts. */

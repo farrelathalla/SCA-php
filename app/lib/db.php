@@ -9,7 +9,7 @@
  * overwrites anything an editor has already changed.
  */
 
-const SCHEMA_VERSION = 7;
+const SCHEMA_VERSION = 8;
 
 function db(): PDO
 {
@@ -307,6 +307,16 @@ function migrate_content(int $from): void
 
     if ($from < 7) {
         migrate_content_v7();
+    }
+
+    // v8 — site search: the wording of the search box and results page.
+    if ($from < 8 && ($global = page_row('global')) !== null) {
+        foreach (seed_data('pages.json')['global']['labels'] as $key => $value) {
+            if (strpos($key, 'search') === 0) {
+                $global['labels'][$key] = $global['labels'][$key] ?? $value;
+            }
+        }
+        save_page_row('global', $global);
     }
 }
 
