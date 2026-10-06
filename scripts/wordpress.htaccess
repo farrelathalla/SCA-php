@@ -1,0 +1,19 @@
+# BEGIN SCA domain switch (source: sca-php/scripts/wordpress.htaccess)
+# Sits at the top of the WordPress .htaccess in
+# /home3/saiga/archive.saiga-conservation.org, outside WordPress's own markers.
+# Applies only while WordPress is the public site, i.e. while
+# /home3/saiga/staging.saiga-conservation.org/go-live.flag does not exist:
+#  - /admin/... on the main domain is the new site's admin: send it to staging.
+#    (?from=old-site makes the new site clear browsers' stale cached redirect.)
+#  - archive. is switched off: it sends visitors to the main domain.
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond /home3/saiga/staging.saiga-conservation.org/go-live.flag !-f
+RewriteCond %{HTTP_HOST} ^(www\.)?saiga-conservation\.org$ [NC]
+RewriteRule ^admin(/.*)?$ https://staging.saiga-conservation.org/admin$1?from=old-site [R=302,L,QSA]
+RewriteCond /home3/saiga/staging.saiga-conservation.org/go-live.flag !-f
+RewriteCond %{HTTP_HOST} ^archive\.saiga-conservation\.org$ [NC]
+RewriteRule ^ https://www.saiga-conservation.org%{REQUEST_URI} [R=302,L]
+</IfModule>
+# END SCA domain switch
+

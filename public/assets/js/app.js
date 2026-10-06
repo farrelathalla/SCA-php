@@ -55,9 +55,20 @@
   var header = document.querySelector("[data-header]");
   if (header) {
     var scrollTargets = header.querySelectorAll("[data-scrolled-on]");
-    var wasScrolled = null;
+    var wasScrolled = false;
+    // The compact header is shorter, and the browser keeps the content in
+    // place by moving the scroll position by the difference (scroll
+    // anchoring). With a single threshold that move crossed it again and the
+    // header kept toggling. So it compacts only once scrolled past its full
+    // height and expands again only near the very top: the gap between the
+    // two is always larger than the change in height.
+    var fullHeight = header.offsetHeight;
+    window.addEventListener("resize", function () {
+      if (!wasScrolled) fullHeight = header.offsetHeight;
+    }, { passive: true });
     var onScroll = function () {
-      var scrolled = window.scrollY > 24;
+      var y = window.scrollY;
+      var scrolled = wasScrolled ? y > 8 : y > fullHeight + 8;
       if (scrolled === wasScrolled) return;
       wasScrolled = scrolled;
       scrollTargets.forEach(function (el) { swap(el, "scrolled", scrolled); });

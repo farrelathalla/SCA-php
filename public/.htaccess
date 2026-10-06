@@ -10,7 +10,7 @@ DirectoryIndex index.php
   # deployed). Without it (the site is only reachable on staging.) they are
   # skipped. Created and removed by ~/domain-switch/switch.sh on the server.
   RewriteCond %{DOCUMENT_ROOT}/../go-live.flag !-f
-  RewriteRule ^ - [S=3]
+  RewriteRule ^ - [S=4]
 
   # The old WordPress site lives on at archive.saiga-conservation.org: its
   # files and admin go there, so old links and images in it keep working.
@@ -19,10 +19,16 @@ DirectoryIndex index.php
 
   # One public address. Staging and www redirect to the main domain; only for
   # GET/HEAD, so a form posted from a staging tab that is still open saves.
-  RewriteCond %{HTTP_HOST} ^(www\.|staging\.|www\.staging\.)saiga-conservation\.org$ [NC]
+  # Staging uses a temporary (302) redirect: browsers keep a 301 for good, so
+  # after a switch back to WordPress staging. would stay unreachable for them.
+  RewriteCond %{HTTP_HOST} ^www\.saiga-conservation\.org$ [NC]
   RewriteCond %{REQUEST_METHOD} ^(GET|HEAD)$
   RewriteCond %{REQUEST_URI} !^/\.well-known/
   RewriteRule ^ https://saiga-conservation.org%{REQUEST_URI} [L,R=301]
+  RewriteCond %{HTTP_HOST} ^(www\.)?staging\.saiga-conservation\.org$ [NC]
+  RewriteCond %{REQUEST_METHOD} ^(GET|HEAD)$
+  RewriteCond %{REQUEST_URI} !^/\.well-known/
+  RewriteRule ^ https://saiga-conservation.org%{REQUEST_URI} [L,R=302]
 
   # Force HTTPS
   RewriteCond %{HTTPS} off

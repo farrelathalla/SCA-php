@@ -14,6 +14,14 @@ require dirname(__DIR__) . '/app/bootstrap.php';
 
 $path = request_path();
 
+// Browsers that opened staging. while it briefly redirected to the main domain
+// (5 Oct 2026) kept that permanent redirect in their cache. While WordPress is
+// the public site, its .htaccess sends /admin/... back here with
+// ?from=old-site; that visit clears the browser's stale copy of this site.
+if (($_GET['from'] ?? '') === 'old-site') {
+    header('Clear-Site-Data: "cache"');
+}
+
 /* ------------------------------------------------------------------ Admin */
 
 if ($path === '/admin' || strpos($path, '/admin/') === 0) {

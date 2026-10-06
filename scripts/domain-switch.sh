@@ -15,6 +15,10 @@
 #   app/config.local.php   site_url + noindex   (canonical URLs, sitemap, Google, analytics)
 #   go-live.flag           lets public/.htaccess redirect staging./www. to the main domain
 #
+# The WordPress .htaccess starts with the block in scripts/wordpress.htaccess,
+# which reads the same flag: without it, /admin on the main domain goes to
+# staging. and archive. is switched off (redirects to the main domain).
+#
 # Server only, in /home3/saiga/domain-switch/. No secrets in this file.
 
 set -eu
