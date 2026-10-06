@@ -13,7 +13,7 @@ RewriteCond %{HTTP_HOST} ^(www\.)?saiga-conservation\.org$ [NC]
 RewriteRule ^admin(/.*)?$ https://staging.saiga-conservation.org/admin$1?from=old-site [R=302,L,QSA]
 RewriteCond /home3/saiga/staging.saiga-conservation.org/go-live.flag !-f
 RewriteCond %{HTTP_HOST} ^archive\.saiga-conservation\.org$ [NC]
-RewriteRule ^ https://www.saiga-conservation.org%{REQUEST_URI} [R=302,L]
+RewriteRule ^ https://saiga-conservation.org%{REQUEST_URI} [R=302,L]
 </IfModule>
 # END SCA domain switch
 
