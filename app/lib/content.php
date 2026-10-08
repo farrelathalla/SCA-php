@@ -122,6 +122,67 @@ function moved_page(string $path): ?string
 }
 
 /**
+ * Pages of the old WordPress site (from its sitemap on 8 Oct 2026) that have
+ * an equivalent here: old path => new page slug or path. Anything else the old
+ * site had lives on at archive.saiga-conservation.org (see legacy_url()).
+ */
+const LEGACY_PAGES = [
+    'about-us' => 'about',
+    'saigas' => 'what-is-a-saiga',
+    'donate' => 'donate',
+    'get-involved' => 'sign-up',
+    'projects-history' => 'projects',
+    'sca-awards' => 'grants-and-awards',
+    'sca-awards/sca-awards' => 'grants-and-awards',
+    'projects/apply-for-funding' => 'grants-and-awards',
+    'news/saiga-resource-centre' => 'resources',
+    'projects/young-conservation-leaders' => '/our-work/grants-and-awards/young-conservation-leaders',
+    'projects/small-grants-programme' => '/our-work/grants-and-awards/small-grants-programme',
+    'projects/award-for-excellence-in-saiga-protection' => '/our-work/grants-and-awards/excellence-in-saiga-protection-award',
+];
+
+/** Old WordPress pages without an equivalent here: they go to the archive. */
+const LEGACY_ARCHIVED = [
+    '2024-in-review', '28346-2', '33113-2', '33192-2', 'cart', 'checkout', 'checkout-2',
+    'case-study-2-excellence-in-saiga-protection-2014', 'case-study-2-excellence-in-saiga-protection-2014-2',
+    'institutional-members', 'my-account', 'new-saigas-go-on-sale', 'news/saiga-news', 'news/saiga-spotlight',
+    'order-confirmation', 'order-failed', 'safeguarding-ploicy', 'saiga-art-gallery', 'search-results',
+    'search_gcse', 'usfws-project',
+    'projects/alternative-livelihoods', 'projects/camera-trapping', 'projects/community-outreach',
+    'projects/designation-of-protected-areas', 'projects/eco-camp', 'projects/impact-evaluation',
+    'projects/migratory-species-day', 'projects/offsetting', 'projects/participatory-monitoring',
+    'projects/population-monitoring', 'projects/projects-in-china', 'projects/projects-in-kazakhstan',
+    'projects/projects-in-mongolia', 'projects/projects-in-russia', 'projects/projects-in-uzbekistan',
+    'projects/protected-area-designation', 'projects/saiga-cms', 'projects/saiga-day', 'projects/saiga-mural',
+    'projects/steppe-wildlife-club',
+    'projects/resurrection-island-safeguarding-one-of-the-wildest-places-on-our-planet',
+    'projects/resurrection-island-safeguarding-one-of-the-wildest-places-on-our-planet/resurrection-island-safeguarding-one-of-the-wildest-places-on-our-planet',
+];
+
+/**
+ * Where an address of the old WordPress site should go now, or null when
+ * $path is not one. Only asked once nothing on this site matched, so a page,
+ * project or article SCA create later always wins over these redirects.
+ */
+function legacy_url(string $path): ?string
+{
+    $old = ltrim($path, '/');
+    if (isset(LEGACY_PAGES[$old])) {
+        $to = LEGACY_PAGES[$old];
+        return $to[0] === '/' ? $to : page_path($to);
+    }
+    // Posts were /YYYY/MM/DD/slug/: the article here if it was carried over.
+    if (preg_match('#^(?:19|20)\d\d/\d\d/\d\d/([a-z0-9-]+)$#', $old, $m) && entry('news', $m[1])) {
+        return '/news/' . $m[1];
+    }
+    if (in_array($old, LEGACY_ARCHIVED, true)
+        || preg_match('#^((19|20)\d\d|category|tag|type|author|project|product|product-category|project_category|project_tag)(/|$)#', $old)) {
+        return 'https://archive.saiga-conservation.org/' . $old . '/';
+    }
+    return null;
+}
+
+/**
  * Why $path cannot become a fixed page's address (an empty string when it can).
  * It may not belong to another page, a built page or an entry, nor sit under
  * a folder the site itself uses.

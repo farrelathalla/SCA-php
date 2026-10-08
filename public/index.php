@@ -154,4 +154,12 @@ if (preg_match('#^/([a-z0-9-]+(?:/[a-z0-9-]+)*)$#', $path, $m) && ($built = entr
     render('pages/custom', ['custom' => $built], $meta);
 }
 
+/* ------------------------------------------- Addresses of the old WordPress site
+   Search engines and other sites still link to them: the matching page here,
+   else the same page on archive.saiga-conservation.org. */
+
+if (($legacy = legacy_url($path)) !== null) {
+    redirect($legacy, 301);
+}
+
 not_found();
