@@ -124,7 +124,7 @@ function moved_page(string $path): ?string
 /**
  * Pages of the old WordPress site (from its sitemap on 8 Oct 2026) that have
  * an equivalent here: old path => new page slug or path. Anything else the old
- * site had lives on at archive.saiga-conservation.org (see legacy_url()).
+ * site had is gone since 2026-11-02 (see legacy_gone()).
  */
 const LEGACY_PAGES = [
     'about-us' => 'about',
@@ -175,11 +175,20 @@ function legacy_url(string $path): ?string
     if (preg_match('#^(?:19|20)\d\d/\d\d/\d\d/([a-z0-9-]+)$#', $old, $m) && entry('news', $m[1])) {
         return '/news/' . $m[1];
     }
-    if (in_array($old, LEGACY_ARCHIVED, true)
-        || preg_match('#^((19|20)\d\d|category|tag|type|author|project|product|product-category|project_category|project_tag)(/|$)#', $old)) {
-        return 'https://archive.saiga-conservation.org/' . $old . '/';
-    }
     return null;
+}
+
+/**
+ * True when $path was an address of the old WordPress site that has no
+ * equivalent here. The archive copy of that site was switched off on
+ * 2026-11-02, so these answer 410 Gone (search engines drop them faster than
+ * a 404). Only asked after legacy_url() found nothing.
+ */
+function legacy_gone(string $path): bool
+{
+    $old = ltrim($path, '/');
+    return in_array($old, LEGACY_ARCHIVED, true)
+        || (bool) preg_match('#^((19|20)\d\d|category|tag|type|author|project|product|product-category|project_category|project_tag)(/|$)#', $old);
 }
 
 /**

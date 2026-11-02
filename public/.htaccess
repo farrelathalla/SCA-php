@@ -12,10 +12,11 @@ DirectoryIndex index.php
   RewriteCond %{DOCUMENT_ROOT}/../go-live.flag !-f
   RewriteRule ^ - [S=4]
 
-  # The old WordPress site lives on at archive.saiga-conservation.org: its
-  # files and admin go there, so old links and images in it keep working.
-  RewriteRule ^(wp-content|wp-includes|wp-admin)(/.*)?$ https://archive.saiga-conservation.org/$1$2 [L,R=301]
-  RewriteRule ^wp-login\.php$ https://archive.saiga-conservation.org/wp-login.php [L,R=301]
+  # The old WordPress site (archive.saiga-conservation.org) was switched off on
+  # 2026-11-02: its files and admin addresses answer 410 Gone, so search
+  # engines drop them. (Keep these two rules: the skip count above is 4.)
+  RewriteRule ^(wp-content|wp-includes|wp-admin)(/.*)?$ - [G,L]
+  RewriteRule ^wp-login\.php$ - [G,L]
 
   # One public address. Staging and www redirect to the main domain; only for
   # GET/HEAD, so a form posted from a staging tab that is still open saves.

@@ -304,7 +304,7 @@ function render(string $viewName, array $vars = [], array $meta = [], int $statu
     exit;
 }
 
-function not_found(): void
+function not_found(int $status = 404): void
 {
-    render('pages/not-found', [], ['title' => 'Page not found'], 404);
+    render('pages/not-found', [], ['title' => 'Page not found'], $status);
 }

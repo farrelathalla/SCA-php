@@ -156,10 +156,10 @@ if (preg_match('#^/([a-z0-9-]+(?:/[a-z0-9-]+)*)$#', $path, $m) && ($built = entr
 
 /* ------------------------------------------- Addresses of the old WordPress site
    Search engines and other sites still link to them: the matching page here,
-   else the same page on archive.saiga-conservation.org. */
+   else (the archive was switched off on 2026-11-02) 410 Gone. */
 
 if (($legacy = legacy_url($path)) !== null) {
     redirect($legacy, 301);
 }
 
-not_found();
+not_found(legacy_gone($path) ? 410 : 404);
