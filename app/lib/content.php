@@ -188,7 +188,8 @@ function legacy_gone(string $path): bool
 {
     $old = ltrim($path, '/');
     return in_array($old, LEGACY_ARCHIVED, true)
-        || (bool) preg_match('#^((19|20)\d\d|category|tag|type|author|project|product|product-category|project_category|project_tag)(/|$)#', $old);
+        || in_array($old, ['wp-login.php', 'xmlrpc.php', 'wp-cron.php', 'wp-comments-post.php'], true)
+        || (bool) preg_match('#^((19|20)\d\d|category|tag|type|author|project|product|product-category|project_category|project_tag|wp-content|wp-includes|wp-admin|wp-json)(/|$)#', $old);
 }
 
 /**
