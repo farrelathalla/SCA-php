@@ -22,6 +22,7 @@ foreach (['Pages', 'About Us', 'About Saigas', 'Our Work', 'Support Us', 'Site']
 $sections[] = ['title' => 'Other', 'links' => [
     ['href' => '/admin/media', 'label' => 'Media library'],
     ['href' => '/admin/messages', 'label' => 'Messages'],
+    ['href' => '/admin/backup', 'label' => 'Backup'],
     ['href' => '/admin/account', 'label' => 'Account & users'],
 ]];
 $flash = flash();

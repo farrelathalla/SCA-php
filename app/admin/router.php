@@ -16,6 +16,7 @@
 
 require APP . '/admin/fields.php';
 require APP . '/admin/media.php';
+require APP . '/admin/backup.php';
 
 start_session();
 header('X-Robots-Tag: noindex, nofollow');
@@ -391,6 +392,26 @@ if (($parts[0] ?? '') === 'messages') {
     $stmt = db()->prepare('SELECT * FROM submissions WHERE kind = ? ORDER BY created_at DESC LIMIT 500');
     $stmt->execute([$kind]);
     admin_view('messages', ['kind' => $kind, 'rows' => $stmt->fetchAll()], 'Messages');
+}
+
+/* --------------------------------------------------------------- Backup */
+
+if (($parts[0] ?? '') === 'backup') {
+    if (is_post()) {
+        require_csrf();
+        if (!backup_available()) {
+            flash('Backups are not available on this server.', 'error');
+            redirect('/admin/backup');
+        }
+        if (($_POST['action'] ?? '') === 'content') {
+            backup_content();
+        } elseif (($_POST['action'] ?? '') === 'files') {
+            backup_files();
+        }
+        redirect('/admin/backup');
+    }
+    [$filesCount, $filesBytes] = backup_uploads_summary();
+    admin_view('backup', ['available' => backup_available(), 'files_count' => $filesCount, 'files_bytes' => $filesBytes], 'Backup');
 }
 
 /* -------------------------------------------------------------- Account */
