@@ -11,7 +11,7 @@
  * live first. The key is not a secret (IndexNow requires it to be public).
  */
 const HOST = 'saiga-conservation.org';
-const ENDPOINT = 'https://api.indexnow.org/indexnow';
+const ENDPOINTS = ['https://www.bing.com/indexnow', 'https://yandex.com/indexnow']; // each engine shares with the others
 
 $keyFiles = glob(__DIR__ . '/../public/[0-9a-f]*.txt');
 $keyFiles = array_filter($keyFiles, fn($f) => preg_match('/^[0-9a-f]{32}\.txt$/', basename($f)));
@@ -42,14 +42,17 @@ if (!in_array('--send', $argv, true)) { echo implode("\n", $urls) . "\n"; exit(0
 $check = @file_get_contents($keyLocation);
 if (trim((string) $check) !== $key) { fwrite(STDERR, "$keyLocation is not live yet. Deploy first.\n"); exit(1); }
 
-foreach (array_chunk($urls, 9000) as $chunk) {
-    $ch = curl_init(ENDPOINT);
-    curl_setopt_array($ch, [
-        CURLOPT_POST => true,
-        CURLOPT_HTTPHEADER => ['Content-Type: application/json; charset=utf-8'],
-        CURLOPT_POSTFIELDS => json_encode(['host' => HOST, 'key' => $key, 'keyLocation' => $keyLocation, 'urlList' => $chunk]),
-        CURLOPT_RETURNTRANSFER => true,
-    ]);
-    curl_exec($ch);
-    echo 'IndexNow answered HTTP ' . curl_getinfo($ch, CURLINFO_HTTP_CODE) . " (200/202 = accepted)\n";
+foreach (ENDPOINTS as $endpoint) {
+    foreach (array_chunk($urls, 9000) as $chunk) {
+        $ch = curl_init($endpoint);
+        curl_setopt_array($ch, [
+            CURLOPT_POST => true,
+            CURLOPT_HTTPHEADER => ['Content-Type: application/json; charset=utf-8'],
+            CURLOPT_POSTFIELDS => json_encode(['host' => HOST, 'key' => $key, 'keyLocation' => $keyLocation, 'urlList' => $chunk]),
+            CURLOPT_RETURNTRANSFER => true,
+        ]);
+        curl_exec($ch);
+        echo $endpoint . ' answered HTTP ' . curl_getinfo($ch, CURLINFO_HTTP_CODE) . " (200/202 = accepted)
+";
+    }
 }
